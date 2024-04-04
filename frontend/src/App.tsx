@@ -1,6 +1,5 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
-import MyLists from "./pages/MyLists";
 
 const router = createRouter({ routeTree });
 

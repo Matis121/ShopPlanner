@@ -11,7 +11,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex items-center border-b px-10 py-2 bg-white dark:bg-neutral-950 overflow-hidden">
+    <header className="flex items-center border-b px-10 py-2 bg-white dark:bg-neutral-950 dark:border-neutral-800 overflow-hidden">
       <Link to="/">
         <span className=" text-blue-400 font-semibold text-xl">
           ShopPlanner
