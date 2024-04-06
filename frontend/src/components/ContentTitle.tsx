@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LuPlus } from "react-icons/lu";
+import AddNewList from "./AddNewList";
 
 interface ContentTitleProps {
   title: string;
@@ -17,10 +17,7 @@ const ContentTitle: React.FC<ContentTitleProps> = ({ title, cardsAmount }) => {
             placeholder="Search list..."
             className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
           />
-          <Button className="flex gap-1">
-            <LuPlus />
-            Add new list
-          </Button>
+          <AddNewList />
         </>
       );
     }

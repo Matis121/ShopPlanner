@@ -6,7 +6,7 @@ const Groups = () => {
   return (
     <DefaultLayout>
       <>
-        <ContentTitle title="Groups" />
+        <ContentTitle title="Groups" cardsAmount={0} />
         <EmptyContent
           paragraph="No group has been created yet!"
           button="Create a new group"
