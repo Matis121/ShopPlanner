@@ -8,10 +8,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
 
-const ListCard = ({ name, description, status, progressBarPercent }: any) => {
+interface CardProps {
+  name: string;
+  description?: string; // Optional prop
+  status: string;
+  progressBarPercent: number;
+}
+
+const Card: React.FC<CardProps> = ({
+  name,
+  description,
+  status,
+  progressBarPercent,
+}) => {
   return (
-    <div className="rounded-lg border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer">
-      <div className="p-6 relative">
+    <div className="rounded-lg min-h-[200px] border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer">
+      <div className="p-6 h-full flex flex-col items-start relative">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -30,11 +42,11 @@ const ListCard = ({ name, description, status, progressBarPercent }: any) => {
           </DropdownMenuContent>
         </DropdownMenu>
         <h2 className="text-lg font-semibold line-clamp-1 pr-10">{name}</h2>
-        <p className="mt-3 text-sm">{description}</p>
+        {description ? <p className="mt-3 text-sm">{description}</p> : null}
         <span className="mt-6 inline-flex flex-shrink-0 items-center rounded-full px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20">
           {status}
         </span>
-        <div className="mt-6 space-y-2">
+        <div className="mt-auto pt-6 w-full space-y-2">
           <div className="flex justify-between text-sm">
             <span>0% Completed</span>
             <span>0/0 products</span>
@@ -46,4 +58,4 @@ const ListCard = ({ name, description, status, progressBarPercent }: any) => {
   );
 };
 
-export default ListCard;
+export default Card;

@@ -1,7 +1,7 @@
 import DefaultLayout from "@/layout/DefaultLayout";
 import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
-import ListCard from "@/components/Card";
+import Card from "@/components/Card";
 import CardsContainer from "@/components/CardsContainer";
 import { useState } from "react";
 
@@ -12,22 +12,20 @@ const MyLists = () => {
   const [list, setList] = useState([
     {
       id: 1,
-      name: "my",
-      description: "test",
+      name: "This is my first list",
       status: "In progress",
       progressBarPercent: 0,
     },
     {
       id: 2,
       name: "firstelement",
-      description: "test",
+      description: "testowe",
       status: "In progress",
       progressBarPercent: 0,
     },
     {
       id: 3,
       name: "element",
-      description: "test",
       status: "In progress",
       progressBarPercent: 80,
     },
@@ -60,7 +58,7 @@ const MyLists = () => {
         {list.length > 0 ? (
           <CardsContainer>
             {filteredList.map(item => (
-              <ListCard
+              <Card
                 key={item.id}
                 name={item.name}
                 description={item.description}
