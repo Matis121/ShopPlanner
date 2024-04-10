@@ -1,24 +1,19 @@
-import { Input } from "@/components/ui/input";
-import AddNewList from "./AddNewList";
+import { ReactElement } from "react";
 
 interface ContentTitleProps {
   title: string;
   cardsAmount: number;
+  children: ReactElement;
 }
 
-const ContentTitle: React.FC<ContentTitleProps> = ({ title, cardsAmount }) => {
+const ContentTitle: React.FC<ContentTitleProps> = ({
+  title,
+  cardsAmount,
+  children,
+}) => {
   const DisplaySearch = (cardsAmount: number) => {
     if (cardsAmount > 0) {
-      return (
-        <>
-          <Input
-            type="text"
-            placeholder="Search list..."
-            className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
-          />
-          <AddNewList />
-        </>
-      );
+      return <>{children}</>;
     }
     return null;
   };
