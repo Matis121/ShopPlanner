@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,10 +11,39 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { LuPlus } from "react-icons/lu";
+import { FieldValues, useForm } from "react-hook-form";
 
-const AddNewList = () => {
+const AddNewList = ({ handleNewItem }: any) => {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (open === false) {
+      reset();
+    }
+  }, [open]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm();
+
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+    // delete after creating backend
+    handleNewItem({
+      id: 4,
+      name: data.name,
+      description: data.description,
+      status: "In progress",
+    });
+    //
+    setOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex gap-1">
           <LuPlus />
@@ -21,34 +51,47 @@ const AddNewList = () => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>New list</DialogTitle>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              placeholder="List name..."
-              className="col-span-3"
-            />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
+            <DialogTitle>New list</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                {...register("name", {
+                  required: "Name is required",
+                  maxLength: {
+                    value: 30,
+                    message: "Maximum length of the name is 30 characters",
+                  },
+                })}
+                placeholder="List name..."
+                className="col-span-3"
+              />
+            </div>
+            {errors.name && (
+              <p className="text-red-500 text-sm">{`${errors.name.message}`}</p>
+            )}
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Description
+              </Label>
+              <Input
+                {...register("description")}
+                placeholder="Description..."
+                className="col-span-3"
+              />
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Description
-            </Label>
-            <Input
-              id="username"
-              placeholder="Description..."
-              className="col-span-3"
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Create list</Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit" disabled={isSubmitting}>
+              Create list
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

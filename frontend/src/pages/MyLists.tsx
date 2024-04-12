@@ -9,6 +9,14 @@ import { Input } from "@/components/ui/input";
 import AddNewList from "../components/AddNewList";
 
 const MyLists = () => {
+  interface ListItem {
+    id: number;
+    name: string;
+    description?: string; // Optional property
+    status: string;
+    progressBarPercent: number;
+  }
+
   const [list, setList] = useState([
     {
       id: 1,
@@ -30,6 +38,11 @@ const MyLists = () => {
       progressBarPercent: 80,
     },
   ]);
+
+  const handleNewItem = (newItem: ListItem) => {
+    setList(prev => [...prev, newItem]);
+  };
+
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +65,7 @@ const MyLists = () => {
               value={searchQuery}
               onChange={handleSearchChange}
             />
-            <AddNewList />
+            <AddNewList handleNewItem={(e: ListItem) => handleNewItem(e)} />
           </>
         </ContentTitle>
         {list.length > 0 ? (
