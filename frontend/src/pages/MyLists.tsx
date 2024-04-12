@@ -39,10 +39,15 @@ const MyLists = () => {
     },
   ]);
 
+  // Remove after connect to backend
   const handleNewItem = (newItem: ListItem) => {
     setList(prev => [...prev, newItem]);
   };
 
+  const handleRemoveItem = (removeItem: number) => {
+    setList(prev => prev.filter(item => item.id !== removeItem));
+  };
+  //
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +82,7 @@ const MyLists = () => {
                 description={item.description}
                 status={item.status}
                 progressBarPercent={item.progressBarPercent}
+                handleRemoveItem={() => handleRemoveItem(item.id)}
               />
             ))}
           </CardsContainer>

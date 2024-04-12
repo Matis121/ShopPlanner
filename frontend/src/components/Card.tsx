@@ -13,6 +13,7 @@ interface CardProps {
   description?: string; // Optional prop
   status: string;
   progressBarPercent: number;
+  handleRemoveItem: () => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -20,6 +21,7 @@ const Card: React.FC<CardProps> = ({
   description,
   status,
   progressBarPercent,
+  handleRemoveItem,
 }) => {
   return (
     <div className="rounded-lg min-h-[200px] border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer">
@@ -35,7 +37,10 @@ const Card: React.FC<CardProps> = ({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-30">
-            <DropdownMenuItem className="flex gap-2 text-red-500 hover:cursor-pointer">
+            <DropdownMenuItem
+              className="flex gap-2 text-red-500 hover:cursor-pointer"
+              onClick={handleRemoveItem}
+            >
               <LuTrash2 />
               Delete
             </DropdownMenuItem>
