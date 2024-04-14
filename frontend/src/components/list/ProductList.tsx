@@ -9,11 +9,11 @@ const ProductList = () => {
   const navigate = useNavigate();
 
   const initialListState = [
-    { id: 1, productName: "first", isCollected: true },
-    { id: 2, productName: "second", isCollected: false },
-    { id: 3, productName: "third", isCollected: false },
-    { id: 4, productName: "fourth", isCollected: true },
-    { id: 5, productName: "fifth", isCollected: true },
+    { id: 1, productName: "first", productAmount: 5, isCollected: true },
+    { id: 2, productName: "second", productAmount: 1, isCollected: false },
+    { id: 3, productName: "third", productAmount: 30, isCollected: false },
+    { id: 4, productName: "fourth", productAmount: 2, isCollected: true },
+    { id: 5, productName: "fifth", productAmount: 1, isCollected: true },
   ];
 
   const [itemsList, setItemsList] = useState(initialListState);
@@ -52,7 +52,12 @@ const ProductList = () => {
     if (e.key === "Enter") {
       setItemsList(prev => [
         ...prev,
-        { id: 10, productName: e.target.value, isCollected: false },
+        {
+          id: 10,
+          productName: e.target.value,
+          productAmount: 1,
+          isCollected: false,
+        },
       ]);
       setNewItemValue("");
     }
@@ -73,7 +78,7 @@ const ProductList = () => {
         <ProgressBar progressBarPercent={50} />
         <Input
           placeholder="Add new product..."
-          className="self-center mt-16 rounded-full text-center"
+          className="self-center mt-16 rounded-full text-center w-[80%]"
           onKeyDown={e => handleNewItemOnEnterPress(e)}
           value={newItemValue}
           onChange={e => setNewItemValue(e.target.value)}
@@ -86,6 +91,7 @@ const ProductList = () => {
             {isNotCollected.map(element => (
               <ProductItem
                 productName={element.productName}
+                productAmount={element.productAmount}
                 key={element.id}
                 isCollected={element.isCollected}
                 collectingActions={() => collectingActions(element.id)}
@@ -97,6 +103,7 @@ const ProductList = () => {
             {isCollected.map(element => (
               <ProductItem
                 productName={element.productName}
+                productAmount={element.productAmount}
                 key={element.id}
                 isCollected={element.isCollected}
                 collectingActions={() => collectingActions(element.id)}
