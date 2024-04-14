@@ -12,6 +12,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
+import { Textarea } from "../ui/textarea";
 
 const AddNewList = ({ handleNewItem }: any) => {
   const [open, setOpen] = useState(false);
@@ -73,13 +74,13 @@ const AddNewList = ({ handleNewItem }: any) => {
               />
             </div>
             {errors.name && (
-              <p className="text-red-500 text-sm">{`${errors.name.message}`}</p>
+              <p className="text-red-500 text-sm grid-cols-4 text-end">{`${errors.name.message}`}</p>
             )}
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="username" className="text-right">
                 Description
               </Label>
-              <Input
+              <Textarea
                 {...register("description")}
                 placeholder="Description..."
                 className="col-span-3"

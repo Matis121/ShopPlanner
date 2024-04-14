@@ -3,7 +3,7 @@ import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 
 import { Input } from "@/components/ui/input";
-import AddNewList from "../components/AddNewList";
+import AddNewList from "../components/list/AddNewList";
 
 const Groups = () => {
   return (

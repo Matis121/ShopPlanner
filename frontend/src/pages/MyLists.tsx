@@ -1,12 +1,13 @@
 import DefaultLayout from "@/layout/DefaultLayout";
 import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
-import Card from "@/components/Card";
-import CardsContainer from "@/components/CardsContainer";
+import Card from "@/components/card/Card";
+import CardsContainer from "@/components/card/CardsContainer";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import AddNewList from "../components/AddNewList";
+import AddNewList from "../components/list/AddNewList";
+import { Link } from "@tanstack/react-router";
 
 const MyLists = () => {
   interface ListItem {
@@ -59,41 +60,48 @@ const MyLists = () => {
   );
 
   return (
-    <DefaultLayout>
-      <>
-        <ContentTitle title="My lists" cardsAmount={1}>
-          <>
-            <Input
-              type="text"
-              placeholder="Search list..."
-              className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
-            <AddNewList handleNewItem={(e: ListItem) => handleNewItem(e)} />
-          </>
-        </ContentTitle>
-        {list.length > 0 ? (
-          <CardsContainer>
-            {filteredList.map(item => (
-              <Card
-                key={item.id}
-                name={item.name}
-                description={item.description}
-                status={item.status}
-                progressBarPercent={item.progressBarPercent}
-                handleRemoveItem={() => handleRemoveItem(item.id)}
+    <>
+      <DefaultLayout>
+        <>
+          <ContentTitle title="My lists" cardsAmount={1}>
+            <>
+              <Input
+                type="text"
+                placeholder="Search list..."
+                className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
+                value={searchQuery}
+                onChange={handleSearchChange}
               />
-            ))}
-          </CardsContainer>
-        ) : (
-          <EmptyContent
-            paragraph="No list has been created yet!"
-            button="Create a new list"
-          />
-        )}
-      </>
-    </DefaultLayout>
+              <AddNewList handleNewItem={(e: ListItem) => handleNewItem(e)} />
+            </>
+          </ContentTitle>
+          {list.length > 0 ? (
+            <CardsContainer>
+              {filteredList.map(item => (
+                <Link
+                  to={"/mylists/$id"}
+                  params={{ id: `${item.id}` }}
+                  key={item.id}
+                >
+                  <Card
+                    name={item.name}
+                    description={item.description}
+                    status={item.status}
+                    progressBarPercent={item.progressBarPercent}
+                    handleRemoveItem={() => handleRemoveItem(item.id)}
+                  />
+                </Link>
+              ))}
+            </CardsContainer>
+          ) : (
+            <EmptyContent
+              paragraph="No list has been created yet!"
+              button="Create a new list"
+            />
+          )}
+        </>
+      </DefaultLayout>
+    </>
   );
 };
 

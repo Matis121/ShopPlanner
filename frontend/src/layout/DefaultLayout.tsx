@@ -9,7 +9,7 @@ type Props = {
 const DefaultLayout = ({ children }: Props) => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="flex flex-col flex-1 w-full overflow-hidden min-h-screen bg-neutral-50 dark:bg-neutral-900">
+      <div className="flex flex-col flex-1 w-full overflow-hidden min-h-screen h-full">
         <Header />
         <main className="flex flex-col items-start w-full container mb-16">
           {children}
