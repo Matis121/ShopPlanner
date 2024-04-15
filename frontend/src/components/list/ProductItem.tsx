@@ -8,12 +8,12 @@ import {
 import { LuMoreVertical, LuTrash2, LuPlus, LuMinus } from "react-icons/lu";
 import { FcCheckmark } from "react-icons/fc";
 
-interface listProps {
+type listProps = {
   productName: string;
   productAmount: number;
   isCollected: boolean;
   collectingActions: () => void;
-}
+};
 
 const ProductItem: React.FC<listProps> = ({
   productName,

@@ -1,8 +1,8 @@
 import { Progress } from "@/components/ui/progress";
 
-interface ProgressBarProps {
+type ProgressBarProps = {
   progressBarPercent: number;
-}
+};
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ progressBarPercent }) => {
   return (

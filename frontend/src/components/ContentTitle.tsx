@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
 
-interface ContentTitleProps {
+type ContentTitleProps = {
   title: string;
   cardsAmount: number;
   children: ReactElement;
-}
+};
 
 const ContentTitle: React.FC<ContentTitleProps> = ({
   title,

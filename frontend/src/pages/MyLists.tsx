@@ -10,13 +10,13 @@ import AddNewList from "../components/list/AddNewList";
 import { Link } from "@tanstack/react-router";
 
 const MyLists = () => {
-  interface ListItem {
+  type ListItem = {
     id: number;
     name: string;
     description?: string; // Optional property
     status: string;
     progressBarPercent: number;
-  }
+  };
 
   const [list, setList] = useState([
     {

@@ -2,10 +2,10 @@ import React from "react";
 import emptyState from "../assets/empty-state.svg";
 import { Button } from "@/components/ui/button";
 
-interface EmptyContentProps {
+type EmptyContentProps = {
   paragraph: string;
   button: string;
-}
+};
 
 const EmptyContent: React.FC<EmptyContentProps> = ({ paragraph, button }) => {
   return (

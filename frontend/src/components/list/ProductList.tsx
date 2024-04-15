@@ -90,9 +90,9 @@ const ProductList = () => {
           >
             {isNotCollected.map(element => (
               <ProductItem
+                key={element.id}
                 productName={element.productName}
                 productAmount={element.productAmount}
-                key={element.id}
                 isCollected={element.isCollected}
                 collectingActions={() => collectingActions(element.id)}
               />
@@ -102,9 +102,9 @@ const ProductList = () => {
           <div className="bg-white text-neutral-500 dark:bg-neutral-950">
             {isCollected.map(element => (
               <ProductItem
+                key={element.id}
                 productName={element.productName}
                 productAmount={element.productAmount}
-                key={element.id}
                 isCollected={element.isCollected}
                 collectingActions={() => collectingActions(element.id)}
               />

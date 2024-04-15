@@ -8,13 +8,13 @@ import {
 import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
 import ProgressBar from "../ProgressBar";
 
-interface CardProps {
+type CardProps = {
   name: string;
   description?: string; // Optional prop
   status: string;
   progressBarPercent: number;
   handleRemoveItem: () => void;
-}
+};
 
 const Card: React.FC<CardProps> = ({
   name,
