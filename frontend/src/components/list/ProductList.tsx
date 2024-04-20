@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Textarea } from "../ui/textarea";
 import { useState } from "react";
 import ProgressBar from "../ProgressBar";
+import { X } from "lucide-react";
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -35,6 +36,9 @@ const ProductList = () => {
       navigate({ to: "/mylists" });
     }
   };
+  const handleExit = () => {
+    navigate({ to: "/mylists" });
+  };
 
   // changing beetween isCollected false / true
   const collectingActions = (id: number) => {
@@ -44,12 +48,13 @@ const ProductList = () => {
       newListState[index].isCollected = !newListState[index].isCollected;
       setItemsList(newListState);
     }
+    checkAmountOfCollectedItems();
   };
 
   const [newItemValue, setNewItemValue] = useState("");
 
   const handleNewItemOnEnterPress = (e: any) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && newItemValue !== "") {
       setItemsList(prev => [
         ...prev,
         {
@@ -63,19 +68,43 @@ const ProductList = () => {
     }
   };
 
+  // Check percent of collected items
+  let percentOfCollectedItems: number = 0;
+  let itemsAmount = itemsList.length;
+  let collectedItemsAmount: number = 0;
+
+  const checkAmountOfCollectedItems = () => {
+    itemsList.map(item => {
+      if (item.isCollected) {
+        collectedItemsAmount++;
+      }
+    });
+    percentOfCollectedItems = (collectedItemsAmount / itemsAmount) * 100;
+  };
+  checkAmountOfCollectedItems();
+
   return (
     <div
       className="flex justify-center absolute top-0 left-0 overflow-y-auto bg-neutral-400 bg-opacity-80 dark:bg-black dark:bg-opacity-70 w-screen z-50 md:min-h-[100%]"
       onClick={handleBackgroundClick}
     >
-      <section className="flex top-0 flex-col w-[600px] min-h-screen md:min-h-full md:h-full py-8 px-8 rounded-md border dark:border-neutral-800 bg-white dark:bg-neutral-950 md:my-16">
+      <section className="relative flex top-0 flex-col w-[600px] min-h-screen md:min-h-full md:h-full py-8 px-8 rounded-md border dark:border-neutral-800 bg-white dark:bg-neutral-950 md:my-16">
+        <X
+          size={30}
+          className="absolute top-4 right-8 p-0 rounded-md transition-all hover:bg-neutral-200 hover:dark:bg-neutral-600 hover:cursor-pointer"
+          onClick={handleExit}
+        />
         <Input
           variant="transparent"
           value={cardValues.name}
           className="font-semibold"
         ></Input>
         <Textarea value={cardValues.desc} className="mt-4"></Textarea>
-        <ProgressBar progressBarPercent={50} />
+        <ProgressBar
+          progressBarPercent={percentOfCollectedItems}
+          itemsAmount={itemsAmount}
+          collectedItemsAmount={collectedItemsAmount}
+        />
         <Input
           placeholder="Add new product..."
           className="self-center mt-16 rounded-full text-center w-[80%]"
