@@ -11,18 +11,24 @@ import ProgressBar from "../ProgressBar";
 type CardProps = {
   name: string;
   description?: string; // Optional prop
-  status: string;
-  progressBarPercent: number;
-  handleRemoveItem: () => void;
+  itemsAmount: number;
+  collectedItemsAmount: number;
 };
 
 const Card: React.FC<CardProps> = ({
   name,
   description,
-  status,
-  progressBarPercent,
-  handleRemoveItem,
+  itemsAmount,
+  collectedItemsAmount,
 }) => {
+  const progressBarPercent = (collectedItemsAmount / itemsAmount) * 100;
+  const status =
+    progressBarPercent === 0
+      ? "New"
+      : progressBarPercent < 100
+        ? "In progress"
+        : "Done";
+
   return (
     <>
       <div className="rounded-lg min-h-[200px] border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer hover:border-blue-500 hover:dark:border-blue-500">
@@ -38,10 +44,7 @@ const Card: React.FC<CardProps> = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-30">
-              <DropdownMenuItem
-                className="flex gap-2 text-red-500 hover:cursor-pointer"
-                onClick={handleRemoveItem}
-              >
+              <DropdownMenuItem className="flex gap-2 text-red-500 hover:cursor-pointer">
                 <LuTrash2 />
                 Delete
               </DropdownMenuItem>
@@ -52,7 +55,11 @@ const Card: React.FC<CardProps> = ({
           <span className="mt-6 inline-flex flex-shrink-0 items-center rounded-full px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20">
             {status}
           </span>
-          <ProgressBar progressBarPercent={progressBarPercent} />
+          <ProgressBar
+            itemsAmount={itemsAmount}
+            collectedItemsAmount={collectedItemsAmount}
+            progressBarPercent={progressBarPercent}
+          />
         </div>
       </div>
     </>

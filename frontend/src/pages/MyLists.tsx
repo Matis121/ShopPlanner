@@ -3,61 +3,48 @@ import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 import Card from "@/components/card/Card";
 import CardsContainer from "@/components/card/CardsContainer";
-import { useState } from "react";
+import { Key, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import AddNewList from "../components/list/AddNewList";
 import { Link } from "@tanstack/react-router";
 
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getUserLists } from "@/api/User";
+
 const MyLists = () => {
+  const queryClient = useQueryClient();
+
   type ListItem = {
-    id: number;
+    _id: Key;
     name: string;
     description?: string; // Optional property
-    status: string;
-    progressBarPercent: number;
+    productList: any[];
   };
 
-  const [list, setList] = useState([
-    {
-      id: 1,
-      name: "This is my first list",
-      status: "In progress",
-      progressBarPercent: 0,
-    },
-    {
-      id: 2,
-      name: "firstelement",
-      description: "testowe",
-      status: "In progress",
-      progressBarPercent: 0,
-    },
-    {
-      id: 3,
-      name: "element",
-      status: "In progress",
-      progressBarPercent: 80,
-    },
-  ]);
+  const { data, isFetched } = useQuery({
+    queryKey: ["lists"],
+    queryFn: getUserLists,
+  });
 
-  // Remove after connect to backend
-  const handleNewItem = (newItem: ListItem) => {
-    setList(prev => [...prev, newItem]);
-  };
+  console.log(data);
 
-  const handleRemoveItem = (removeItem: number) => {
-    setList(prev => prev.filter(item => item.id !== removeItem));
-  };
-  //
+  // NOT USED AT THIS MOMENT
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredList = list.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const collectedItems = (arrayOfItems: any[]) => {
+    let collectedItemsAmount = 0;
+    arrayOfItems.map(item => {
+      if (item.isCollected) {
+        collectedItemsAmount++;
+      }
+    });
+    return collectedItemsAmount;
+  };
 
   return (
     <>
@@ -72,23 +59,22 @@ const MyLists = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
-              <AddNewList handleNewItem={(e: ListItem) => handleNewItem(e)} />
+              <AddNewList />
             </>
           </ContentTitle>
-          {list.length > 0 ? (
+          {isFetched ? (
             <CardsContainer>
-              {filteredList.map(item => (
+              {data.map((item: ListItem) => (
                 <Link
                   to={"/mylists/$id"}
-                  params={{ id: `${item.id}` }}
-                  key={item.id}
+                  params={{ id: `${item._id}` }}
+                  key={item._id}
                 >
                   <Card
                     name={item.name}
                     description={item.description}
-                    status={item.status}
-                    progressBarPercent={item.progressBarPercent}
-                    handleRemoveItem={() => handleRemoveItem(item.id)}
+                    itemsAmount={item.productList.length}
+                    collectedItemsAmount={collectedItems(item.productList)}
                   />
                 </Link>
               ))}

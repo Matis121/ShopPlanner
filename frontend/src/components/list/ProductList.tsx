@@ -5,9 +5,12 @@ import { Textarea } from "../ui/textarea";
 import { useState } from "react";
 import ProgressBar from "../ProgressBar";
 import { X } from "lucide-react";
+// import { useParams } from "@tanstack/react-router";
 
 const ProductList = () => {
   const navigate = useNavigate();
+
+  // const params = useParams({ from: "/mylists/$id" });
 
   const initialListState = [
     { id: 1, productName: "first", productAmount: 5, isCollected: true },

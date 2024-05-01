@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
+import { createNewList } from "@/api/User";
 
 const AddNewList = ({ handleNewItem }: any) => {
   const [open, setOpen] = useState(false);
@@ -30,17 +31,13 @@ const AddNewList = ({ handleNewItem }: any) => {
     reset,
   } = useForm();
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
-    // delete after creating backend
-    handleNewItem({
-      id: 4,
-      name: data.name,
-      description: data.description,
-      status: "In progress",
-    });
-    //
-    setOpen(false);
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      await createNewList(data);
+      setOpen(false);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   return (
