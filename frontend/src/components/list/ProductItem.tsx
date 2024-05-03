@@ -7,24 +7,50 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LuMoreVertical, LuTrash2, LuPlus, LuMinus } from "react-icons/lu";
 import { FcCheckmark } from "react-icons/fc";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { updateProduct } from "@/api/User";
 
 type listProps = {
+  productId: number;
   productName: string;
   productAmount: number;
   isCollected: boolean;
-  collectingActions: () => void;
+  listUrlParam: number;
+  // collectingActions: () => void;
 };
 
 const ProductItem: React.FC<listProps> = ({
+  productId,
   productName,
   productAmount,
   isCollected,
-  collectingActions,
+  listUrlParam,
+  // collectingActions,
 }) => {
+  const queryClient = useQueryClient();
+  console.log(listUrlParam);
+
+  const updateProductMutation = useMutation({
+    mutationFn: updateProduct,
+    onError: error => {
+      console.error("Error adding new product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists", listUrlParam] });
+    },
+  });
+
+  const handleCollectingProduct = () => {
+    updateProductMutation.mutate({
+      listId: listUrlParam,
+      productId: productId,
+    });
+  };
+
   return (
     <div className={`flex items-center justify-center py-2 px-4 font-semibold`}>
       <div
-        onClick={collectingActions}
+        onClick={handleCollectingProduct}
         className={`min-w-[25px] min-h-[25px] w-[25px] h-[25px] cursor-pointer mr-4 rounded-full ${isCollected ? null : "hover:bg-blue-500 border-2 border-blue-500 transition-all"}`}
       >
         {isCollected && <FcCheckmark size={25} />}

@@ -9,12 +9,10 @@ import { Input } from "@/components/ui/input";
 import AddNewList from "../components/list/AddNewList";
 import { Link } from "@tanstack/react-router";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getUserLists } from "@/api/User";
+import { useQuery } from "@tanstack/react-query";
+import { getAllLists } from "@/api/User";
 
 const MyLists = () => {
-  const queryClient = useQueryClient();
-
   type ListItem = {
     _id: Key;
     name: string;
@@ -24,10 +22,8 @@ const MyLists = () => {
 
   const { data, isFetched } = useQuery({
     queryKey: ["lists"],
-    queryFn: getUserLists,
+    queryFn: getAllLists,
   });
-
-  console.log(data);
 
   // NOT USED AT THIS MOMENT
   const [searchQuery, setSearchQuery] = useState("");

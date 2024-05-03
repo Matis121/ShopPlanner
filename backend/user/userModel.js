@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
 
+const productSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  amount: {
+    type: Number,
+    default: 1,
+  },
+  isCollected: {
+    type: Boolean,
+    default: false,
+  },
+});
+
 const listSchema = new mongoose.Schema({
   name: String,
   description: String,
@@ -12,13 +27,7 @@ const listSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now(),
   },
-  productList: [
-    {
-      name: String,
-      amount: Number,
-      isCollected: Boolean,
-    },
-  ],
+  productList: [productSchema],
 });
 
 const userSchema = new mongoose.Schema({
@@ -36,4 +45,6 @@ const userSchema = new mongoose.Schema({
   lists: [listSchema],
 });
 
+module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("List", listSchema);
 module.exports = mongoose.model("User", userSchema);

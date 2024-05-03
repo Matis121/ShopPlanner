@@ -21,7 +21,8 @@ const Card: React.FC<CardProps> = ({
   itemsAmount,
   collectedItemsAmount,
 }) => {
-  const progressBarPercent = (collectedItemsAmount / itemsAmount) * 100;
+  const progressBarPercent =
+    ((collectedItemsAmount / itemsAmount) * 100).toFixed(0) | 0;
   const status =
     progressBarPercent === 0
       ? "New"

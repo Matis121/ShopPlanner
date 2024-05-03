@@ -3,7 +3,10 @@ const express = require("express");
 const userRouter = express.Router();
 
 userRouter.get("/new-user", userController.newUser);
-userRouter.get("/get-user-lists", userController.getUserLists);
+userRouter.get("/get-all-lists", userController.getAllLists);
+userRouter.get("/get-single-list", userController.getSingleList);
+userRouter.post("/add-new-product", userController.addNewProduct);
+userRouter.put("/update-product", userController.updateProduct);
 userRouter.post("/create-new-list", userController.createNewList);
 
 module.exports = userRouter;
