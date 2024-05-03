@@ -11,8 +11,8 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { addNewProduct } from "@/api/User";
 
 const ProductList = () => {
-  // QUERY CLIENT
   const queryClient = useQueryClient();
+
   const navigate = useNavigate();
 
   const listUrl = useParams({ from: "/mylists/$id" });
@@ -84,10 +84,8 @@ const ProductList = () => {
         collectedItemsAmount++;
       }
     });
-    percentOfCollectedItems = (
-      (collectedItemsAmount / itemsAmount) *
-      100
-    ).toFixed(0);
+    percentOfCollectedItems =
+      ((collectedItemsAmount / itemsAmount) * 100).toFixed(0) | 0;
   };
   checkAmountOfCollectedItems();
 

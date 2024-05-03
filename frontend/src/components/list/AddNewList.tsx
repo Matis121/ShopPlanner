@@ -14,8 +14,11 @@ import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
 import { createNewList } from "@/api/User";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 const AddNewList = ({ handleNewItem }: any) => {
+  const queryClient = useQueryClient();
+
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -31,13 +34,19 @@ const AddNewList = ({ handleNewItem }: any) => {
     reset,
   } = useForm();
 
-  const onSubmit = async (data: FieldValues) => {
-    try {
-      await createNewList(data);
+  const createListMutation = useMutation({
+    mutationFn: createNewList,
+    onError: error => {
+      console.error("Error adding new list:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
       setOpen(false);
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+    },
+  });
+
+  const onSubmit = async (data: FieldValues) => {
+    createListMutation.mutate(data);
   };
 
   return (
