@@ -48,7 +48,9 @@ const ProductItem: React.FC<listProps> = ({
   };
 
   return (
-    <div className={`flex items-center justify-center py-2 px-4 font-semibold`}>
+    <div
+      className={`flex items-center justify-center py-2 px-4 font-semibold min-h-[52px]`}
+    >
       <div
         onClick={handleCollectingProduct}
         className={`min-w-[25px] min-h-[25px] w-[25px] h-[25px] cursor-pointer mr-4 rounded-full ${isCollected ? null : "hover:bg-blue-500 border-2 border-blue-500 transition-all"}`}
