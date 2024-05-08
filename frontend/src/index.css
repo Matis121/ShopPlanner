@@ -8,6 +8,17 @@
   font-family: "Montserrat", sans-serif;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #9b9999;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 @layer base {
   :root {
     --background: 0, 0%, 98%;
@@ -31,7 +42,6 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
-
   .dark {
     --background: 0, 0%, 7%;
     --foreground: 210 0% 80%;
