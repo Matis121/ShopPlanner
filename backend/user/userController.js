@@ -23,8 +23,7 @@ const newUser = async (req, res, next) => {
   }
 };
 
-// GET METHODS
-
+// GET
 const getAllLists = async (req, res, next) => {
   try {
     const user = await User.findOne({ name: "testowy2" });
@@ -37,7 +36,6 @@ const getAllLists = async (req, res, next) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
 const getSingleList = async (req, res, next) => {
   const listQueryId = req.query.listId;
   try {
@@ -48,7 +46,7 @@ const getSingleList = async (req, res, next) => {
     }
 
     // Find the list inside the user's lists
-    const list = user.lists.find(list => String(list._id) === listQueryId); // Convert list._id to string for comparison
+    const list = user.lists.find(list => String(list._id) === listQueryId);
 
     if (!list) {
       return res.status(404).json({ message: "List not found" });
@@ -61,6 +59,24 @@ const getSingleList = async (req, res, next) => {
   }
 };
 
+// ADD
+const createNewList = async (req, res) => {
+  const newListData = req.body;
+  console.log(newListData);
+  try {
+    const user = await User.findOne({ name: "testowy2" });
+    const newList = {
+      name: newListData.name,
+      description: newListData.description,
+    };
+    user.lists.push(newList);
+    await user.save();
+    return res.json(newList);
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to create list");
+  }
+};
 const addNewProduct = async (req, res, next) => {
   const listQueryId = req.body.listId;
   const newProduct = { name: req.body.productName };
@@ -90,6 +106,7 @@ const addNewProduct = async (req, res, next) => {
   }
 };
 
+// UPDATE
 const updateProduct = async (req, res) => {
   const { listId, productId } = req.body;
   try {
@@ -100,7 +117,7 @@ const updateProduct = async (req, res) => {
     }
 
     // Find the list inside the user's lists
-    const list = user.lists.find(list => String(list._id) === listId); // Convert list._id to string for comparison
+    const list = user.lists.find(list => String(list._id) === listId);
     if (!list) {
       return res.status(404).json({ message: "List not found" });
     }
@@ -123,23 +140,26 @@ const updateProduct = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-// ADD METHODS
 
-const createNewList = async (req, res) => {
-  const newListData = req.body;
-  console.log(newListData);
+// DELETE
+
+const deleteProduct = async (req, res) => {
+  const { listId, productId } = req.body;
   try {
-    const user = await User.findOne({ name: "testowy2" });
-    const newList = {
-      name: newListData.name,
-      description: newListData.description,
-    };
-    user.lists.push(newList);
-    await user.save();
-    return res.json(newList);
+    // Find the user and update the list
+    const user = await User.findOneAndUpdate(
+      { name: "testowy2", "lists._id": listId },
+      { $pull: { "lists.$.productList": { _id: productId } } }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User or list not found" });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
-    console.error(error);
-    throw new Error("Failed to create list");
+    console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -150,4 +170,5 @@ module.exports = {
   createNewList,
   updateProduct,
   addNewProduct,
+  deleteProduct,
 };

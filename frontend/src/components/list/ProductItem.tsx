@@ -8,7 +8,7 @@ import {
 import { LuMoreVertical, LuTrash2, LuPlus, LuMinus } from "react-icons/lu";
 import { FcCheckmark } from "react-icons/fc";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { updateProduct } from "@/api/User";
+import { deleteProduct, updateProduct } from "@/api/User";
 
 type listProps = {
   productId: number;
@@ -16,7 +16,6 @@ type listProps = {
   productAmount: number;
   isCollected: boolean;
   listUrlParam: number;
-  // collectingActions: () => void;
 };
 
 const ProductItem: React.FC<listProps> = ({
@@ -25,7 +24,6 @@ const ProductItem: React.FC<listProps> = ({
   productAmount,
   isCollected,
   listUrlParam,
-  // collectingActions,
 }) => {
   const queryClient = useQueryClient();
   console.log(listUrlParam);
@@ -40,8 +38,25 @@ const ProductItem: React.FC<listProps> = ({
     },
   });
 
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProduct,
+    onError: error => {
+      console.error("Error removing a product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists", listUrlParam] });
+    },
+  });
+
   const handleCollectingProduct = () => {
     updateProductMutation.mutate({
+      listId: listUrlParam,
+      productId: productId,
+    });
+  };
+
+  const handleDeleteProduct = () => {
+    deleteProductMutation.mutate({
       listId: listUrlParam,
       productId: productId,
     });
@@ -93,7 +108,10 @@ const ProductItem: React.FC<listProps> = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-30">
-                <DropdownMenuItem className="flex gap-2 text-red-500 hover:cursor-pointer">
+                <DropdownMenuItem
+                  className="flex gap-2 text-red-500 hover:cursor-pointer"
+                  onClick={handleDeleteProduct}
+                >
                   <LuTrash2 />
                   Delete
                 </DropdownMenuItem>

@@ -7,6 +7,7 @@ userRouter.get("/get-all-lists", userController.getAllLists);
 userRouter.get("/get-single-list", userController.getSingleList);
 userRouter.post("/add-new-product", userController.addNewProduct);
 userRouter.put("/update-product", userController.updateProduct);
+userRouter.delete("/delete-product", userController.deleteProduct);
 userRouter.post("/create-new-list", userController.createNewList);
 
 module.exports = userRouter;

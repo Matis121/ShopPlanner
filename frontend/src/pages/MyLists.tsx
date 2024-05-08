@@ -25,6 +25,13 @@ const MyLists = () => {
     queryFn: getAllLists,
   });
 
+  // NOT USED AT THIS MOMENT
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   const collectedItems = (arrayOfItems: any[]) => {
     let collectedItemsAmount = 0;
     arrayOfItems.map(item => {

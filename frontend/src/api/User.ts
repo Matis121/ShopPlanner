@@ -11,7 +11,6 @@ export async function getAllLists() {
 }
 
 export async function getSingleList(listId: any) {
-  console.log(listId);
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/get-single-list`,
     {
@@ -38,10 +37,20 @@ export async function addNewProduct({ listId, productName }) {
 
 export async function updateProduct({ listId, productId }) {
   try {
-    console.log(listId, productId);
     let response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/update-product`,
       { listId, productId }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteProduct({ listId, productId }) {
+  try {
+    let response = await axios.delete(
+      `${import.meta.env.VITE_SERVER_URL}/delete-product`,
+      { data: { listId, productId } }
     );
   } catch (error) {
     console.log(error);
