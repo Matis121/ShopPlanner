@@ -46,6 +46,17 @@ export async function updateProduct({ listId, productId }) {
   }
 }
 
+export async function updateList({ listId, listName, listDesc }) {
+  try {
+    let response = await axios.put(
+      `${import.meta.env.VITE_SERVER_URL}/update-list`,
+      { listId, listName, listDesc }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function deleteProduct({ listId, productId }) {
   try {
     let response = await axios.delete(

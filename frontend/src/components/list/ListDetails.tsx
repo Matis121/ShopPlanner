@@ -1,11 +1,12 @@
 import { Input } from "@/components/ui/input";
+import { Button } from "../ui/button";
 import ProductItem from "./ProductItem";
 import { useNavigate } from "@tanstack/react-router";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import ProgressBar from "../ProgressBar";
 import { X } from "lucide-react";
-import { getSingleList } from "@/api/User";
+import { getSingleList, updateList } from "@/api/User";
 import { useParams } from "@tanstack/react-router";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { addNewProduct } from "@/api/User";
@@ -55,6 +56,24 @@ const ProductList = () => {
     },
   });
 
+  const updateListMutation = useMutation({
+    mutationFn: updateList,
+    onError: error => {
+      console.error("Error updating list:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists", listUrl.id] });
+    },
+  });
+
+  const handleUpdateList = () => {
+    updateListMutation.mutate({
+      listId: listUrl.id,
+      listName: cardValues.name,
+      listDesc: cardValues.desc,
+    });
+  };
+
   const handleNewItemOnEnterPress = (e: any) => {
     if (e.key === "Enter" && newItemValue !== "") {
       createProductMutation.mutate({
@@ -103,13 +122,18 @@ const ProductList = () => {
         <Input
           variant="transparent"
           value={cardValues.name}
+          onChange={e => setCardValues({ ...cardValues, name: e.target.value })}
           className="font-semibold"
         />
         <Textarea
           placeholder="Description..."
           value={cardValues.desc}
+          onChange={e => setCardValues({ ...cardValues, desc: e.target.value })}
           className="mt-4"
         />
+        <Button className="self-start mt-6" onClick={handleUpdateList}>
+          Save
+        </Button>
         <ProgressBar
           progressBarPercent={percentOfCollectedItems}
           itemsAmount={itemsAmount}

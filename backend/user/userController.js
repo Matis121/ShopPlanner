@@ -122,19 +122,42 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "List not found" });
     }
 
-    const product = list.productList.find(product => product.id === productId);
-
-    if (product.isCollected) {
-      product.isCollected = false;
-    } else {
-      product.isCollected = true;
-    }
-
-    console.log(product);
-
     await user.save();
 
     res.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const updateList = async (req, res) => {
+  const { listId, listName, listDesc } = req.body;
+  try {
+    // Find the user
+    const user = await User.findOne({ name: "testowy2" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the list inside the user's lists
+    const list = user.lists.find(list => String(list._id) === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    // Update the name and description if provided
+    if (listName) {
+      list.name = listName;
+    }
+    if (listDesc) {
+      list.description = listDesc;
+    }
+
+    // Save the changes to the user
+    await user.save();
+
+    res.status(200).json({ message: "List updated successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });
@@ -192,4 +215,5 @@ module.exports = {
   addNewProduct,
   deleteProduct,
   deleteList,
+  updateList,
 };

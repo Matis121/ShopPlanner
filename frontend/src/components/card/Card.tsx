@@ -9,6 +9,7 @@ import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
 import ProgressBar from "../ProgressBar";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/api/User";
+import { useState } from "react";
 
 type CardProps = {
   id: Key;
