@@ -163,6 +163,26 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const deleteList = async (req, res) => {
+  const { listId } = req.body;
+  try {
+    // Find the user and update the list
+    const user = await User.findOneAndUpdate(
+      { name: "testowy2", "lists._id": listId },
+      { $pull: { lists: { _id: listId } } }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User or list not found" });
+    }
+
+    res.status(200).json({ message: "List deleted successfully" }); // Changed message to reflect list deletion
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   newUser,
   getAllLists,
@@ -171,4 +191,5 @@ module.exports = {
   updateProduct,
   addNewProduct,
   deleteProduct,
+  deleteList,
 };

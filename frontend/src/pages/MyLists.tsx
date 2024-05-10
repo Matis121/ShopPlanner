@@ -67,6 +67,7 @@ const MyLists = () => {
                   key={item._id}
                 >
                   <Card
+                    id={item._id}
                     name={item.name}
                     description={item.description}
                     itemsAmount={item.productList.length}

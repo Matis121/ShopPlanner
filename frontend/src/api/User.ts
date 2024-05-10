@@ -57,6 +57,17 @@ export async function deleteProduct({ listId, productId }) {
   }
 }
 
+export async function deleteList({ listId }) {
+  try {
+    let response = await axios.delete(
+      `${import.meta.env.VITE_SERVER_URL}/delete-list`,
+      { data: { listId } }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function createNewList(newList: any) {
   try {
     console.log(newList);

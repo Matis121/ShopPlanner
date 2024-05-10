@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LuMoreVertical, LuTrash2, LuPlus, LuMinus } from "react-icons/lu";
 import { FcCheckmark } from "react-icons/fc";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { deleteProduct, updateProduct } from "@/api/User";
 
 type listProps = {
