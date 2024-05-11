@@ -122,6 +122,16 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "List not found" });
     }
 
+    const product = list.productList.find(product => product.id === productId);
+
+    if (product.isCollected) {
+      product.isCollected = false;
+    } else {
+      product.isCollected = true;
+    }
+
+    console.log(product);
+
     await user.save();
 
     res.status(200).json({ message: "Product updated successfully" });
