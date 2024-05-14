@@ -19,8 +19,13 @@ const ProductList = () => {
   const listUrl = useParams({ from: "/mylists/$id" });
 
   const [cardValues, setCardValues] = useState({ name: "", desc: "" });
+  const [fetchedCardValues, setFetchedCardValues] = useState({
+    name: "",
+    desc: "",
+  });
   const [itemsList, setItemsList] = useState([]);
   const [newItemValue, setNewItemValue] = useState("");
+  const [enableEditButton, setEnableEditButton] = useState(false);
 
   const { data, isFetched } = useQuery({
     queryKey: ["lists", listUrl.id],
@@ -30,9 +35,20 @@ const ProductList = () => {
   useEffect(() => {
     if (isFetched) {
       setCardValues({ name: data.name, desc: data.description });
+      setFetchedCardValues({ name: data.name, desc: data.description });
       setItemsList(data.productList);
     }
   }, [isFetched, data]);
+
+  useEffect(() => {
+    if (
+      cardValues.name !== fetchedCardValues.name ||
+      cardValues.desc !== fetchedCardValues.desc
+    ) {
+      return setEnableEditButton(true);
+    }
+    setEnableEditButton(false);
+  }, [cardValues, fetchedCardValues]);
 
   const handleBackgroundClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -131,7 +147,10 @@ const ProductList = () => {
           onChange={e => setCardValues({ ...cardValues, desc: e.target.value })}
           className="mt-4"
         />
-        <Button className="self-start mt-6" onClick={handleUpdateList}>
+        <Button
+          className={`self-start mt-6 ${enableEditButton ? null : "hidden"}`}
+          onClick={handleUpdateList}
+        >
           Save
         </Button>
         <ProgressBar

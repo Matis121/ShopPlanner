@@ -1,6 +1,4 @@
 const User = require("./userModel");
-const List = require("./userModel");
-const Product = require("./userModel");
 
 const newUser = async (req, res, next) => {
   try {
@@ -140,7 +138,6 @@ const updateProduct = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
 const updateList = async (req, res) => {
   const { listId, listName, listDesc } = req.body;
   try {
@@ -175,7 +172,6 @@ const updateList = async (req, res) => {
 };
 
 // DELETE
-
 const deleteProduct = async (req, res) => {
   const { listId, productId } = req.body;
   try {
@@ -195,7 +191,6 @@ const deleteProduct = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
 const deleteList = async (req, res) => {
   const { listId } = req.body;
   try {

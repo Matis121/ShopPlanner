@@ -58,7 +58,7 @@ const MyLists = () => {
               <AddNewList />
             </>
           </ContentTitle>
-          {isFetched ? (
+          {isFetched && data.length > 0 ? (
             <CardsContainer>
               {data.map((item: ListItem) => (
                 <Link
