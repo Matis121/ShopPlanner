@@ -46,7 +46,7 @@ const MyLists = () => {
     <>
       <DefaultLayout>
         <>
-          <ContentTitle title="My lists" cardsAmount={1}>
+          <ContentTitle title="My lists" cardsAmount={data.length}>
             <>
               <Input
                 type="text"
@@ -55,7 +55,7 @@ const MyLists = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
-              <AddNewList />
+              <AddNewList buttonValue="Add new list" />
             </>
           </ContentTitle>
           {isFetched && data.length > 0 ? (
@@ -77,10 +77,9 @@ const MyLists = () => {
               ))}
             </CardsContainer>
           ) : (
-            <EmptyContent
-              paragraph="No list has been created yet!"
-              button="Create a new list"
-            />
+            <EmptyContent paragraph="No list has been created yet!">
+              <AddNewList buttonValue="Create a new list" />
+            </EmptyContent>
           )}
         </>
       </DefaultLayout>

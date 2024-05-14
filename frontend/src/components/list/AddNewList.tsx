@@ -16,7 +16,7 @@ import { Textarea } from "../ui/textarea";
 import { createNewList } from "@/api/User";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
-const AddNewList = ({ handleNewItem }: any) => {
+const AddNewList = ({ buttonValue }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -54,7 +54,7 @@ const AddNewList = ({ handleNewItem }: any) => {
       <DialogTrigger asChild>
         <Button className="flex gap-1">
           <LuPlus />
-          Add new list
+          {buttonValue}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
