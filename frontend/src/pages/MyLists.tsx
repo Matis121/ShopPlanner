@@ -1,12 +1,12 @@
 import DefaultLayout from "@/layout/DefaultLayout";
 import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
-import Card from "@/components/card/Card";
-import CardsContainer from "@/components/card/CardsContainer";
+import ListCard from "@/components/lists/ListCard";
+import CardsContainer from "@/layout/CardsContainer";
 import { Key, useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import AddNewList from "../components/list/AddNewList";
+import AddNewList from "../components/lists/AddNewList";
 import { Link } from "@tanstack/react-router";
 
 import { useQuery } from "@tanstack/react-query";
@@ -46,7 +46,7 @@ const MyLists = () => {
     <>
       <DefaultLayout>
         <>
-          <ContentTitle title="My lists" cardsAmount={data.length}>
+          <ContentTitle title="My lists" cardsAmount={data ? data.length : 0}>
             <>
               <Input
                 type="text"
@@ -66,7 +66,7 @@ const MyLists = () => {
                   params={{ id: `${item._id}` }}
                   key={item._id}
                 >
-                  <Card
+                  <ListCard
                     id={item._id}
                     name={item.name}
                     description={item.description}

@@ -60,7 +60,6 @@ const getSingleList = async (req, res, next) => {
 // ADD
 const createNewList = async (req, res) => {
   const newListData = req.body;
-  console.log(newListData);
   try {
     const user = await User.findOne({ name: "testowy2" });
     const newList = {
@@ -78,7 +77,6 @@ const createNewList = async (req, res) => {
 const addNewProduct = async (req, res, next) => {
   const listQueryId = req.body.listId;
   const newProduct = { name: req.body.productName };
-  console.log(listQueryId, newProduct);
   try {
     // Find the user
     const user = await User.findOne({ name: "testowy2" });
@@ -127,8 +125,6 @@ const updateProduct = async (req, res) => {
     } else {
       product.isCollected = true;
     }
-
-    console.log(product);
 
     await user.save();
 

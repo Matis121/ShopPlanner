@@ -26,7 +26,6 @@ const ProductItem: React.FC<listProps> = ({
   listUrlParam,
 }) => {
   const queryClient = useQueryClient();
-  console.log(listUrlParam);
 
   const updateProductMutation = useMutation({
     mutationFn: updateProduct,

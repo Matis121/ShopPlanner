@@ -6,7 +6,6 @@ export async function getAllLists() {
     `${import.meta.env.VITE_SERVER_URL}/get-all-lists`
   );
   let data = response.data;
-  console.log(data);
   return data;
 }
 
@@ -20,7 +19,6 @@ export async function getSingleList(listId: any) {
     }
   );
   let data = response.data;
-  console.log(data);
   return data;
 }
 
@@ -81,12 +79,10 @@ export async function deleteList({ listId }) {
 
 export async function createNewList(newList: any) {
   try {
-    console.log(newList);
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/create-new-list`,
       newList
     );
-    console.log(response);
     let data = response.data;
     return data;
   } catch (error) {
