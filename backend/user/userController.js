@@ -1,4 +1,4 @@
-const { User, Group } = require("./userModel");
+const { User, Group, List } = require("./userModel");
 
 const newUser = async (req, res, next) => {
   try {
@@ -29,6 +29,19 @@ const getAllLists = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
     return res.json(user.lists);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+const getGroupLists = async (req, res, next) => {
+  const { groupId } = req.query;
+  try {
+    const group = await Group.findOne({ _id: groupId });
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+    return res.json(group.lists);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });
@@ -84,24 +97,44 @@ const createNewList = async (req, res) => {
     throw new Error("Failed to create list");
   }
 };
+const createNewListInGroup = async (req, res) => {
+  const { name, description, groupId } = req.body;
+  try {
+    const group = await Group.findOne({ _id: groupId });
+
+    if (!group) {
+      return res.status(404).json({ error: "Group not found" });
+    }
+
+    const newList = new List({
+      name: name,
+      description: description,
+    });
+
+    group.lists.push(newList);
+    await group.save();
+
+    return res.status(200).json(newList);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to create list" });
+  }
+};
 const addNewProduct = async (req, res, next) => {
   const listQueryId = req.body.listId;
   const newProduct = { name: req.body.productName };
   try {
-    // Find the user
     const user = await User.findOne({ name: "testowy2" });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Find the list inside the user's lists
-    const list = user.lists.find(list => String(list._id) === listQueryId); // Convert list._id to string for comparison
+    const list = user.lists.find(list => String(list._id) === listQueryId);
     if (!list) {
       return res.status(404).json({ message: "List not found" });
     }
 
     list.productList.push(newProduct);
-    // Save the updated list
     await user.save();
     return res
       .status(200)
@@ -196,7 +229,6 @@ const updateList = async (req, res) => {
 const deleteProduct = async (req, res) => {
   const { listId, productId } = req.body;
   try {
-    // Find the user and update the list
     const user = await User.findOneAndUpdate(
       { name: "testowy2", "lists._id": listId },
       { $pull: { "lists.$.productList": { _id: productId } } }
@@ -215,7 +247,6 @@ const deleteProduct = async (req, res) => {
 const deleteList = async (req, res) => {
   const { listId } = req.body;
   try {
-    // Find the user and update the list
     const user = await User.findOneAndUpdate(
       { name: "testowy2", "lists._id": listId },
       { $pull: { lists: { _id: listId } } }
@@ -225,7 +256,7 @@ const deleteList = async (req, res) => {
       return res.status(404).json({ message: "User or list not found" });
     }
 
-    res.status(200).json({ message: "List deleted successfully" }); // Changed message to reflect list deletion
+    res.status(200).json({ message: "List deleted successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });
@@ -244,4 +275,6 @@ module.exports = {
   updateList,
   getAvaibleGroups,
   createNewGroup,
+  createNewListInGroup,
+  getGroupLists,
 };

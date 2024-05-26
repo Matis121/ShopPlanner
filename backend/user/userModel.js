@@ -78,5 +78,6 @@ const groupSchema = new mongoose.Schema({
 
 const Group = mongoose.model("Group", groupSchema);
 const User = mongoose.model("User", userSchema);
+const List = mongoose.model("List", listSchema);
 
-module.exports = { Group, User };
+module.exports = { Group, User, List };

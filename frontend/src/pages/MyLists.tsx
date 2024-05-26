@@ -24,6 +24,7 @@ const MyLists = () => {
     queryKey: ["lists"],
     queryFn: getAllLists,
   });
+  console.log(data);
 
   // NOT USED AT THIS MOMENT
   const [searchQuery, setSearchQuery] = useState("");

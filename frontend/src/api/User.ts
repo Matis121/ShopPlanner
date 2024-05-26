@@ -17,6 +17,19 @@ export async function getAllGroups() {
   return data;
 }
 
+export async function getGroupLists(groupId) {
+  let response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/get-group-lists`,
+    {
+      params: {
+        groupId,
+      },
+    }
+  );
+  let data = response.data;
+  return data;
+}
+
 export async function getSingleList(listId: any) {
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/get-single-list`,

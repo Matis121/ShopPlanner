@@ -9,6 +9,7 @@ import GroupCard from "@/components/groups/GroupCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllGroups } from "@/api/User";
 import { Link } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 const Groups = () => {
   const { data, isFetched } = useQuery({
@@ -39,8 +40,8 @@ const Groups = () => {
                 <GroupCard
                   name={item.name}
                   description={item.description}
-                  usersAmount={item.users}
-                  listsAmount={item.lists}
+                  usersAmount={item.users.length ? item.users.length : 0}
+                  listsAmount={item.lists.length ? item.lists.length : 0}
                 />
               </Link>
             ))}
