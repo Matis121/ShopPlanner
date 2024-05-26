@@ -31,7 +31,10 @@ const GroupLists = ({ groupId }) => {
   return (
     <DefaultLayout>
       <>
-        <ContentTitle title={`Group: ${groupId}`} cardsAmount={0}>
+        <ContentTitle
+          title={`Group: ${groupId}`}
+          cardsAmount={data ? data.length : 0}
+        >
           <>
             <Input
               type="text"
