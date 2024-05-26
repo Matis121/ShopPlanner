@@ -12,7 +12,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
-import { Textarea } from "../ui/textarea";
 import { CreateNewGroup } from "@/api/User";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
@@ -58,7 +57,7 @@ const HandleNewGroup = ({ buttonValue }) => {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <DialogHeader>
             <DialogTitle>New group</DialogTitle>
           </DialogHeader>
@@ -82,20 +81,10 @@ const HandleNewGroup = ({ buttonValue }) => {
             {errors.name && (
               <p className="text-red-500 text-sm grid-cols-4 text-end">{`${errors.name.message}`}</p>
             )}
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Description
-              </Label>
-              <Textarea
-                {...register("description")}
-                placeholder="Description..."
-                className="col-span-3"
-              />
-            </div>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
-              Create group
+              Create
             </Button>
           </DialogFooter>
         </form>

@@ -12,6 +12,8 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getAllLists } from "@/api/User";
 
+import { createNewList } from "@/api/User";
+
 const MyLists = () => {
   type ListItem = {
     _id: Key;

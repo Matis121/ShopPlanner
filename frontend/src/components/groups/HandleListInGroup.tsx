@@ -14,9 +14,9 @@ import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { createNewList } from "@/api/User";
+import { createNewListInGroup } from "@/api/User";
 
-const AddNewList = ({ buttonValue }) => {
+const AddNewList = ({ buttonValue, groupId }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -35,18 +35,22 @@ const AddNewList = ({ buttonValue }) => {
   } = useForm();
 
   const createListMutation = useMutation({
-    mutationFn: createNewList,
+    mutationFn: createNewListInGroup,
     onError: error => {
       console.error("Error adding new list:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists"] });
+      queryClient.invalidateQueries({ queryKey: ["groupLists", groupId] });
       setOpen(false);
     },
   });
 
   const onSubmit = async (data: FieldValues) => {
-    createListMutation.mutate(data);
+    createListMutation.mutate({
+      name: data.name,
+      description: data.description,
+      groupId: groupId,
+    });
   };
 
   return (
