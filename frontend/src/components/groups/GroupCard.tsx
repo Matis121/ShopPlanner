@@ -28,7 +28,7 @@ const GroupCard = ({ name, description, usersAmount, listsAmount }) => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <h2 className="text-lg font-semibold line-clamp-1 pr-10 mb-2 text-blue-500">
+        <h2 className="text-lg font-semibold line-clamp-1 pr-10 mb-2 text-blue-400">
           {name}
         </h2>
         <p className="mb-4 text-[14.5px]">{description}</p>
