@@ -15,7 +15,8 @@ import { Route as IndexImport } from './routes/index'
 import { Route as MylistsIndexImport } from './routes/mylists/index'
 import { Route as GroupsIndexImport } from './routes/groups/index'
 import { Route as MylistsIdImport } from './routes/mylists/$id'
-import { Route as GroupsIdImport } from './routes/groups/$id'
+import { Route as GroupsGroupIdImport } from './routes/groups/$groupId'
+import { Route as GroupsGroupIdListListIdImport } from './routes/groups_/$groupId/list/$listId'
 
 // Create/Update Routes
 
@@ -39,8 +40,13 @@ const MylistsIdRoute = MylistsIdImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const GroupsIdRoute = GroupsIdImport.update({
-  path: '/groups/$id',
+const GroupsGroupIdRoute = GroupsGroupIdImport.update({
+  path: '/groups/$groupId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GroupsGroupIdListListIdRoute = GroupsGroupIdListListIdImport.update({
+  path: '/groups/$groupId/list/$listId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -52,8 +58,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/groups/$id': {
-      preLoaderRoute: typeof GroupsIdImport
+    '/groups/$groupId': {
+      preLoaderRoute: typeof GroupsGroupIdImport
       parentRoute: typeof rootRoute
     }
     '/mylists/$id': {
@@ -68,6 +74,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MylistsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/groups/$groupId/list/$listId': {
+      preLoaderRoute: typeof GroupsGroupIdListListIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -75,10 +85,11 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
-  GroupsIdRoute,
+  GroupsGroupIdRoute,
   MylistsIdRoute,
   GroupsIndexRoute,
   MylistsIndexRoute,
+  GroupsGroupIdListListIdRoute,
 ])
 
 /* prettier-ignore-end */

@@ -4,19 +4,17 @@ import ContentTitle from "../components/ContentTitle";
 import EmptyContent from "../components/EmptyContent";
 import { Input } from "../components/ui/input";
 import AddNewList from "../components/lists/AddNewList";
-import { useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { getGroupLists } from "@/api/User";
 import { useQuery } from "@tanstack/react-query";
 import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/layout/CardsContainer";
 
-const GroupLists = () => {
-  const groupId = useParams({ from: "/groups/$id" });
-
+const GroupLists = ({ groupId }) => {
   // fetch data
   const { data, isFetched } = useQuery({
-    queryKey: ["groupLists", groupId.id],
-    queryFn: () => getGroupLists(groupId.id),
+    queryKey: ["groupLists", groupId],
+    queryFn: () => getGroupLists(groupId),
   });
 
   // collected items
@@ -34,7 +32,7 @@ const GroupLists = () => {
   return (
     <DefaultLayout>
       <>
-        <ContentTitle title={`Group: ${groupId.id}`} cardsAmount={0}>
+        <ContentTitle title={`Group: ${groupId}`} cardsAmount={0}>
           <>
             <Input
               type="text"
@@ -47,13 +45,19 @@ const GroupLists = () => {
         {isFetched && data.length > 0 ? (
           <CardsContainer>
             {data.map(item => (
-              <ListCard
-                id={item._id}
-                name={item.name}
-                description={item.description}
-                itemsAmount={item.productList.length}
-                collectedItemsAmount={collectedItems(item.productList)}
-              />
+              <Link
+                to={"/groups/$groupId/list/$listId"}
+                params={{ listId: `${item._id}` }}
+                key={item._id}
+              >
+                <ListCard
+                  id={item._id}
+                  name={item.name}
+                  description={item.description}
+                  itemsAmount={item.productList.length}
+                  collectedItemsAmount={collectedItems(item.productList)}
+                />
+              </Link>
             ))}
           </CardsContainer>
         ) : (

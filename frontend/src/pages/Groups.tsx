@@ -33,8 +33,8 @@ const Groups = () => {
           <CardsContainer>
             {data.map(item => (
               <Link
-                to={"/groups/$id"}
-                params={{ id: `${item._id}` }}
+                to={"/groups/$groupId"}
+                params={{ groupId: item._id }}
                 key={item._id}
               >
                 <GroupCard
