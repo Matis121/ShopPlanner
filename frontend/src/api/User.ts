@@ -110,3 +110,15 @@ export async function createNewList(newList: any) {
     console.log(error);
   }
 }
+export async function CreateNewGroup(newList: any) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/create-new-group`,
+      newList
+    );
+    let data = response.data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}

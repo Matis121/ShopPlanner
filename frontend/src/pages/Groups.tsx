@@ -9,7 +9,7 @@ import GroupCard from "@/components/groups/GroupCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllGroups } from "@/api/User";
 import { Link } from "@tanstack/react-router";
-import { useEffect } from "react";
+import HandleNewGroup from "@/components/groups/HandleNewGroup";
 
 const Groups = () => {
   const { data, isFetched } = useQuery({
@@ -26,7 +26,7 @@ const Groups = () => {
               placeholder="Search group..."
               className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
             />
-            <AddNewList buttonValue="Add new group" />
+            <HandleNewGroup buttonValue="Add new group" />
           </>
         </ContentTitle>
         {isFetched && data.length > 0 ? (

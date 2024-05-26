@@ -13,10 +13,10 @@ import { Label } from "@/components/ui/label";
 import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
-import { createNewList } from "@/api/User";
+import { CreateNewGroup } from "@/api/User";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-const AddNewList = ({ buttonValue }) => {
+const HandleNewGroup = ({ buttonValue }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -35,12 +35,12 @@ const AddNewList = ({ buttonValue }) => {
   } = useForm();
 
   const createListMutation = useMutation({
-    mutationFn: createNewList,
+    mutationFn: CreateNewGroup,
     onError: error => {
       console.error("Error adding new list:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists"] });
+      queryClient.invalidateQueries({ queryKey: ["groups"] });
       setOpen(false);
     },
   });
@@ -60,7 +60,7 @@ const AddNewList = ({ buttonValue }) => {
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>New list</DialogTitle>
+            <DialogTitle>New group</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -95,7 +95,7 @@ const AddNewList = ({ buttonValue }) => {
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
-              Create list
+              Create group
             </Button>
           </DialogFooter>
         </form>
@@ -104,4 +104,4 @@ const AddNewList = ({ buttonValue }) => {
   );
 };
 
-export default AddNewList;
+export default HandleNewGroup;
