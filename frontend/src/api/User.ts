@@ -9,6 +9,14 @@ export async function getAllLists() {
   return data;
 }
 
+export async function getAllGroups() {
+  let response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/get-all-avaible-groups`
+  );
+  let data = response.data;
+  return data;
+}
+
 export async function getSingleList(listId: any) {
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/get-single-list`,

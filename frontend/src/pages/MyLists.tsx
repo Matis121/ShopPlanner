@@ -43,47 +43,45 @@ const MyLists = () => {
   };
 
   return (
-    <>
-      <DefaultLayout>
-        <>
-          <ContentTitle title="My lists" cardsAmount={data ? data.length : 0}>
-            <>
-              <Input
-                type="text"
-                placeholder="Search list..."
-                className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-              <AddNewList buttonValue="Add new list" />
-            </>
-          </ContentTitle>
-          {isFetched && data.length > 0 ? (
-            <CardsContainer>
-              {data.map((item: ListItem) => (
-                <Link
-                  to={"/mylists/$id"}
-                  params={{ id: `${item._id}` }}
-                  key={item._id}
-                >
-                  <ListCard
-                    id={item._id}
-                    name={item.name}
-                    description={item.description}
-                    itemsAmount={item.productList.length}
-                    collectedItemsAmount={collectedItems(item.productList)}
-                  />
-                </Link>
-              ))}
-            </CardsContainer>
-          ) : (
-            <EmptyContent paragraph="No list has been created yet!">
-              <AddNewList buttonValue="Create a new list" />
-            </EmptyContent>
-          )}
-        </>
-      </DefaultLayout>
-    </>
+    <DefaultLayout>
+      <>
+        <ContentTitle title="My lists" cardsAmount={data ? data.length : 0}>
+          <>
+            <Input
+              type="text"
+              placeholder="Search list..."
+              className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <AddNewList buttonValue="Add new list" />
+          </>
+        </ContentTitle>
+        {isFetched && data.length > 0 ? (
+          <CardsContainer>
+            {data.map((item: ListItem) => (
+              <Link
+                to={"/mylists/$id"}
+                params={{ id: `${item._id}` }}
+                key={item._id}
+              >
+                <ListCard
+                  id={item._id}
+                  name={item.name}
+                  description={item.description}
+                  itemsAmount={item.productList.length}
+                  collectedItemsAmount={collectedItems(item.productList)}
+                />
+              </Link>
+            ))}
+          </CardsContainer>
+        ) : (
+          <EmptyContent paragraph="No list has been created yet!">
+            <AddNewList buttonValue="Create a new list" />
+          </EmptyContent>
+        )}
+      </>
+    </DefaultLayout>
   );
 };
 

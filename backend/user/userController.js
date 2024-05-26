@@ -1,4 +1,4 @@
-const User = require("./userModel");
+const { User, Group } = require("./userModel");
 
 const newUser = async (req, res, next) => {
   try {
@@ -16,8 +16,8 @@ const newUser = async (req, res, next) => {
       ],
     });
     await user.save();
-  } catch {
-    console.log(e.error);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -51,6 +51,16 @@ const getSingleList = async (req, res, next) => {
     }
 
     return res.json(list);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const getAvaibleGroups = async (req, res, next) => {
+  try {
+    const groups = await Group.find();
+    return res.status(200).json(groups);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });
@@ -99,6 +109,21 @@ const addNewProduct = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });
+  }
+};
+
+const createNewGroup = async (req, res, next) => {
+  const { name, description } = req.body;
+  try {
+    const group = new Group({
+      name: name,
+    });
+    await group.save();
+    return res
+      .status(200)
+      .json({ message: "Group added successfully", group: group });
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -217,4 +242,6 @@ module.exports = {
   deleteProduct,
   deleteList,
   updateList,
+  getAvaibleGroups,
+  createNewGroup,
 };

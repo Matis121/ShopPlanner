@@ -31,8 +31,22 @@ const listSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  name: String,
-  email: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  lists: {
+    type: [listSchema],
+    required: false,
+  },
+  groups: {
+    type: Array,
+    required: false,
+  },
   createdAt: {
     type: Date,
     immutable: true,
@@ -42,9 +56,27 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now(),
   },
+});
+
+const groupSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    immutable: true,
+    default: () => Date.now(),
+  },
+  updatedAt: {
+    type: Date,
+    default: () => Date.now(),
+  },
+  users: Array,
   lists: [listSchema],
 });
 
-module.exports = mongoose.model("Product", productSchema);
-module.exports = mongoose.model("List", listSchema);
-module.exports = mongoose.model("User", userSchema);
+const Group = mongoose.model("Group", groupSchema);
+const User = mongoose.model("User", userSchema);
+
+module.exports = { Group, User };

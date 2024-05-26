@@ -12,4 +12,7 @@ userRouter.delete("/delete-product", userController.deleteProduct);
 userRouter.delete("/delete-list", userController.deleteList);
 userRouter.post("/create-new-list", userController.createNewList);
 
+userRouter.post("/create-new-group", userController.createNewGroup);
+userRouter.get("/get-all-avaible-groups", userController.getAvaibleGroups);
+
 module.exports = userRouter;

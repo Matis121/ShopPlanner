@@ -11,17 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as GroupsImport } from './routes/groups'
 import { Route as IndexImport } from './routes/index'
 import { Route as MylistsIndexImport } from './routes/mylists/index'
+import { Route as GroupsIndexImport } from './routes/groups/index'
 import { Route as MylistsIdImport } from './routes/mylists/$id'
+import { Route as GroupsIdImport } from './routes/groups/$id'
 
 // Create/Update Routes
-
-const GroupsRoute = GroupsImport.update({
-  path: '/groups',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   path: '/',
@@ -33,8 +29,18 @@ const MylistsIndexRoute = MylistsIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const GroupsIndexRoute = GroupsIndexImport.update({
+  path: '/groups/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const MylistsIdRoute = MylistsIdImport.update({
   path: '/mylists/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const GroupsIdRoute = GroupsIdImport.update({
+  path: '/groups/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,12 +52,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/groups': {
-      preLoaderRoute: typeof GroupsImport
+    '/groups/$id': {
+      preLoaderRoute: typeof GroupsIdImport
       parentRoute: typeof rootRoute
     }
     '/mylists/$id': {
       preLoaderRoute: typeof MylistsIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/groups/': {
+      preLoaderRoute: typeof GroupsIndexImport
       parentRoute: typeof rootRoute
     }
     '/mylists/': {
@@ -65,8 +75,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
-  GroupsRoute,
+  GroupsIdRoute,
   MylistsIdRoute,
+  GroupsIndexRoute,
   MylistsIndexRoute,
 ])
 
