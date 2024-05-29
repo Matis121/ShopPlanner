@@ -281,6 +281,22 @@ const deleteListInGroup = async (req, res) => {
   }
 };
 
+const deleteGroup = async (req, res) => {
+  const { groupId } = req.body;
+  try {
+    const group = await Group.findOneAndDelete({ _id: groupId });
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    res.status(200).json({ message: "Group deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   newUser,
   getAllLists,
@@ -296,4 +312,5 @@ module.exports = {
   createNewListInGroup,
   getGroupLists,
   deleteListInGroup,
+  deleteGroup,
 };
