@@ -7,7 +7,7 @@ import { getGroupLists } from "@/api/User";
 import { useQuery } from "@tanstack/react-query";
 import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/layout/CardsContainer";
-import HandleListInGroup from "@/components/groups/HandleListInGroup";
+import AddListInGroup from "@/components/groups/AddListInGroup";
 
 const GroupLists = ({ groupId }) => {
   // fetch data
@@ -41,7 +41,7 @@ const GroupLists = ({ groupId }) => {
               placeholder="Search list..."
               className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
             />
-            <HandleListInGroup buttonValue="Add new list" groupId={groupId} />
+            <AddListInGroup buttonValue="Add new list" groupId={groupId} />
           </>
         </ContentTitle>
         {isFetched && data.length > 0 ? (
@@ -64,7 +64,7 @@ const GroupLists = ({ groupId }) => {
           </CardsContainer>
         ) : (
           <EmptyContent paragraph="No list has been created yet!">
-            <HandleListInGroup buttonValue="Add new list" groupId={groupId} />
+            <AddListInGroup buttonValue="Add new list" groupId={groupId} />
           </EmptyContent>
         )}
       </>

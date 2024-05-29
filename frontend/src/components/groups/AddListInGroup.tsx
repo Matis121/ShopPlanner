@@ -16,7 +16,7 @@ import { Textarea } from "../ui/textarea";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createNewListInGroup } from "@/api/User";
 
-const AddNewList = ({ buttonValue, groupId }) => {
+const AddListInGroup = ({ buttonValue, groupId }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -108,4 +108,4 @@ const AddNewList = ({ buttonValue, groupId }) => {
   );
 };
 
-export default AddNewList;
+export default AddListInGroup;

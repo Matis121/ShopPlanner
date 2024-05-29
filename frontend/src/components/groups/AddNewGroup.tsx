@@ -15,7 +15,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { CreateNewGroup } from "@/api/User";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-const HandleNewGroup = ({ buttonValue }) => {
+const AddNewGroup = ({ buttonValue }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -93,4 +93,4 @@ const HandleNewGroup = ({ buttonValue }) => {
   );
 };
 
-export default HandleNewGroup;
+export default AddNewGroup;
