@@ -1,13 +1,42 @@
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
 import { Button } from "../ui/button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteGroup } from "@/api/User";
 
-const GroupCard = ({ name, description, usersAmount, listsAmount }) => {
+const GroupCard = ({
+  name,
+  description,
+  usersAmount,
+  listsAmount,
+  groupId,
+}) => {
+  const queryClient = useQueryClient();
+
+  const deleteGroupMutation = useMutation({
+    mutationFn: deleteGroup,
+    onError: error => {
+      console.error("Error removing a group:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["groups"],
+      });
+    },
+  });
+
+  const handleDeleteGroup = e => {
+    e.stopPropagation();
+    deleteGroupMutation.mutate({
+      groupId: groupId,
+    });
+  };
+
   return (
     <div className="rounded-lg border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer hover:border-blue-500 hover:dark:border-blue-500">
       <div className="p-6 flex flex-col items-start relative">
@@ -22,7 +51,10 @@ const GroupCard = ({ name, description, usersAmount, listsAmount }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-30">
-            <DropdownMenuItem className="flex gap-2 text-red-500 hover:cursor-pointer">
+            <DropdownMenuItem
+              className="flex gap-2 text-red-500 hover:cursor-pointer"
+              onClick={handleDeleteGroup}
+            >
               <LuTrash2 />
               Delete
             </DropdownMenuItem>

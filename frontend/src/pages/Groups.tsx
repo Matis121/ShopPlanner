@@ -42,6 +42,7 @@ const Groups = () => {
                   description={item.description}
                   usersAmount={item.users.length ? item.users.length : 0}
                   listsAmount={item.lists.length ? item.lists.length : 0}
+                  groupId={item._id}
                 />
               </Link>
             ))}
