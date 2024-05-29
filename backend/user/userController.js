@@ -263,7 +263,7 @@ const deleteList = async (req, res) => {
 };
 
 const deleteListInGroup = async (req, res) => {
-  const { groupId, listId } = req.query;
+  const { groupId, listId } = req.body;
   try {
     const group = await Group.findOneAndUpdate(
       { _id: groupId, "lists._id": listId },

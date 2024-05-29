@@ -9,7 +9,6 @@ import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
 import ProgressBar from "../ProgressBar";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/api/User";
-import { useState } from "react";
 
 type CardProps = {
   id: Key;
@@ -17,6 +16,9 @@ type CardProps = {
   description?: string; // Optional prop
   itemsAmount: number;
   collectedItemsAmount: number;
+  mutationFn: (variables: any) => Promise<any>; // Generic mutation function type
+  queryKeyProp: "list" | "group";
+  groupId?: string;
 };
 
 const ListCard: React.FC<CardProps> = ({
@@ -25,24 +27,36 @@ const ListCard: React.FC<CardProps> = ({
   itemsAmount,
   collectedItemsAmount,
   id,
+  mutationFn,
+  queryKeyProp,
+  groupId,
 }) => {
   const queryClient = useQueryClient();
 
   const deleteListMutation = useMutation({
-    mutationFn: deleteList,
+    mutationFn: mutationFn,
     onError: error => {
       console.error("Error removing a list:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists"] });
+      queryClient.invalidateQueries({
+        queryKey: [queryKeyProp === "list" ? "lists" : "groupLists", groupId],
+      });
     },
   });
 
   const handleDeleteList = e => {
     e.stopPropagation();
-    deleteListMutation.mutate({
-      listId: id,
-    });
+    if (mutationFn === deleteList) {
+      deleteListMutation.mutate({
+        listId: id,
+      });
+    } else {
+      deleteListMutation.mutate({
+        listId: id,
+        groupId: groupId,
+      });
+    }
   };
 
   const progressBarPercent =

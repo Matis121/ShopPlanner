@@ -10,9 +10,7 @@ import AddNewList from "../components/lists/AddNewList";
 import { Link } from "@tanstack/react-router";
 
 import { useQuery } from "@tanstack/react-query";
-import { getAllLists } from "@/api/User";
-
-import { createNewList } from "@/api/User";
+import { deleteList, getAllLists } from "@/api/User";
 
 const MyLists = () => {
   type ListItem = {
@@ -74,6 +72,8 @@ const MyLists = () => {
                   description={item.description}
                   itemsAmount={item.productList.length}
                   collectedItemsAmount={collectedItems(item.productList)}
+                  mutationFn={deleteList}
+                  queryKeyProp="list"
                 />
               </Link>
             ))}

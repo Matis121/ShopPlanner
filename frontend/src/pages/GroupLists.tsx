@@ -3,7 +3,7 @@ import ContentTitle from "../components/ContentTitle";
 import EmptyContent from "../components/EmptyContent";
 import { Input } from "../components/ui/input";
 import { Link } from "@tanstack/react-router";
-import { getGroupLists } from "@/api/User";
+import { deleteListInGroup, getGroupLists } from "@/api/User";
 import { useQuery } from "@tanstack/react-query";
 import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/layout/CardsContainer";
@@ -58,6 +58,9 @@ const GroupLists = ({ groupId }) => {
                   description={item.description}
                   itemsAmount={item.productList.length}
                   collectedItemsAmount={collectedItems(item.productList)}
+                  mutationFn={deleteListInGroup}
+                  queryKeyProp="group"
+                  groupId={groupId}
                 />
               </Link>
             ))}

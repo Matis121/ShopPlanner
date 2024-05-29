@@ -98,6 +98,17 @@ export async function deleteList({ listId }) {
   }
 }
 
+export async function deleteListInGroup({ listId, groupId }) {
+  try {
+    let response = await axios.delete(
+      `${import.meta.env.VITE_SERVER_URL}/delete-list-in-group`,
+      { data: { listId, groupId } }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function createNewList(newList: any) {
   try {
     let response = await axios.post(
