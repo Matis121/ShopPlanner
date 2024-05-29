@@ -69,7 +69,6 @@ const getSingleList = async (req, res, next) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
 const getAvaibleGroups = async (req, res, next) => {
   try {
     const groups = await Group.find();
@@ -263,6 +262,25 @@ const deleteList = async (req, res) => {
   }
 };
 
+const deleteListInGroup = async (req, res) => {
+  const { groupId, listId } = req.query;
+  try {
+    const group = await Group.findOneAndUpdate(
+      { _id: groupId, "lists._id": listId },
+      { $pull: { lists: { _id: listId } } }
+    );
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    res.status(200).json({ message: "List deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   newUser,
   getAllLists,
@@ -277,4 +295,5 @@ module.exports = {
   createNewGroup,
   createNewListInGroup,
   getGroupLists,
+  deleteListInGroup,
 };

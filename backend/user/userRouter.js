@@ -21,5 +21,6 @@ userRouter.post(
 );
 userRouter.get("/get-all-avaible-groups", userController.getAvaibleGroups);
 userRouter.get("/get-group-lists", userController.getGroupLists);
+userRouter.delete("/delete-list-in-group", userController.deleteListInGroup);
 
 module.exports = userRouter;
