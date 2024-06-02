@@ -69,6 +69,23 @@ const getSingleList = async (req, res, next) => {
     return res.status(500).json({ error: error.message });
   }
 };
+const getSingleListInGroup = async (req, res, next) => {
+  const { listId, groupId } = req.query;
+  try {
+    const group = await Group.findOne({ _id: groupId });
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+    const list = group.lists.find(list => list._id.toString() === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+    return res.json(list);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
 const getAvaibleGroups = async (req, res, next) => {
   try {
     const groups = await Group.find();
@@ -144,6 +161,29 @@ const addNewProduct = async (req, res, next) => {
   }
 };
 
+const addNewProductInGroup = async (req, res) => {
+  // const listQueryId = req.body.listId;
+  const { listId, groupId, productName } = req.body;
+  try {
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+    const list = group.lists.find(list => list._id.toString() === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+    list.productList.push({ name: productName });
+    await group.save();
+    return res
+      .status(200)
+      .json({ message: "Product added successfully", list: list });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 const createNewGroup = async (req, res, next) => {
   const { name, description } = req.body;
   try {
@@ -191,6 +231,36 @@ const updateProduct = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+const updateProductInGroup = async (req, res) => {
+  const { groupId, listId, productId } = req.body;
+  try {
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Find the list inside the user's lists
+    const list = group.lists.find(list => String(list._id) === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    const product = list.productList.find(product => product.id === productId);
+
+    if (product.isCollected) {
+      product.isCollected = false;
+    } else {
+      product.isCollected = true;
+    }
+
+    await group.save();
+
+    res.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
 const updateList = async (req, res) => {
   const { listId, listName, listDesc } = req.body;
   try {
@@ -224,6 +294,38 @@ const updateList = async (req, res) => {
   }
 };
 
+const updateListInGroup = async (req, res) => {
+  const { groupId, listId, listName, listDesc } = req.body;
+  try {
+    const group = await Group.findOne({ _id: groupId });
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Find the list inside the user's lists
+    const list = group.lists.find(list => String(list._id) === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    // Update the name and description if provided
+    if (listName) {
+      list.name = listName;
+    }
+    if (listDesc) {
+      list.description = listDesc;
+    }
+
+    // Save the changes to the user
+    await group.save();
+
+    res.status(200).json({ message: "List updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 // DELETE
 const deleteProduct = async (req, res) => {
   const { listId, productId } = req.body;
@@ -235,6 +337,24 @@ const deleteProduct = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ message: "User or list not found" });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+const deleteProductInGroup = async (req, res) => {
+  const { groupId, listId, productId } = req.body;
+  try {
+    const group = await Group.findOneAndUpdate(
+      { _id: groupId, "lists._id": listId },
+      { $pull: { "lists.$.productList": { _id: productId } } }
+    );
+
+    if (!group) {
+      return res.status(404).json({ message: "Group or list not found" });
     }
 
     res.status(200).json({ message: "Product deleted successfully" });
@@ -313,4 +433,9 @@ module.exports = {
   getGroupLists,
   deleteListInGroup,
   deleteGroup,
+  addNewProductInGroup,
+  getSingleListInGroup,
+  updateListInGroup,
+  deleteProductInGroup,
+  updateProductInGroup,
 };

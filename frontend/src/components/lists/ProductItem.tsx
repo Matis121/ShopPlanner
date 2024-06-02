@@ -8,14 +8,21 @@ import {
 import { LuMoreVertical, LuTrash2, LuPlus, LuMinus } from "react-icons/lu";
 import { FcCheckmark } from "react-icons/fc";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { deleteProduct, updateProduct } from "@/api/User";
+import {
+  deleteProduct,
+  deleteProductInGroup,
+  updateProduct,
+  updateProductInGroup,
+} from "@/api/User";
 
 type listProps = {
   productId: number;
   productName: string;
   productAmount: number;
   isCollected: boolean;
-  listUrlParam: number;
+  listUrlParam: string;
+  queryKeyProp: "list" | "group";
+  groupId?: string;
 };
 
 const ProductItem: React.FC<listProps> = ({
@@ -24,41 +31,69 @@ const ProductItem: React.FC<listProps> = ({
   productAmount,
   isCollected,
   listUrlParam,
+  queryKeyProp,
+  groupId,
 }) => {
   const queryClient = useQueryClient();
 
   const updateProductMutation = useMutation({
-    mutationFn: updateProduct,
+    mutationFn: queryKeyProp === "list" ? updateProduct : updateProductInGroup,
     onError: error => {
       console.error("Error adding new product:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists", listUrlParam] });
+      queryClient.invalidateQueries({
+        queryKey: [
+          queryKeyProp === "list" ? "lists" : "groupLists",
+          listUrlParam,
+        ],
+      });
     },
   });
 
   const deleteProductMutation = useMutation({
-    mutationFn: deleteProduct,
+    mutationFn: queryKeyProp === "list" ? deleteProduct : deleteProductInGroup,
     onError: error => {
       console.error("Error removing a product:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists", listUrlParam] });
+      queryClient.invalidateQueries({
+        queryKey: [
+          queryKeyProp === "list" ? "lists" : "groupLists",
+          listUrlParam,
+        ],
+      });
     },
   });
 
   const handleCollectingProduct = () => {
-    updateProductMutation.mutate({
-      listId: listUrlParam,
-      productId: productId,
-    });
+    if (queryKeyProp === "list") {
+      updateProductMutation.mutate({
+        listId: listUrlParam,
+        productId: productId,
+      });
+    } else {
+      updateProductMutation.mutate({
+        groupId: groupId,
+        listId: listUrlParam,
+        productId: productId,
+      });
+    }
   };
 
   const handleDeleteProduct = () => {
-    deleteProductMutation.mutate({
-      listId: listUrlParam,
-      productId: productId,
-    });
+    if (queryKeyProp === "list") {
+      deleteProductMutation.mutate({
+        listId: listUrlParam,
+        productId: productId,
+      });
+    } else {
+      deleteProductMutation.mutate({
+        groupId: groupId,
+        listId: listUrlParam,
+        productId: productId,
+      });
+    }
   };
 
   return (

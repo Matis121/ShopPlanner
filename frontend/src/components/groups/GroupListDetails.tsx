@@ -1,22 +1,26 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
-import ProductItem from "./ProductItem";
+import ProductItem from "../lists/ProductItem";
 import { useNavigate } from "@tanstack/react-router";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import ProgressBar from "../ProgressBar";
 import { X } from "lucide-react";
-import { getSingleList, updateList } from "@/api/User";
+import {
+  addNewProductInGroup,
+  getSingleListInGroup,
+  updateListInGroup,
+} from "@/api/User";
 import { useParams } from "@tanstack/react-router";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { addNewProduct } from "@/api/User";
 
-const ProductList = () => {
+const GroupListDetails = () => {
   const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
-  const listUrl = useParams({ from: "/mylists/$id" });
+  const listUrl = useParams({ from: "/groups/$groupId/list/$listId" });
+  console.log(listUrl);
 
   const [cardValues, setCardValues] = useState({ name: "", desc: "" });
   const [fetchedCardValues, setFetchedCardValues] = useState({
@@ -28,8 +32,12 @@ const ProductList = () => {
   const [enableEditButton, setEnableEditButton] = useState(false);
 
   const { data, isFetched } = useQuery({
-    queryKey: ["lists", listUrl.id],
-    queryFn: () => getSingleList(listUrl.id),
+    queryKey: ["groupLists", listUrl.listId],
+    queryFn: () =>
+      getSingleListInGroup({
+        listId: listUrl.listId,
+        groupId: listUrl.groupId,
+      }),
   });
 
   useEffect(() => {
@@ -54,37 +62,42 @@ const ProductList = () => {
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (event.target === event.currentTarget) {
-      navigate({ to: "/mylists" });
+      navigate({ to: "/groups/$groupId" });
     }
   };
   const handleExit = () => {
-    navigate({ to: "/mylists" });
+    navigate({ to: "/groups/$groupId" });
   };
 
   // MUTATION
   const createProductMutation = useMutation({
-    mutationFn: addNewProduct,
+    mutationFn: addNewProductInGroup,
     onError: error => {
       console.error("Error adding new product:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists", listUrl.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["groupLists", listUrl.listId],
+      });
     },
   });
 
   const updateListMutation = useMutation({
-    mutationFn: updateList,
+    mutationFn: updateListInGroup,
     onError: error => {
       console.error("Error updating list:", error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["lists", listUrl.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["groupLists", listUrl.listId],
+      });
     },
   });
 
   const handleUpdateList = () => {
     updateListMutation.mutate({
-      listId: listUrl.id,
+      groupId: listUrl.groupId,
+      listId: listUrl.listId,
       listName: cardValues.name,
       listDesc: cardValues.desc,
     });
@@ -93,7 +106,8 @@ const ProductList = () => {
   const handleNewItemOnEnterPress = (e: any) => {
     if (e.key === "Enter" && newItemValue !== "") {
       createProductMutation.mutate({
-        listId: listUrl.id,
+        listId: listUrl.listId,
+        groupId: listUrl.groupId,
         productName: e.target.value,
       });
       setNewItemValue("");
@@ -176,8 +190,9 @@ const ProductList = () => {
                   productName={element.name}
                   productAmount={element.amount}
                   isCollected={element.isCollected}
-                  listUrlParam={listUrl.id}
-                  queryKeyProp="list"
+                  listUrlParam={listUrl.listId}
+                  groupId={listUrl.groupId}
+                  queryKeyProp="group"
                 />
               ))}
           </div>
@@ -190,8 +205,9 @@ const ProductList = () => {
                   productName={element.name}
                   productAmount={element.amount}
                   isCollected={element.isCollected}
-                  listUrlParam={listUrl.id}
-                  queryKeyProp="list"
+                  listUrlParam={listUrl.listId}
+                  groupId={listUrl.groupId}
+                  queryKeyProp="group"
                 />
               ))}
           </div>
@@ -201,4 +217,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default GroupListDetails;

@@ -43,11 +43,37 @@ export async function getSingleList(listId: any) {
   return data;
 }
 
+export async function getSingleListInGroup({ listId, groupId }) {
+  console.log({ listId, groupId });
+  let response = await axios.get(
+    `${import.meta.env.VITE_SERVER_URL}/get-single-list-in-group`,
+    {
+      params: {
+        listId,
+        groupId,
+      },
+    }
+  );
+  let data = response.data;
+  return data;
+}
+
 export async function addNewProduct({ listId, productName }) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/add-new-product`,
       { listId, productName }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function addNewProductInGroup({ listId, groupId, productName }) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/add-new-product-in-group`,
+      { listId, groupId, productName }
     );
   } catch (error) {
     console.log(error);
@@ -65,6 +91,17 @@ export async function updateProduct({ listId, productId }) {
   }
 }
 
+export async function updateProductInGroup({ groupId, listId, productId }) {
+  try {
+    let response = await axios.put(
+      `${import.meta.env.VITE_SERVER_URL}/update-product-in-group`,
+      { groupId, listId, productId }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function updateList({ listId, listName, listDesc }) {
   try {
     let response = await axios.put(
@@ -76,11 +113,38 @@ export async function updateList({ listId, listName, listDesc }) {
   }
 }
 
+export async function updateListInGroup({
+  groupId,
+  listId,
+  listName,
+  listDesc,
+}) {
+  try {
+    let response = await axios.put(
+      `${import.meta.env.VITE_SERVER_URL}/update-list-in-group`,
+      { groupId, listId, listName, listDesc }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function deleteProduct({ listId, productId }) {
   try {
     let response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/delete-product`,
       { data: { listId, productId } }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteProductInGroup({ groupId, listId, productId }) {
+  try {
+    let response = await axios.delete(
+      `${import.meta.env.VITE_SERVER_URL}/delete-product-in-group`,
+      { data: { groupId, listId, productId } }
     );
   } catch (error) {
     console.log(error);
