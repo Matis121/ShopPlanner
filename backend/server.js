@@ -6,7 +6,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const userRouter = require("./user/userRouter");
+const userRouter = require("./routers/userRouter");
+const listsRouter = require("./routers/listsRouter");
+const groupsRouter = require("./routers/groupsRouter");
 
 // database connection
 mongoconn();
@@ -29,3 +31,5 @@ app.listen(PORT, () => {
 
 // Routers
 app.use("/", userRouter);
+app.use("/", listsRouter);
+app.use("/", groupsRouter);
