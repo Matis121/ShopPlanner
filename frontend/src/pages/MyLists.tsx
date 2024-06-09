@@ -2,7 +2,7 @@ import DefaultLayout from "@/layout/DefaultLayout";
 import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 import ListCard from "@/components/lists/ListCard";
-import CardsContainer from "@/layout/CardsContainer";
+import CardsContainer from "@/components/CardsContainer";
 import { Key, useState } from "react";
 
 import { Input } from "@/components/ui/input";
@@ -59,7 +59,7 @@ const MyLists = () => {
           </>
         </ContentTitle>
         {isFetched && data.length > 0 ? (
-          <CardsContainer>
+          <CardsContainer contentType="lists">
             {data.map((item: ListItem) => (
               <Link
                 to={"/mylists/$id"}

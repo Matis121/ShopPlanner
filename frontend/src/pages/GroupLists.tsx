@@ -6,7 +6,7 @@ import { Link } from "@tanstack/react-router";
 import { deleteListInGroup, getGroupLists } from "@/api/User";
 import { useQuery } from "@tanstack/react-query";
 import ListCard from "@/components/lists/ListCard";
-import CardsContainer from "@/layout/CardsContainer";
+import CardsContainer from "@/components/CardsContainer";
 import AddListInGroup from "@/components/groups/AddListInGroup";
 
 const GroupLists = ({ groupId }) => {
@@ -45,7 +45,7 @@ const GroupLists = ({ groupId }) => {
           </>
         </ContentTitle>
         {isFetched && data.length > 0 ? (
-          <CardsContainer>
+          <CardsContainer contentType="lists">
             {data.map(item => (
               <Link
                 to={"/groups/$groupId/list/$listId"}

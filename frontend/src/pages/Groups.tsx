@@ -3,7 +3,7 @@ import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 
 import { Input } from "@/components/ui/input";
-import CardsContainer from "@/layout/CardsContainer";
+import CardsContainer from "@/components/CardsContainer";
 import GroupCard from "@/components/groups/GroupCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllGroups } from "@/api/User";
@@ -29,7 +29,7 @@ const Groups = () => {
           </>
         </ContentTitle>
         {isFetched && data.length > 0 ? (
-          <CardsContainer>
+          <CardsContainer contentType="groups">
             {data.map(item => (
               <Link
                 to={"/groups/$groupId"}
