@@ -3,7 +3,6 @@ import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 
 import { Input } from "@/components/ui/input";
-import AddNewList from "../components/lists/AddNewList";
 import CardsContainer from "@/layout/CardsContainer";
 import GroupCard from "@/components/groups/GroupCard";
 import { useQuery } from "@tanstack/react-query";
@@ -49,7 +48,7 @@ const Groups = () => {
           </CardsContainer>
         ) : (
           <EmptyContent paragraph="No group has been created yet!">
-            <AddNewList buttonValue="Create a new group" />
+            <AddNewGroup buttonValue="Create a new group" />
           </EmptyContent>
         )}
       </>
