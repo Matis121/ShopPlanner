@@ -17,7 +17,6 @@ const GroupLists = ({ groupId }) => {
   });
 
   // collected items
-
   const collectedItems = (arrayOfItems: any[]) => {
     let collectedItemsAmount = 0;
     arrayOfItems.map(item => {
@@ -32,14 +31,14 @@ const GroupLists = ({ groupId }) => {
     <DefaultLayout>
       <>
         <ContentTitle
-          title={`Group: ${groupId}`}
+          title={`Group: ${data ? data.name : null}`}
           cardsAmount={data ? data.length : 0}
         >
           <>
             <Input
               type="text"
               placeholder="Search list..."
-              className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
+              className="w-full xl:w-[500px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
             />
             <AddListInGroup buttonValue="Add new list" groupId={groupId} />
           </>
