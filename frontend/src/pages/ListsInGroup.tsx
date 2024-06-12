@@ -9,12 +9,17 @@ import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/components/CardsContainer";
 import AddListInGroup from "@/components/groups/AddListInGroup";
 
-const GroupLists = ({ groupId }) => {
+const ListsInGroup = ({ groupId }) => {
   // fetch data
   const { data, isFetched } = useQuery({
     queryKey: ["groupLists", groupId],
     queryFn: () => getGroupLists(groupId),
   });
+
+  // console.log(data.listsInGroup);
+  if (isFetched) {
+    console.log(data.listsInGroup[0]);
+  }
 
   // collected items
   const collectedItems = (arrayOfItems: any[]) => {
@@ -31,7 +36,7 @@ const GroupLists = ({ groupId }) => {
     <DefaultLayout>
       <>
         <ContentTitle
-          title={`Group: ${data ? data.name : null}`}
+          title={`Group: ${data ? data.groupName : ""}`}
           cardsAmount={data ? data.length : 0}
         >
           <>
@@ -43,9 +48,9 @@ const GroupLists = ({ groupId }) => {
             <AddListInGroup buttonValue="Add new list" groupId={groupId} />
           </>
         </ContentTitle>
-        {isFetched && data.length > 0 ? (
+        {isFetched && data.listsInGroup.length > 0 ? (
           <CardsContainer contentType="lists">
-            {data.map(item => (
+            {data.listsInGroup.map(item => (
               <Link
                 to={"/groups/$groupId/list/$listId"}
                 params={{ listId: `${item._id}` }}
@@ -74,4 +79,4 @@ const GroupLists = ({ groupId }) => {
   );
 };
 
-export default GroupLists;
+export default ListsInGroup;

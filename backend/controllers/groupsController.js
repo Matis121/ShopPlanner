@@ -9,7 +9,7 @@ const getGroupLists = async (req, res, next) => {
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
-    return res.json(group.lists);
+    return res.json({ groupName: group.name, listsInGroup: group.lists });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });

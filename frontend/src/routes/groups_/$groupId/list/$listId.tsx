@@ -1,5 +1,5 @@
 import { useParams } from "@tanstack/react-router";
-import GroupLists from "@/pages/GroupLists";
+import ListsInGroup from "@/pages/ListsInGroup";
 import { createFileRoute } from "@tanstack/react-router";
 import GroupListDetails from "@/components/groups/GroupListDetails";
 
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/groups/$groupId/list/$listId")({
       <div>
         <GroupListDetails />
         <div className="hidden md:block relative">
-          <GroupLists groupId={groupId} />
+          <ListsInGroup groupId={groupId} />
         </div>
       </div>
     );
