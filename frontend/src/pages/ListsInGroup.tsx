@@ -16,11 +16,6 @@ const ListsInGroup = ({ groupId }) => {
     queryFn: () => getGroupLists(groupId),
   });
 
-  // console.log(data.listsInGroup);
-  if (isFetched) {
-    console.log(data.listsInGroup[0]);
-  }
-
   // collected items
   const collectedItems = (arrayOfItems: any[]) => {
     let collectedItemsAmount = 0;
