@@ -1,10 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FieldValues, useForm } from "react-hook-form";
-import { loginUser } from "@/api/User";
-import { auth } from "@/utils/auth";
+import { registerUser } from "@/api/User";
 
-const Login = () => {
+const Register = () => {
   const {
     register,
     handleSubmit,
@@ -14,13 +13,11 @@ const Login = () => {
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      const usersettings = await loginUser({
+      await registerUser({
+        username: data.username,
         email: data.email,
         password: data.password,
       });
-      if (usersettings.token) {
-        auth(usersettings.token);
-      }
     } catch (error) {
       console.error("Error during submission:", error);
     }
@@ -28,11 +25,16 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center gap-10">
-      <h2 className=" text-xl">Login page</h2>
+      <h2 className=" text-xl">Register page</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4 shadow-xl rounded-xl py-4 px-8"
       >
+        <Input
+          {...register("username")}
+          placeholder="username"
+          className="w-80"
+        />
         <Input {...register("email")} placeholder="e-mail" className="w-80" />
         <Input
           {...register("password")}
@@ -45,11 +47,11 @@ const Login = () => {
           variant="outline"
           className=" self-end"
         >
-          Log in
+          Create account
         </Button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

@@ -3,6 +3,24 @@ import { getUserId } from "@/utils/auth";
 
 const userId = getUserId();
 
+export async function registerUser({ username, email, password }) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/user/register`,
+      {
+        username,
+        email,
+        password,
+      }
+    );
+    let data = response.data;
+    return console.log(data);
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+}
+
 export async function loginUser({ email, password }) {
   try {
     let response = await axios.post(
