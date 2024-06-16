@@ -1,16 +1,45 @@
 import axios from "axios";
+import { getUserId } from "@/utils/auth";
+
+const userId = getUserId();
+
+export async function loginUser({ email, password }) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/user/login`,
+      {
+        email,
+        password,
+      }
+    );
+    let data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+}
 
 // ! LISTS FUNCTIONS
 
 // get
 export async function getAllLists() {
-  let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/lists`);
+  let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/lists`, {
+    params: {
+      userId: userId,
+    },
+  });
   let data = response.data;
   return data;
 }
 export async function getSingleList(listId: any) {
   let response = await axios.get(
-    `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`
+    `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
+    {
+      params: {
+        userId: userId,
+      },
+    }
   );
   let data = response.data;
   return data;
@@ -21,7 +50,10 @@ export async function createNewList(newList: any) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/lists`,
-      newList
+      {
+        userId: userId,
+        newListData: newList,
+      }
     );
     let data = response.data;
     return data;
@@ -33,7 +65,10 @@ export async function addNewProduct({ listId, productName }) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
-      { productName }
+      {
+        userId,
+        productName,
+      }
     );
   } catch (error) {
     console.log(error);
@@ -45,7 +80,7 @@ export async function updateList({ listId, listName, listDesc }) {
   try {
     let response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
-      { listName, listDesc }
+      { userId, listName, listDesc }
     );
   } catch (error) {
     console.log(error);
@@ -54,7 +89,10 @@ export async function updateList({ listId, listName, listDesc }) {
 export async function updateProduct({ listId, productId }) {
   try {
     let response = await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`
+      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
+      {
+        userId,
+      }
     );
   } catch (error) {
     console.log(error);
@@ -65,7 +103,12 @@ export async function updateProduct({ listId, productId }) {
 export async function deleteList({ listId }) {
   try {
     let response = await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`
+      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
+      {
+        params: {
+          userId,
+        },
+      }
     );
   } catch (error) {
     console.log(error);
@@ -74,7 +117,12 @@ export async function deleteList({ listId }) {
 export async function deleteProduct({ listId, productId }) {
   try {
     let response = await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`
+      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
+      {
+        params: {
+          userId,
+        },
+      }
     );
   } catch (error) {
     console.log(error);

@@ -2,8 +2,9 @@ const { User, List } = require("../models");
 
 // GET
 const getAllLists = async (req, res, next) => {
+  const { userId } = req.query;
   try {
-    const user = await User.findOne({ name: "testowy2" });
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -16,9 +17,10 @@ const getAllLists = async (req, res, next) => {
 
 const getSingleList = async (req, res, next) => {
   const { listId } = req.params;
+  const { userId } = req.query;
   try {
     // Find the user
-    const user = await User.findOne({ name: "testowy2" });
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -39,9 +41,9 @@ const getSingleList = async (req, res, next) => {
 
 // ADD
 const createNewList = async (req, res) => {
-  const newListData = req.body;
+  const { newListData, userId } = req.body;
   try {
-    const user = await User.findOne({ name: "testowy2" });
+    const user = await User.findOne({ _id: userId });
     const newList = {
       name: newListData.name,
       description: newListData.description,
@@ -57,9 +59,9 @@ const createNewList = async (req, res) => {
 
 const addNewProduct = async (req, res, next) => {
   const { listId } = req.params;
-  const newProduct = { name: req.body.productName };
+  const { productName, userId } = req.body;
   try {
-    const user = await User.findOne({ name: "testowy2" });
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -69,7 +71,7 @@ const addNewProduct = async (req, res, next) => {
       return res.status(404).json({ message: "List not found" });
     }
 
-    list.productList.push(newProduct);
+    list.productList.push({ name: productName });
     await user.save();
     return res
       .status(200)
@@ -83,10 +85,10 @@ const addNewProduct = async (req, res, next) => {
 // UPDATE
 const updateList = async (req, res) => {
   const { listId } = req.params;
-  const { listName, listDesc } = req.body;
+  const { userId, listName, listDesc } = req.body;
   try {
     // Find the user
-    const user = await User.findOne({ name: "testowy2" });
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -117,9 +119,10 @@ const updateList = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const { listId, productId } = req.params;
+  const { userId } = req.body;
   try {
     // Find the user
-    const user = await User.findOne({ name: "testowy2" });
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -150,9 +153,10 @@ const updateProduct = async (req, res) => {
 // DELETE
 const deleteProduct = async (req, res) => {
   const { listId, productId } = req.params;
+  const { userId } = req.query;
   try {
     const user = await User.findOneAndUpdate(
-      { name: "testowy2", "lists._id": listId },
+      { _id: userId, "lists._id": listId },
       { $pull: { "lists.$.productList": { _id: productId } } }
     );
 
@@ -169,9 +173,10 @@ const deleteProduct = async (req, res) => {
 
 const deleteList = async (req, res) => {
   const { listId } = req.params;
+  const { userId } = req.query;
   try {
     const user = await User.findOneAndUpdate(
-      { name: "testowy2", "lists._id": listId },
+      { _id: userId, "lists._id": listId },
       { $pull: { lists: { _id: listId } } }
     );
 
