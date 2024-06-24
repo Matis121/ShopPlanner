@@ -151,7 +151,11 @@ export async function deleteProduct({ listId, productId }) {
 
 // get
 export async function getAllGroups() {
-  let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/groups`);
+  let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/groups`, {
+    params: {
+      userId: userId,
+    },
+  });
   let data = response.data;
   return data;
 }
@@ -182,11 +186,11 @@ export async function addNewProductInGroup({ listId, groupId, productName }) {
     console.log(error);
   }
 }
-export async function CreateNewGroup(newList: any) {
+export async function CreateNewGroup({ name }) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/groups/add-proposal`,
-      newList
+      { name, userId }
     );
     let data = response.data;
     return data;

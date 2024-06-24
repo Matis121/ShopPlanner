@@ -1,9 +1,18 @@
 const { Group, List } = require("../models");
 
 // GET
+const getAvaibleGroups = async (req, res, next) => {
+  const { userId } = req.query;
+  try {
+    const groups = await Group.find({ users: userId });
+    return res.status(200).json(groups);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
 const getGroupLists = async (req, res, next) => {
   const { groupId } = req.params;
-  console.log(groupId);
   try {
     const group = await Group.findOne({ _id: groupId });
     if (!group) {
@@ -32,22 +41,14 @@ const getSingleList = async (req, res, next) => {
     return res.status(500).json({ error: error.message });
   }
 };
-const getAvaibleGroups = async (req, res, next) => {
-  try {
-    const groups = await Group.find();
-    return res.status(200).json(groups);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: error.message });
-  }
-};
 
 // POST
 const createNewGroup = async (req, res, next) => {
-  const { name } = req.body;
+  const { name, userId } = req.body;
   try {
     const group = new Group({
       name: name,
+      users: [userId],
     });
     await group.save();
     return res
