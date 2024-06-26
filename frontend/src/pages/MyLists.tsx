@@ -3,7 +3,7 @@ import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/components/CardsContainer";
-import { Key, useState } from "react";
+import { Key, useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import AddNewList from "../components/lists/AddNewList";
@@ -27,6 +27,7 @@ const MyLists = () => {
 
   // NOT USED AT THIS MOMENT
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -41,6 +42,21 @@ const MyLists = () => {
     });
     return collectedItemsAmount;
   };
+
+  useEffect(() => {
+    if (isFetched) {
+      setFilteredData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (isFetched) {
+      const filtered = data.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
+  }, [searchQuery]);
 
   return (
     <DefaultLayout>
@@ -59,7 +75,7 @@ const MyLists = () => {
         </ContentTitle>
         {isFetched && data.length > 0 ? (
           <CardsContainer contentType="lists">
-            {data.map((item: ListItem) => (
+            {filteredData.map((item: ListItem) => (
               <Link
                 to={"/mylists/$id"}
                 params={{ id: `${item._id}` }}
