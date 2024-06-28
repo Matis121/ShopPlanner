@@ -32,7 +32,7 @@ const ListsInGroup = ({ groupId }) => {
       <>
         <ContentTitle
           title={`Group: ${data ? data.groupName : ""}`}
-          cardsAmount={data ? data.length : 0}
+          cardsAmount={data ? data.listsInGroup.length : 0}
         >
           <>
             <Input

@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Group, GroupUser } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -37,7 +37,6 @@ const register = async (req, res, next) => {
     });
   }
 };
-
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -65,8 +64,89 @@ const login = async (req, res, next) => {
     return res.json({ error: "Login failed", details: error.message });
   }
 };
+const confirmGroupInvitation = async (req, res) => {
+  const { groupId, userId } = req.body;
+  try {
+    const user = await User.findOne({ _id: userId });
+    const group = await Group.findOne({ _id: groupId });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found in database" });
+    }
+    if (!group) {
+      return res.status(404).json({ error: "Group not found in database" });
+    }
+    if (!user.groupInvitations.includes(groupId.toString())) {
+      return res
+        .status(400)
+        .json({ error: "Group invitation not found for this user" });
+    }
+    const groupUser = group.users.find(
+      groupUser =>
+        groupUser.id === userId.toString() && groupUser.status === "invited"
+    );
+    if (!groupUser) {
+      return res
+        .status(400)
+        .json({ error: "User was not invited to the group" });
+    }
+    groupUser.status = "active";
+    await group.save();
+
+    user.groupInvitations = user.groupInvitations.filter(
+      invitation => invitation.toString() !== groupId
+    );
+    user.groups.push(groupId);
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Invitation confirmed successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to send invitation" });
+  }
+};
+const rejectGroupInvitation = async (req, res) => {
+  const { userId, groupId } = req.body;
+  try {
+    const user = await User.findById(userId);
+    const group = await Group.findOne({ _id: groupId });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found in database" });
+    }
+    if (!group) {
+      return res.status(404).json({ error: "Group not found in database" });
+    }
+    if (!user.groupInvitations.includes(groupId.toString())) {
+      return res
+        .status(400)
+        .json({ error: "Group invitation not found for this user" });
+    }
+
+    // Remove the invitation from the user's groupInvitations array
+    user.groupInvitations = user.groupInvitations.filter(
+      invitation => invitation.toString() !== groupId
+    );
+    await user.save();
+
+    // Remove the user from the group's users array if their status is "invited"
+    group.users = group.users.filter(
+      groupUser =>
+        groupUser.id !== userId.toString() || groupUser.status !== "invited"
+    );
+    await group.save();
+
+    return res.status(200).json({ message: "Invitation removed successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to remove invitation" });
+  }
+};
 
 module.exports = {
   register,
   login,
+  confirmGroupInvitation,
+  rejectGroupInvitation,
 };

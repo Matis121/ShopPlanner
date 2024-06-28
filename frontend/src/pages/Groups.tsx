@@ -18,7 +18,7 @@ const Groups = () => {
   return (
     <DefaultLayout>
       <>
-        <ContentTitle title="Groups" cardsAmount={2}>
+        <ContentTitle title="Groups" cardsAmount={data ? data.length : 0}>
           <>
             <Input
               type="text"
@@ -31,19 +31,21 @@ const Groups = () => {
         {isFetched && data.length > 0 ? (
           <CardsContainer contentType="groups">
             {data.map(item => (
-              <Link
-                to={"/groups/$groupId"}
-                params={{ groupId: item._id }}
-                key={item._id}
-              >
+              <div>
+                <Link
+                  to={"/groups/$groupId"}
+                  params={{ groupId: item._id }}
+                  key={item._id}
+                ></Link>
                 <GroupCard
+                  href="/groups/$groupId"
                   name={item.name}
                   description={item.description}
                   usersAmount={item.users.length ? item.users.length : 0}
                   listsAmount={item.lists.length ? item.lists.length : 0}
                   groupId={item._id}
                 />
-              </Link>
+              </div>
             ))}
           </CardsContainer>
         ) : (

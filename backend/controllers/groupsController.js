@@ -1,10 +1,19 @@
-const { Group, List } = require("../models");
+const { GroupUser, Group, List, User } = require("../models");
 
 // GET
-const getAvaibleGroups = async (req, res, next) => {
+const getAvailableGroups = async (req, res, next) => {
   const { userId } = req.query;
   try {
-    const groups = await Group.find({ users: userId });
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const activeGroups = user.groups;
+
+    const groups = await Group.find({
+      _id: { $in: activeGroups },
+    });
+
     return res.status(200).json(groups);
   } catch (error) {
     console.log(error);
@@ -46,9 +55,14 @@ const getSingleList = async (req, res, next) => {
 const createNewGroup = async (req, res, next) => {
   const { name, userId } = req.body;
   try {
+    const admin = new GroupUser({
+      id: userId,
+      status: "active",
+      role: "admin",
+    });
     const group = new Group({
       name: name,
-      users: [userId],
+      users: [admin],
     });
     await group.save();
     return res
@@ -102,6 +116,50 @@ const createNewProduct = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });
+  }
+};
+const inviteUser = async (req, res) => {
+  const { groupId } = req.params;
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email: email });
+    const group = await Group.findOne({ _id: groupId });
+
+    if (!user) {
+      return res.status(404).json({ error: "E-mail not found in database" });
+    }
+    if (
+      group.users.some(
+        groupUser =>
+          groupUser._id === user._id.toString() &&
+          groupUser.status === "invited"
+      )
+    ) {
+      return res.status(404).json({ error: "User is already invited" });
+    }
+    if (
+      group.users.some(
+        groupUser =>
+          groupUser._id === user._id.toString() && groupUser.status === "active"
+      )
+    ) {
+      return res.status(404).json({ error: "User is already member of group" });
+    }
+
+    user.groupInvitations.push(groupId);
+    await user.save();
+
+    const invitedUser = new GroupUser({
+      _id: user._id,
+      status: "invited",
+    });
+    group.users.push(invitedUser);
+    await group.save();
+
+    return res.status(200).json({ message: "Invitation sent successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to send invitation" });
   }
 };
 
@@ -224,7 +282,7 @@ const deleteProduct = async (req, res) => {
 
 module.exports = {
   getGroupLists,
-  getAvaibleGroups,
+  getAvailableGroups,
   getSingleList,
   createNewList,
   deleteGroup,
@@ -235,4 +293,5 @@ module.exports = {
   createNewProduct,
   createNewGroup,
   createNewGroup,
+  inviteUser,
 };

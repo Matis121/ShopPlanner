@@ -3,7 +3,7 @@ const express = require("express");
 const groupsRouter = express.Router();
 
 // GET
-groupsRouter.get("/groups", controller.getAvaibleGroups);
+groupsRouter.get("/groups", controller.getAvailableGroups);
 groupsRouter.get("/groups/:groupId/lists", controller.getGroupLists);
 groupsRouter.get("/groups/:groupId/lists/:listId", controller.getSingleList);
 
@@ -17,6 +17,11 @@ groupsRouter.post(
   "/groups/:groupId/lists/:listId/products/add-proposal",
   controller.createNewProduct
 );
+groupsRouter.post(
+  "/groups/:groupId/lists/:listId/products/add-proposal",
+  controller.createNewProduct
+);
+groupsRouter.post("/groups/:groupId/invite-user", controller.inviteUser);
 
 // UPDATE
 groupsRouter.put(

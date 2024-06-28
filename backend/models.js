@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema({
     type: Array,
     required: false,
   },
+  groupInvitations: {
+    type: Array,
+    required: false,
+  },
   createdAt: {
     type: Date,
     immutable: true,
@@ -59,6 +63,23 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: () => Date.now(),
+  },
+});
+
+const groupUserSchema = new mongoose.Schema({
+  _id: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["invited", "active"],
+    required: true,
+  },
+  role: {
+    type: String,
+    default: "user",
+    required: true,
   },
 });
 
@@ -76,12 +97,13 @@ const groupSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now(),
   },
-  users: Array,
+  users: [groupUserSchema],
   lists: [listSchema],
 });
 
 const Group = mongoose.model("Group", groupSchema);
 const User = mongoose.model("User", userSchema);
 const List = mongoose.model("List", listSchema);
+const GroupUser = mongoose.model("GroupUser", groupUserSchema);
 
-module.exports = { Group, User, List };
+module.exports = { GroupUser, Group, User, List };
