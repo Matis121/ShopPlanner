@@ -222,6 +222,30 @@ export async function inviteUser({ email, groupId }) {
     return { success: false, message: error.response.data.error };
   }
 }
+export async function rejectGroupInvitation({ groupId }) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/user/group-invitation/reject`,
+      { groupId, userId }
+    );
+    let data = response.data;
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, message: error.response.data.error };
+  }
+}
+export async function confirmGroupInvitation({ groupId }) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/user/group-invitation/confirm`,
+      { groupId, userId }
+    );
+    let data = response.data;
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, message: error.response.data.error };
+  }
+}
 
 // update
 export async function updateListInGroup({

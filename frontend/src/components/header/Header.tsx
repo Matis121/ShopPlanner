@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LuListChecks, LuUsers } from "react-icons/lu";
 import ToggleTheme from "./ToggleTheme";
+import Notifications from "./notifications/Notifications";
 
 const Header = () => {
   const isActiveElement = () => {
@@ -44,6 +45,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="flex items-center ml-auto gap-4">
+        <Notifications />
         <ToggleTheme />
         <Avatar className="cursor-pointer">
           <AvatarImage src="https://github.com/shadcn.png" />
