@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import emptyState from "../assets/empty-state.svg";
-import { Button } from "@/components/ui/button";
 
 type EmptyContentProps = {
   paragraph: string;

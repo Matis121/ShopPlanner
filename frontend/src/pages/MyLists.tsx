@@ -4,11 +4,9 @@ import ContentTitle from "@/components/ContentTitle";
 import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/components/CardsContainer";
 import { Key, useEffect, useState } from "react";
-
 import { Input } from "@/components/ui/input";
 import AddNewList from "../components/lists/AddNewList";
 import { Link } from "@tanstack/react-router";
-
 import { useQuery } from "@tanstack/react-query";
 import { deleteList, getAllLists } from "@/api/User";
 
