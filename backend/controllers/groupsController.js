@@ -55,8 +55,12 @@ const getSingleList = async (req, res, next) => {
 const createNewGroup = async (req, res, next) => {
   const { name, userId } = req.body;
   try {
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     const admin = new GroupUser({
-      id: userId,
+      _id: userId,
       status: "active",
       role: "admin",
     });
@@ -65,6 +69,9 @@ const createNewGroup = async (req, res, next) => {
       users: [admin],
     });
     await group.save();
+
+    user.groups.push(group._id.toString());
+    await user.save();
     return res
       .status(200)
       .json({ message: "Group added successfully", group: group });
@@ -236,6 +243,8 @@ const deleteGroup = async (req, res) => {
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
+
+    await User.updateMany({ groups: groupId }, { $pull: { groups: groupId } });
 
     res.status(200).json({ message: "Group deleted successfully" });
   } catch (error) {
