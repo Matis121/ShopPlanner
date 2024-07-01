@@ -6,25 +6,20 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
-import { CreateNewGroup } from "@/api/User";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { inviteUser } from "@/api/User";
 
-const InviteUser = ({ isOpen, setIsOpen }) => {
-  const queryClient = useQueryClient();
-
-  const [open, setOpen] = useState(false);
+const InviteUser = ({ isOpen, setIsOpen, groupId }) => {
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (open === false) {
+    if (isOpen === false) {
       reset();
     }
-  }, [open]);
+  }, [isOpen]);
 
   const {
     register,
@@ -33,19 +28,15 @@ const InviteUser = ({ isOpen, setIsOpen }) => {
     reset,
   } = useForm();
 
-  const createListMutation = useMutation({
-    mutationFn: CreateNewGroup,
-    onError: error => {
-      console.error("Error adding new list:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["groups"] });
-      setOpen(false);
-    },
-  });
-
   const onSubmit = async (data: FieldValues) => {
-    createListMutation.mutate(data);
+    try {
+      const result = await inviteUser({ email: data.email, groupId: groupId });
+      if (!result.success) {
+        setError(result.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -61,7 +52,7 @@ const InviteUser = ({ isOpen, setIsOpen }) => {
                 E-mail:
               </Label>
               <Input
-                {...register("name", {
+                {...register("email", {
                   required: "Name is required",
                   maxLength: {
                     value: 30,
@@ -74,6 +65,7 @@ const InviteUser = ({ isOpen, setIsOpen }) => {
             {errors.name && (
               <p className="text-red-500 text-sm grid-cols-4 text-end">{`${errors.name.message}`}</p>
             )}
+            <p className="text-red-500 text-sm grid-cols-4 text-end">{`${error}`}</p>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>

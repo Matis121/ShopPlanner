@@ -45,7 +45,11 @@ const GroupCard = ({
 
   return (
     <>
-      <InviteUser isOpen={isInviteOpen} setIsOpen={setIsInviteOpen} />
+      <InviteUser
+        groupId={groupId}
+        isOpen={isInviteOpen}
+        setIsOpen={setIsInviteOpen}
+      />
       <div className=" relative rounded-lg border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer hover:border-blue-500 hover:dark:border-blue-500">
         <Link to={"/groups/$groupId"} params={{ groupId }} key={groupId}>
           <div className="p-6 flex flex-col items-start relative">
