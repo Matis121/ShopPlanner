@@ -38,6 +38,18 @@ export async function loginUser({ email, password }) {
   }
 }
 
+export async function getGroupInvitations({ userId }) {
+  try {
+    let response = await axios.post(
+      `${import.meta.env.VITE_SERVER_URL}/user/${userId}/group-invitations`
+    );
+    let data = response.data;
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // ! LISTS FUNCTIONS
 
 // get

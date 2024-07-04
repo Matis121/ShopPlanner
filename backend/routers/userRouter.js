@@ -13,5 +13,9 @@ userRouter.post(
   "/user/group-invitation/reject",
   userController.rejectGroupInvitation
 );
+userRouter.get(
+  "/user/:userId/group-invitations",
+  userController.getGroupInvitations
+);
 
 module.exports = userRouter;

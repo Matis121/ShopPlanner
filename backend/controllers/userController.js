@@ -64,6 +64,20 @@ const login = async (req, res, next) => {
     return res.json({ error: "Login failed", details: error.message });
   }
 };
+const getGroupInvitations = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ error: "User not found in database" });
+    }
+    return res.status(200).json(user.groupInvitations);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to fetch invitations" });
+  }
+};
 const confirmGroupInvitation = async (req, res) => {
   const { groupId, userId } = req.body;
   try {
@@ -149,4 +163,5 @@ module.exports = {
   login,
   confirmGroupInvitation,
   rejectGroupInvitation,
+  getGroupInvitations,
 };
