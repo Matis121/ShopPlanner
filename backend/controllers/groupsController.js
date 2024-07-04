@@ -153,7 +153,10 @@ const inviteUser = async (req, res) => {
       return res.status(404).json({ error: "User is already member of group" });
     }
 
-    user.groupInvitations.push(groupId);
+    user.groupInvitations.push({
+      groupId: groupId,
+      groupName: group.name,
+    });
     await user.save();
 
     const invitedUser = new GroupUser({

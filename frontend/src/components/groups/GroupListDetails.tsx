@@ -20,7 +20,6 @@ const GroupListDetails = () => {
   const navigate = useNavigate();
 
   const listUrl = useParams({ from: "/groups/$groupId/list/$listId" });
-  console.log(listUrl);
 
   const [cardValues, setCardValues] = useState({ name: "", desc: "" });
   const [fetchedCardValues, setFetchedCardValues] = useState({

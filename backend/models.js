@@ -30,6 +30,17 @@ const listSchema = new mongoose.Schema({
   productList: [productSchema],
 });
 
+const groupInvitationSchema = new mongoose.Schema({
+  groupId: {
+    type: String,
+    required: true,
+  },
+  groupName: {
+    type: String,
+    required: true,
+  },
+});
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -52,7 +63,7 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
   groupInvitations: {
-    type: Array,
+    type: [groupInvitationSchema],
     required: false,
   },
   createdAt: {

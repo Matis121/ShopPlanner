@@ -38,9 +38,9 @@ export async function loginUser({ email, password }) {
   }
 }
 
-export async function getGroupInvitations({ userId }) {
+export async function getGroupInvitations() {
   try {
-    let response = await axios.post(
+    let response = await axios.get(
       `${import.meta.env.VITE_SERVER_URL}/user/${userId}/group-invitations`
     );
     let data = response.data;
@@ -179,7 +179,6 @@ export async function getGroupLists(groupId) {
   return data;
 }
 export async function getSingleListInGroup({ listId, groupId }) {
-  console.log({ listId, groupId });
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}`
   );

@@ -34,6 +34,7 @@ const InviteUser = ({ isOpen, setIsOpen, groupId }) => {
       if (!result.success) {
         setError(result.message);
       }
+      setIsOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -69,7 +70,7 @@ const InviteUser = ({ isOpen, setIsOpen, groupId }) => {
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
-              Send request
+              {isSubmitting ? "Loading..." : "Send request"}
             </Button>
           </DialogFooter>
         </form>

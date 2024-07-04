@@ -80,6 +80,7 @@ const getGroupInvitations = async (req, res) => {
 };
 const confirmGroupInvitation = async (req, res) => {
   const { groupId, userId } = req.body;
+  console.log(req.body);
   try {
     const user = await User.findOne({ _id: userId });
     const group = await Group.findOne({ _id: groupId });
@@ -90,7 +91,9 @@ const confirmGroupInvitation = async (req, res) => {
     if (!group) {
       return res.status(404).json({ error: "Group not found in database" });
     }
-    if (!user.groupInvitations.includes(groupId.toString())) {
+    if (
+      !user.groupInvitations.some(invitation => invitation.groupId === groupId)
+    ) {
       return res
         .status(400)
         .json({ error: "Group invitation not found for this user" });
@@ -108,7 +111,7 @@ const confirmGroupInvitation = async (req, res) => {
     await group.save();
 
     user.groupInvitations = user.groupInvitations.filter(
-      invitation => invitation.toString() !== groupId
+      invitation => invitation.groupId.toString() !== groupId
     );
     user.groups.push(groupId);
     await user.save();
@@ -132,7 +135,9 @@ const rejectGroupInvitation = async (req, res) => {
     if (!group) {
       return res.status(404).json({ error: "Group not found in database" });
     }
-    if (!user.groupInvitations.includes(groupId.toString())) {
+    if (
+      !user.groupInvitations.some(invitation => invitation.groupId === groupId)
+    ) {
       return res
         .status(400)
         .json({ error: "Group invitation not found for this user" });
@@ -140,7 +145,7 @@ const rejectGroupInvitation = async (req, res) => {
 
     // Remove the invitation from the user's groupInvitations array
     user.groupInvitations = user.groupInvitations.filter(
-      invitation => invitation.toString() !== groupId
+      invitation => invitation.groupId.toString() !== groupId
     );
     await user.save();
 
