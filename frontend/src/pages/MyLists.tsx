@@ -9,6 +9,7 @@ import AddNewList from "../components/lists/AddNewList";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { deleteList, getAllLists } from "@/api/User";
+import { useLists } from "@/hooks/useLists";
 
 const MyLists = () => {
   type ListItem = {
@@ -23,38 +24,8 @@ const MyLists = () => {
     queryFn: getAllLists,
   });
 
-  // NOT USED AT THIS MOMENT
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const collectedItems = (arrayOfItems: any[]) => {
-    let collectedItemsAmount = 0;
-    arrayOfItems.map(item => {
-      if (item.isCollected) {
-        collectedItemsAmount++;
-      }
-    });
-    return collectedItemsAmount;
-  };
-
-  useEffect(() => {
-    if (isFetched) {
-      setFilteredData(data);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if (isFetched) {
-      const filtered = data.filter(item =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredData(filtered);
-    }
-  }, [searchQuery]);
+  const { searchQuery, filteredData, handleSearchChange, collectedItems } =
+    useLists(data, isFetched);
 
   return (
     <DefaultLayout>

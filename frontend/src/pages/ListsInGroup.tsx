@@ -8,24 +8,25 @@ import { useQuery } from "@tanstack/react-query";
 import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/components/CardsContainer";
 import AddListInGroup from "@/components/groups/AddListInGroup";
+import { useLists } from "@/hooks/useLists";
+import { Key, useEffect, useState } from "react";
 
 const ListsInGroup = ({ groupId }) => {
+  type ListItem = {
+    _id: Key;
+    name: string;
+    description?: string; // Optional property
+    productList: any[];
+  };
+
   // fetch data
   const { data, isFetched } = useQuery({
     queryKey: ["groupLists", groupId],
     queryFn: () => getGroupLists(groupId),
   });
 
-  // collected items
-  const collectedItems = (arrayOfItems: any[]) => {
-    let collectedItemsAmount = 0;
-    arrayOfItems.map(item => {
-      if (item.isCollected) {
-        collectedItemsAmount++;
-      }
-    });
-    return collectedItemsAmount;
-  };
+  const { searchQuery, filteredData, handleSearchChange, collectedItems } =
+    useLists(data?.listsInGroup, isFetched);
 
   return (
     <DefaultLayout>
@@ -38,14 +39,16 @@ const ListsInGroup = ({ groupId }) => {
             <Input
               type="text"
               placeholder="Search list..."
-              className="w-full xl:w-[500px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
+              className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
             <AddListInGroup buttonValue="Add new list" groupId={groupId} />
           </>
         </ContentTitle>
-        {isFetched && data.listsInGroup.length > 0 ? (
+        {isFetched && data && data.listsInGroup.length > 0 ? (
           <CardsContainer contentType="lists">
-            {data.listsInGroup.map(item => (
+            {filteredData.map((item: ListItem) => (
               <Link
                 to={"/groups/$groupId/list/$listId"}
                 params={{ listId: `${item._id}` }}
