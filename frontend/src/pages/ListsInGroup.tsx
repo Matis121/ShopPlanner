@@ -9,7 +9,8 @@ import ListCard from "@/components/lists/ListCard";
 import CardsContainer from "@/components/CardsContainer";
 import AddListInGroup from "@/components/groups/AddListInGroup";
 import { useLists } from "@/hooks/useLists";
-import { Key, useEffect, useState } from "react";
+import { useFilterData } from "@/hooks/useFilterData";
+import { Key } from "react";
 
 const ListsInGroup = ({ groupId }) => {
   type ListItem = {
@@ -25,8 +26,12 @@ const ListsInGroup = ({ groupId }) => {
     queryFn: () => getGroupLists(groupId),
   });
 
-  const { searchQuery, filteredData, handleSearchChange, collectedItems } =
-    useLists(data?.listsInGroup, isFetched);
+  const { collectedItems } = useLists();
+
+  const { filteredData, handleSearchChange } = useFilterData(
+    data?.listsInGroup,
+    isFetched
+  );
 
   return (
     <DefaultLayout>
@@ -40,7 +45,6 @@ const ListsInGroup = ({ groupId }) => {
               type="text"
               placeholder="Search list..."
               className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
-              value={searchQuery}
               onChange={handleSearchChange}
             />
             <AddListInGroup buttonValue="Add new list" groupId={groupId} />

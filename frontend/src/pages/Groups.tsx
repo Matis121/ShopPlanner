@@ -8,12 +8,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllGroups } from "@/api/User";
 import { Link } from "@tanstack/react-router";
 import AddNewGroup from "@/components/groups/AddNewGroup";
+import { useFilterData } from "@/hooks/useFilterData";
 
 const Groups = () => {
   const { data, isFetched } = useQuery({
     queryKey: ["groups"],
     queryFn: getAllGroups,
   });
+
+  const { filteredData, handleSearchChange } = useFilterData(data, isFetched);
+
   return (
     <DefaultLayout>
       <>
@@ -23,13 +27,14 @@ const Groups = () => {
               type="text"
               placeholder="Search group..."
               className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
+              onChange={handleSearchChange}
             />
             <AddNewGroup buttonValue="Add new group" />
           </>
         </ContentTitle>
         {isFetched && data.length > 0 ? (
           <CardsContainer contentType="groups">
-            {data.map(item => (
+            {filteredData.map(item => (
               <div key={item._id}>
                 <Link
                   to={"/groups/$groupId"}

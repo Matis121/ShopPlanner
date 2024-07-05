@@ -10,6 +10,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { deleteList, getAllLists } from "@/api/User";
 import { useLists } from "@/hooks/useLists";
+import { useFilterData } from "@/hooks/useFilterData";
 
 const MyLists = () => {
   type ListItem = {
@@ -24,8 +25,8 @@ const MyLists = () => {
     queryFn: getAllLists,
   });
 
-  const { searchQuery, filteredData, handleSearchChange, collectedItems } =
-    useLists(data, isFetched);
+  const { collectedItems } = useLists();
+  const { filteredData, handleSearchChange } = useFilterData(data, isFetched);
 
   return (
     <DefaultLayout>
@@ -36,7 +37,6 @@ const MyLists = () => {
               type="text"
               placeholder="Search list..."
               className="w-full xl:w-[600px] absolute left-1/2 -translate-x-1/2 top-24 xl:top-auto"
-              value={searchQuery}
               onChange={handleSearchChange}
             />
             <AddNewList buttonValue="Add new list" />
