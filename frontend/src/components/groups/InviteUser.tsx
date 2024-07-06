@@ -15,12 +15,6 @@ import { inviteUser } from "@/api/User";
 const InviteUser = ({ isOpen, setIsOpen, groupId }) => {
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (isOpen === false) {
-      reset();
-    }
-  }, [isOpen]);
-
   const {
     register,
     handleSubmit,
@@ -28,11 +22,19 @@ const InviteUser = ({ isOpen, setIsOpen, groupId }) => {
     reset,
   } = useForm();
 
+  useEffect(() => {
+    if (isOpen === false) {
+      setError("");
+      reset();
+    }
+  }, [isOpen]);
+
   const onSubmit = async (data: FieldValues) => {
     try {
       const result = await inviteUser({ email: data.email, groupId: groupId });
       if (!result.success) {
         setError(result.message);
+        return;
       }
       setIsOpen(false);
     } catch (error) {
