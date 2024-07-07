@@ -73,6 +73,7 @@ const Register = () => {
           {...register("password")}
           placeholder="Password"
           className="w-80"
+          type="password"
         />
         {errors.password && (
           <p className="text-sm text-muted-foreground -mt-3 text-red-500">
@@ -83,6 +84,7 @@ const Register = () => {
           {...register("confirmPassword")}
           placeholder="Confirm Password"
           className="w-80"
+          type="password"
         />
         {errors.confirmPassword && (
           <p className="text-sm text-muted-foreground -mt-3 text-red-500">

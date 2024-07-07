@@ -30,7 +30,6 @@ const Login = () => {
       });
       if (!usersettings.success) {
         setError(usersettings.message);
-        return;
       }
       if (usersettings.token) {
         auth(usersettings.token);
@@ -58,6 +57,7 @@ const Login = () => {
           {...register("password")}
           placeholder="Password"
           className="w-80"
+          type="password"
         />
         {errors.password && (
           <p className="text-sm text-muted-foreground -mt-3 text-red-500">

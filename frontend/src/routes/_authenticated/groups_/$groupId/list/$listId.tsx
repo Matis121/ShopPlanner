@@ -3,7 +3,7 @@ import ListsInGroup from "@/pages/ListsInGroup";
 import { createFileRoute } from "@tanstack/react-router";
 import GroupListDetails from "@/components/groups/GroupListDetails";
 
-export const Route = createFileRoute("/groups/$groupId/list/$listId")({
+export const Route = createFileRoute("/_authenticated/groups/$groupId/list/$listId")({
   component: () => {
     const { groupId } = useParams({ from: "/groups/$groupId/list/$listId" });
     return (

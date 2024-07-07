@@ -13,12 +13,13 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
-import { Route as IndexImport } from './routes/index'
-import { Route as MylistsIndexImport } from './routes/mylists/index'
-import { Route as GroupsIndexImport } from './routes/groups/index'
-import { Route as MylistsIdImport } from './routes/mylists/$id'
-import { Route as GroupsGroupIdImport } from './routes/groups/$groupId'
-import { Route as GroupsGroupIdListListIdImport } from './routes/groups_/$groupId/list/$listId'
+import { Route as AuthenticatedImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedMylistsIndexImport } from './routes/_authenticated/mylists/index'
+import { Route as AuthenticatedGroupsIndexImport } from './routes/_authenticated/groups/index'
+import { Route as AuthenticatedMylistsIdImport } from './routes/_authenticated/mylists/$id'
+import { Route as AuthenticatedGroupsGroupIdImport } from './routes/_authenticated/groups/$groupId'
+import { Route as AuthenticatedGroupsGroupIdListListIdImport } from './routes/_authenticated/groups_/$groupId/list/$listId'
 
 // Create/Update Routes
 
@@ -32,42 +33,50 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const AuthenticatedRoute = AuthenticatedImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const MylistsIndexRoute = MylistsIndexImport.update({
+const AuthenticatedMylistsIndexRoute = AuthenticatedMylistsIndexImport.update({
   path: '/mylists/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const GroupsIndexRoute = GroupsIndexImport.update({
+const AuthenticatedGroupsIndexRoute = AuthenticatedGroupsIndexImport.update({
   path: '/groups/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const MylistsIdRoute = MylistsIdImport.update({
+const AuthenticatedMylistsIdRoute = AuthenticatedMylistsIdImport.update({
   path: '/mylists/$id',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const GroupsGroupIdRoute = GroupsGroupIdImport.update({
-  path: '/groups/$groupId',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticatedGroupsGroupIdRoute = AuthenticatedGroupsGroupIdImport.update(
+  {
+    path: '/groups/$groupId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
 
-const GroupsGroupIdListListIdRoute = GroupsGroupIdListListIdImport.update({
-  path: '/groups/$groupId/list/$listId',
-  getParentRoute: () => rootRoute,
-} as any)
+const AuthenticatedGroupsGroupIdListListIdRoute =
+  AuthenticatedGroupsGroupIdListListIdImport.update({
+    path: '/groups/$groupId/list/$listId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      preLoaderRoute: typeof IndexImport
+    '/_authenticated': {
+      preLoaderRoute: typeof AuthenticatedImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -78,25 +87,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
-    '/groups/$groupId': {
-      preLoaderRoute: typeof GroupsGroupIdImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/': {
+      preLoaderRoute: typeof AuthenticatedIndexImport
+      parentRoute: typeof AuthenticatedImport
     }
-    '/mylists/$id': {
-      preLoaderRoute: typeof MylistsIdImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/groups/$groupId': {
+      preLoaderRoute: typeof AuthenticatedGroupsGroupIdImport
+      parentRoute: typeof AuthenticatedImport
     }
-    '/groups/': {
-      preLoaderRoute: typeof GroupsIndexImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/mylists/$id': {
+      preLoaderRoute: typeof AuthenticatedMylistsIdImport
+      parentRoute: typeof AuthenticatedImport
     }
-    '/mylists/': {
-      preLoaderRoute: typeof MylistsIndexImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/groups/': {
+      preLoaderRoute: typeof AuthenticatedGroupsIndexImport
+      parentRoute: typeof AuthenticatedImport
     }
-    '/groups/$groupId/list/$listId': {
-      preLoaderRoute: typeof GroupsGroupIdListListIdImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/mylists/': {
+      preLoaderRoute: typeof AuthenticatedMylistsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/groups/$groupId/list/$listId': {
+      preLoaderRoute: typeof AuthenticatedGroupsGroupIdListListIdImport
+      parentRoute: typeof AuthenticatedImport
     }
   }
 }
@@ -104,14 +117,16 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  IndexRoute,
+  AuthenticatedRoute.addChildren([
+    AuthenticatedIndexRoute,
+    AuthenticatedGroupsGroupIdRoute,
+    AuthenticatedMylistsIdRoute,
+    AuthenticatedGroupsIndexRoute,
+    AuthenticatedMylistsIndexRoute,
+    AuthenticatedGroupsGroupIdListListIdRoute,
+  ]),
   LoginRoute,
   RegisterRoute,
-  GroupsGroupIdRoute,
-  MylistsIdRoute,
-  GroupsIndexRoute,
-  MylistsIndexRoute,
-  GroupsGroupIdListListIdRoute,
 ])
 
 /* prettier-ignore-end */

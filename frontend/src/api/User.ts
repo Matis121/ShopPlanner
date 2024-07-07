@@ -14,6 +14,7 @@ export async function registerUser({ username, email, password }) {
       }
     );
     let data = response.data;
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error logging in:", error);
@@ -31,6 +32,7 @@ export async function loginUser({ email, password }) {
       }
     );
     let data = response.data;
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error logging in:", error);
