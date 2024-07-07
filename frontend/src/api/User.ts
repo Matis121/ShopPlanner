@@ -14,7 +14,7 @@ export async function registerUser({ username, email, password }) {
       }
     );
     let data = response.data;
-    return console.log(data);
+    return data;
   } catch (error) {
     console.error("Error logging in:", error);
     throw error;

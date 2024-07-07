@@ -13,7 +13,7 @@ const register = async (req, res, next) => {
       return res.json({ error: "Username is already taken" });
     }
     if (emailExists) {
-      return res.json({ error: "Username is already taken" });
+      return res.json({ error: "E-mail is already taken" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,7 +44,7 @@ const login = async (req, res, next) => {
     const user = await User.findOne({ email }).lean();
 
     if (!user) {
-      return res.json({ message: "Invalid email" });
+      return res.json({ message: "E-mail not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
