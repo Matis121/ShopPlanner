@@ -6,8 +6,10 @@ import { auth } from "@/utils/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const loginSchema = z.object({
@@ -33,6 +35,7 @@ const Login = () => {
       }
       if (usersettings.token) {
         auth(usersettings.token);
+        navigate({ to: "/" });
         return;
       }
     } catch (error) {

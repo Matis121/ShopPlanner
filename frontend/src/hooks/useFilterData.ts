@@ -6,7 +6,6 @@ export function useFilterData(data, isFetched) {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    console.log(searchQuery);
   };
 
   useEffect(() => {

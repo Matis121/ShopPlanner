@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LuListChecks, LuUsers } from "react-icons/lu";
 import ToggleTheme from "./ToggleTheme";
@@ -6,10 +6,17 @@ import Notifications from "./notifications/Notifications";
 import { logout } from "@/utils/auth";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   const isActiveElement = () => {
     return (
       <span className="absolute -bottom-[11.5px] -left-2 bg-blue-500 dark:bg-white w-[calc(100%+3px)] h-2 rounded-md"></span>
     );
+  };
+
+  const logoutWithRedirect = () => {
+    logout();
+    navigate({ to: "/login" });
   };
 
   return (
@@ -48,7 +55,7 @@ const Header = () => {
       <div className="flex items-center ml-auto gap-4">
         <Notifications />
         <ToggleTheme />
-        <Avatar onClick={logout} className="cursor-pointer">
+        <Avatar onClick={logoutWithRedirect} className="cursor-pointer">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
