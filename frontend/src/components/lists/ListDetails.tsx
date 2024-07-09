@@ -16,7 +16,7 @@ const ProductList = () => {
 
   const navigate = useNavigate();
 
-  const listUrl = useParams({ from: "/mylists/$id" });
+  const listUrl = useParams({ from: "/_authenticated/mylists/$id" });
 
   const [cardValues, setCardValues] = useState({ name: "", desc: "" });
   const [fetchedCardValues, setFetchedCardValues] = useState({

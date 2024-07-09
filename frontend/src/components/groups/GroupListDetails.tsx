@@ -19,7 +19,9 @@ const GroupListDetails = () => {
 
   const navigate = useNavigate();
 
-  const listUrl = useParams({ from: "/groups/$groupId/list/$listId" });
+  const listUrl = useParams({
+    from: "/_authenticated/groups/$groupId/list/$listId",
+  });
 
   const [cardValues, setCardValues] = useState({ name: "", desc: "" });
   const [fetchedCardValues, setFetchedCardValues] = useState({

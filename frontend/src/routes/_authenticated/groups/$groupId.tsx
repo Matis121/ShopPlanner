@@ -4,7 +4,7 @@ import ListsInGroup from "@/pages/ListsInGroup";
 
 export const Route = createFileRoute("/_authenticated/groups/$groupId")({
   component: () => {
-    const { groupId } = useParams({ from: "/groups/$groupId" });
+    const { groupId } = useParams({ from: "/_authenticated/groups/$groupId" });
     return <ListsInGroup groupId={groupId} />;
   },
 });
