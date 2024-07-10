@@ -3,7 +3,15 @@ import { Button } from "@/components/ui/button";
 import { rejectGroupInvitation, confirmGroupInvitation } from "@/api/User";
 import { useQueryClient } from "@tanstack/react-query";
 
-const GroupInvitations = ({ groupId, groupName }) => {
+type GroupInvitationsProps = {
+  groupId: number;
+  groupName: string;
+};
+
+const GroupInvitations: React.FC<GroupInvitationsProps> = ({
+  groupId,
+  groupName,
+}) => {
   const queryClient = useQueryClient();
 
   const confirmInvite = async () => {

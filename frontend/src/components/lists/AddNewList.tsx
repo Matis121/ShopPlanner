@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +16,11 @@ import { Textarea } from "../ui/textarea";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createNewList } from "@/api/User";
 
-const AddNewList = ({ buttonValue }) => {
+type AddNewListProps = {
+  buttonValue: string;
+};
+
+const AddNewList: React.FC<AddNewListProps> = ({ buttonValue }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);

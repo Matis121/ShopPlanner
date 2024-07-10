@@ -15,7 +15,11 @@ import { FieldValues, useForm } from "react-hook-form";
 import { CreateNewGroup } from "@/api/User";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-const AddNewGroup = ({ buttonValue }) => {
+type AddNewGroupProps = {
+  buttonValue: string;
+};
+
+const AddNewGroup: React.FC<AddNewGroupProps> = ({ buttonValue }) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);
@@ -45,7 +49,7 @@ const AddNewGroup = ({ buttonValue }) => {
   });
 
   const onSubmit = async (data: FieldValues) => {
-    createListMutation.mutate(data);
+    createListMutation.mutate({ name: data.name });
   };
 
   return (

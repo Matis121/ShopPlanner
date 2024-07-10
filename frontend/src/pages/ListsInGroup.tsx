@@ -10,16 +10,19 @@ import CardsContainer from "@/components/CardsContainer";
 import AddListInGroup from "@/components/groups/AddListInGroup";
 import { useLists } from "@/hooks/useLists";
 import { useFilterData } from "@/hooks/useFilterData";
-import { Key } from "react";
 
-const ListsInGroup = ({ groupId }) => {
-  type ListItem = {
-    _id: Key;
-    name: string;
-    description?: string; // Optional property
-    productList: any[];
-  };
+type ListItem = {
+  _id: number;
+  name: string;
+  description?: string; // Optional property
+  productList: any[];
+};
 
+type ListsInGroupProps = {
+  groupId: number;
+};
+
+const ListsInGroup: React.FC<ListsInGroupProps> = ({ groupId }) => {
   // fetch data
   const { data, isFetched } = useQuery({
     queryKey: ["groupLists", groupId],
@@ -55,7 +58,7 @@ const ListsInGroup = ({ groupId }) => {
             {filteredData.map((item: ListItem) => (
               <Link
                 to={"/groups/$groupId/list/$listId"}
-                params={{ listId: `${item._id}` }}
+                params={{ groupId: `${groupId}`, listId: `${item._id}` }}
                 key={item._id}
               >
                 <ListCard

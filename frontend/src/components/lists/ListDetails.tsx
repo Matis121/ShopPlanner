@@ -11,6 +11,11 @@ import { useParams } from "@tanstack/react-router";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { addNewProduct } from "@/api/User";
 
+type Item = {
+  id: number;
+  isCollected: boolean;
+};
+
 const ProductList = () => {
   const queryClient = useQueryClient();
 
@@ -23,7 +28,7 @@ const ProductList = () => {
     name: "",
     desc: "",
   });
-  const [itemsList, setItemsList] = useState([]);
+  const [itemsList, setItemsList] = useState<Item[]>([]);
   const [newItemValue, setNewItemValue] = useState("");
   const [enableEditButton, setEnableEditButton] = useState(false);
 
@@ -119,8 +124,9 @@ const ProductList = () => {
         collectedItemsAmount++;
       }
     });
-    percentOfCollectedItems =
-      ((collectedItemsAmount / itemsAmount) * 100).toFixed(0) | 0;
+    percentOfCollectedItems = parseFloat(
+      ((collectedItemsAmount / itemsAmount) * 100).toFixed(0)
+    );
   };
   checkAmountOfCollectedItems();
 
@@ -154,9 +160,9 @@ const ProductList = () => {
           Save
         </Button>
         <ProgressBar
-          progressBarPercent={percentOfCollectedItems}
           itemsAmount={itemsAmount}
           collectedItemsAmount={collectedItemsAmount}
+          progressBarPercent={percentOfCollectedItems}
         />
         <Input
           placeholder="Add new product..."

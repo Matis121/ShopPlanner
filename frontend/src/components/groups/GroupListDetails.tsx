@@ -14,6 +14,11 @@ import {
 import { useParams } from "@tanstack/react-router";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
+type Item = {
+  id: number;
+  isCollected: boolean;
+};
+
 const GroupListDetails = () => {
   const queryClient = useQueryClient();
 
@@ -28,7 +33,7 @@ const GroupListDetails = () => {
     name: "",
     desc: "",
   });
-  const [itemsList, setItemsList] = useState([]);
+  const [itemsList, setItemsList] = useState<Item[]>([]);
   const [newItemValue, setNewItemValue] = useState("");
   const [enableEditButton, setEnableEditButton] = useState(false);
 
@@ -46,6 +51,7 @@ const GroupListDetails = () => {
       setCardValues({ name: data.name, desc: data.description });
       setFetchedCardValues({ name: data.name, desc: data.description });
       setItemsList(data.productList);
+      console.log(data.productList);
     }
   }, [isFetched, data]);
 
@@ -63,11 +69,14 @@ const GroupListDetails = () => {
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (event.target === event.currentTarget) {
-      navigate({ to: "/groups/$groupId" });
+      navigate({
+        to: "/groups/$groupId",
+        params: { groupId: listUrl.groupId },
+      });
     }
   };
   const handleExit = () => {
-    navigate({ to: "/groups/$groupId" });
+    navigate({ to: "/groups/$groupId", params: { groupId: listUrl.groupId } });
   };
 
   // MUTATION
@@ -134,8 +143,9 @@ const GroupListDetails = () => {
         collectedItemsAmount++;
       }
     });
-    percentOfCollectedItems =
-      ((collectedItemsAmount / itemsAmount) * 100).toFixed(0) | 0;
+    percentOfCollectedItems = parseFloat(
+      ((collectedItemsAmount / itemsAmount) * 100).toFixed(0)
+    );
   };
   checkAmountOfCollectedItems();
 

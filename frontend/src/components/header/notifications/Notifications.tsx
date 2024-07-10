@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { LuBell } from "react-icons/lu";
 import {
   DropdownMenu,
@@ -7,6 +6,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import GroupInvitations from "./GroupInvitations";
 import { useGroupInvitations } from "@/hooks/useGroupInvitations";
+
+type GroupInvitation = {
+  id: number;
+  groupId: number;
+  groupName: string;
+};
 
 const Notifications = () => {
   const { data } = useGroupInvitations();
@@ -24,7 +29,7 @@ const Notifications = () => {
       <DropdownMenuContent>
         <div className="flex items-center flex-col gap-4 p-1">
           {data && data.length > 0 ? (
-            data.map(element => (
+            (data as GroupInvitation[]).map(element => (
               <GroupInvitations
                 key={element.id}
                 groupId={element.groupId}

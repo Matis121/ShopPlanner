@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,7 +16,15 @@ import { Textarea } from "../ui/textarea";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createNewListInGroup } from "@/api/User";
 
-const AddListInGroup = ({ buttonValue, groupId }) => {
+type AddListInGroupProps = {
+  buttonValue: string;
+  groupId: number;
+};
+
+const AddListInGroup: React.FC<AddListInGroupProps> = ({
+  buttonValue,
+  groupId,
+}) => {
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState(false);

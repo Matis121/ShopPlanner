@@ -1,3 +1,4 @@
+import React, { Key } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,7 +19,7 @@ type CardProps = {
   collectedItemsAmount: number;
   mutationFn: (variables: any) => Promise<any>; // Generic mutation function type
   queryKeyProp: "list" | "group";
-  groupId?: string;
+  groupId?: number;
 };
 
 const ListCard: React.FC<CardProps> = ({
@@ -45,7 +46,7 @@ const ListCard: React.FC<CardProps> = ({
     },
   });
 
-  const handleDeleteList = e => {
+  const handleDeleteList = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (mutationFn === deleteList) {
       deleteListMutation.mutate({
@@ -59,8 +60,9 @@ const ListCard: React.FC<CardProps> = ({
     }
   };
 
-  const progressBarPercent =
-    ((collectedItemsAmount / itemsAmount) * 100).toFixed(0) | 0;
+  const progressBarPercent = parseFloat(
+    ((collectedItemsAmount / itemsAmount) * 100).toFixed(0)
+  );
 
   const status =
     progressBarPercent === 0

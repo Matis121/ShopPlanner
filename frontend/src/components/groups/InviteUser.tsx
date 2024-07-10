@@ -12,7 +12,17 @@ import { Label } from "@/components/ui/label";
 import { FieldValues, useForm } from "react-hook-form";
 import { inviteUser } from "@/api/User";
 
-const InviteUser = ({ isOpen, setIsOpen, groupId }) => {
+type InviteUserProps = {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  groupId: number;
+};
+
+const InviteUser: React.FC<InviteUserProps> = ({
+  isOpen,
+  setIsOpen,
+  groupId,
+}) => {
   const [error, setError] = useState("");
 
   const {

@@ -9,11 +9,18 @@ import { Button } from "../ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteGroup } from "@/api/User";
 import InviteUser from "./InviteUser";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-const GroupCard = ({
-  href,
+type GroupCardProps = {
+  name: string;
+  description: string;
+  usersAmount: number;
+  listsAmount: number;
+  groupId: number;
+};
+
+const GroupCard: React.FC<GroupCardProps> = ({
   name,
   description,
   usersAmount,
@@ -36,7 +43,7 @@ const GroupCard = ({
     },
   });
 
-  const handleDeleteGroup = e => {
+  const handleDeleteGroup = (e: React.MouseEvent) => {
     e.stopPropagation();
     deleteGroupMutation.mutate({
       groupId: groupId,
@@ -51,7 +58,11 @@ const GroupCard = ({
         setIsOpen={setIsInviteOpen}
       />
       <div className=" relative rounded-lg border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer hover:border-blue-500 hover:dark:border-blue-500">
-        <Link to={"/groups/$groupId"} params={{ groupId }} key={groupId}>
+        <Link
+          to={"/groups/$groupId"}
+          params={{ groupId: `${groupId}` }}
+          key={groupId}
+        >
           <div className="p-6 flex flex-col items-start relative">
             <h2 className="text-lg font-semibold line-clamp-1 pr-10 mb-2 text-blue-400">
               {name}
