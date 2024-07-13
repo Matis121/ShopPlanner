@@ -8,7 +8,7 @@ import { LuMoreVertical, LuTrash2, LuUserPlus } from "react-icons/lu";
 import { Button } from "../ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteGroup } from "@/api/User";
-import InviteUser from "./InviteUser";
+import InviteUser from "../group/InviteUser";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 

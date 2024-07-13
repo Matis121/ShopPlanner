@@ -2,12 +2,12 @@ import DefaultLayout from "@/layout/DefaultLayout";
 import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 import { Input } from "@/components/ui/input";
-import CardsContainer from "@/components/CardsContainer";
-import GroupCard from "@/components/groups/GroupCard";
+import CardsContainer from "@/components/cards/CardsContainer";
+import GroupCard from "@/components/cards/GroupCard";
 import { useQuery } from "@tanstack/react-query";
 import { getAllGroups } from "@/api/User";
 import { Link } from "@tanstack/react-router";
-import AddNewGroup from "@/components/groups/AddNewGroup";
+import AddNewGroup from "@/components/group/AddNewGroup";
 import { useFilterData } from "@/hooks/useFilterData";
 
 const Groups = () => {

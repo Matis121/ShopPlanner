@@ -1,31 +1,30 @@
 import DefaultLayout from "@/layout/DefaultLayout";
 import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
-import ListCard from "@/components/lists/ListCard";
-import CardsContainer from "@/components/CardsContainer";
-import { Key, useEffect, useState } from "react";
+import ListCard from "@/components/cards/ListCard";
+import CardsContainer from "@/components/cards/CardsContainer";
+import { Key } from "react";
 import { Input } from "@/components/ui/input";
-import AddNewList from "../components/lists/AddNewList";
+import AddNewList from "../components/list/AddNewList";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { deleteList, getAllLists } from "@/api/User";
 import { useLists } from "@/hooks/useLists";
 import { useFilterData } from "@/hooks/useFilterData";
 
-const MyLists = () => {
-  type ListItem = {
-    _id: Key;
-    name: string;
-    description?: string; // Optional property
-    productList: any[];
-  };
+type ListItem = {
+  _id: Key;
+  name: string;
+  description?: string; // Optional property
+  productList: any[];
+};
 
+const MyLists = () => {
   const { data, isFetched } = useQuery({
     queryKey: ["lists"],
     queryFn: getAllLists,
   });
 
-  const { collectedItems } = useLists();
   const { filteredData, handleSearchChange } = useFilterData(data, isFetched);
 
   return (
@@ -51,11 +50,8 @@ const MyLists = () => {
                 key={item._id}
               >
                 <ListCard
-                  id={item._id}
-                  name={item.name}
-                  description={item.description}
-                  itemsAmount={item.productList.length}
-                  collectedItemsAmount={collectedItems(item.productList)}
+                  listData={item}
+                  isFetched={isFetched}
                   mutationFn={deleteList}
                   queryKeyProp="list"
                 />

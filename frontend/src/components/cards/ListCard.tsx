@@ -10,24 +10,25 @@ import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
 import ProgressBar from "../ProgressBar";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/api/User";
+import { useProgressBar } from "@/hooks/useProgressBar";
+import CardStatus from "./CardStatus";
 
 type CardProps = {
-  id: Key;
-  name: string;
-  description?: string; // Optional prop
-  itemsAmount: number;
-  collectedItemsAmount: number;
-  mutationFn: (variables: any) => Promise<any>; // Generic mutation function type
+  listData: {
+    _id: Key;
+    name: string;
+    description: string;
+    productList: object;
+  };
+  isFetched: boolean;
+  mutationFn: (variables: any) => Promise<any>;
   queryKeyProp: "list" | "group";
   groupId?: number;
 };
 
 const ListCard: React.FC<CardProps> = ({
-  name,
-  description,
-  itemsAmount,
-  collectedItemsAmount,
-  id,
+  listData,
+  isFetched,
   mutationFn,
   queryKeyProp,
   groupId,
@@ -50,26 +51,18 @@ const ListCard: React.FC<CardProps> = ({
     e.stopPropagation();
     if (mutationFn === deleteList) {
       deleteListMutation.mutate({
-        listId: id,
+        listId: listData._id,
       });
     } else {
       deleteListMutation.mutate({
-        listId: id,
+        listId: listData._id,
         groupId: groupId,
       });
     }
   };
 
-  const progressBarPercent = parseFloat(
-    ((collectedItemsAmount / itemsAmount) * 100).toFixed(0)
-  );
-
-  const status =
-    progressBarPercent === 0
-      ? "New"
-      : progressBarPercent < 100
-        ? "In progress"
-        : "Collected";
+  const { itemsAmount, percentOfCollectedItems, collectedItemsAmount } =
+    useProgressBar(listData?.productList, isFetched);
 
   return (
     <div className="rounded-lg min-h-[200px] border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer hover:border-blue-500 hover:dark:border-blue-500">
@@ -94,17 +87,17 @@ const ListCard: React.FC<CardProps> = ({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <h2 className="text-lg font-semibold line-clamp-1 pr-10">{name}</h2>
-        {description ? <p className="mt-3 text-sm">{description}</p> : null}
-        <span
-          className={`mt-6 inline-flex flex-shrink-0 items-center rounded-full ring-1 px-2 py-1 text-xs font-medium ${status == "New" ? "bg-blue-50 text-blue-700 ring-blue-600/20" : status == "In progress" ? "bg-yellow-50 text-yellow-700 ring-yellow-600/20" : "bg-green-50 text-green-700 ring-green-600/20"}`}
-        >
-          {status}
-        </span>
+        <h2 className="text-lg font-semibold line-clamp-1 pr-10">
+          {listData.name}
+        </h2>
+        {listData.description ? (
+          <p className="mt-3 text-sm">{listData.description}</p>
+        ) : null}
+        <CardStatus percentOfCollectedItems={percentOfCollectedItems} />
         <ProgressBar
           itemsAmount={itemsAmount}
           collectedItemsAmount={collectedItemsAmount}
-          progressBarPercent={progressBarPercent}
+          progressBarPercent={percentOfCollectedItems}
         />
       </div>
     </div>

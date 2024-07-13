@@ -1,7 +1,7 @@
 import { useParams } from "@tanstack/react-router";
 import ListsInGroup from "@/pages/ListsInGroup";
 import { createFileRoute } from "@tanstack/react-router";
-import GroupListDetails from "@/components/groups/GroupListDetails";
+import GroupListDetails from "@/components/group/GroupListDetails";
 
 export const Route = createFileRoute(
   "/_authenticated/groups/$groupId/list/$listId"

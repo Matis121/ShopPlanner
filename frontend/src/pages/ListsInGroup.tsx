@@ -5,10 +5,9 @@ import { Input } from "../components/ui/input";
 import { Link } from "@tanstack/react-router";
 import { deleteListInGroup, getGroupLists } from "@/api/User";
 import { useQuery } from "@tanstack/react-query";
-import ListCard from "@/components/lists/ListCard";
-import CardsContainer from "@/components/CardsContainer";
-import AddListInGroup from "@/components/groups/AddListInGroup";
-import { useLists } from "@/hooks/useLists";
+import ListCard from "@/components/cards/ListCard";
+import CardsContainer from "@/components/cards/CardsContainer";
+import AddListInGroup from "@/components/group/AddListInGroup";
 import { useFilterData } from "@/hooks/useFilterData";
 
 type ListItem = {
@@ -28,8 +27,6 @@ const ListsInGroup: React.FC<ListsInGroupProps> = ({ groupId }) => {
     queryKey: ["groupLists", groupId],
     queryFn: () => getGroupLists(groupId),
   });
-
-  const { collectedItems } = useLists();
 
   const { filteredData, handleSearchChange } = useFilterData(
     data?.listsInGroup,
@@ -62,11 +59,8 @@ const ListsInGroup: React.FC<ListsInGroupProps> = ({ groupId }) => {
                 key={item._id}
               >
                 <ListCard
-                  id={item._id}
-                  name={item.name}
-                  description={item.description}
-                  itemsAmount={item.productList.length}
-                  collectedItemsAmount={collectedItems(item.productList)}
+                  listData={item}
+                  isFetched={isFetched}
                   mutationFn={deleteListInGroup}
                   queryKeyProp="group"
                   groupId={groupId}

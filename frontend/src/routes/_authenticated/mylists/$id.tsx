@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ProductList from "@/components/lists/ListDetails";
+import List from "@/components/list/List";
 import MyLists from "@/pages/MyLists";
+import { useList } from "@/hooks/list/useList";
 
 export const Route = createFileRoute("/_authenticated/mylists/$id")({
   component: () => (
     <div>
-      <ProductList />
+      <List hookName={useList} />
       <div className="hidden md:block">
         <MyLists />
       </div>
