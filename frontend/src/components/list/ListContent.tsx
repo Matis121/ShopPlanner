@@ -1,4 +1,4 @@
-import ProductForm from "./product/ProductForm";
+import { ProductForm, ProductFromGroup } from "./product/ProductForm";
 import ProductList from "./product/ProductList";
 
 type Product = {
@@ -13,7 +13,7 @@ type ListContentProps = {
   listId: string;
 };
 
-const ListContent: React.FC<ListContentProps> = ({
+export const ListContent: React.FC<ListContentProps> = ({
   data,
   isFetched,
   listId,
@@ -21,9 +21,30 @@ const ListContent: React.FC<ListContentProps> = ({
   return (
     <>
       <ProductForm listId={listId} />
-      <ProductList data={data} isFetched={isFetched} listId={listId} />
+      <ProductList
+        data={data}
+        isFetched={isFetched}
+        listId={listId}
+        queryKey={"list"}
+      />
     </>
   );
 };
 
-export default ListContent;
+export const ListContentGroup: React.FC<ListContentProps> = ({
+  data,
+  isFetched,
+  listId,
+}) => {
+  return (
+    <>
+      <ProductFromGroup listId={listId} />
+      <ProductList
+        data={data}
+        isFetched={isFetched}
+        listId={listId}
+        queryKey={"group"}
+      />
+    </>
+  );
+};

@@ -9,9 +9,11 @@ export function useProgressBar(itemsList, isFetched) {
         collectedItemsAmount++;
       }
     });
-    percentOfCollectedItems = parseFloat(
-      ((collectedItemsAmount / itemsAmount) * 100).toFixed(0)
-    );
+    if (itemsAmount > 0) {
+      percentOfCollectedItems = parseFloat(
+        ((collectedItemsAmount / itemsAmount) * 100).toFixed(0)
+      );
+    }
   }
 
   return { itemsAmount, percentOfCollectedItems, collectedItemsAmount };

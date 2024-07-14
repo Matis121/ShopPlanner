@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
+import { useParams } from "@tanstack/react-router";
 
 type Product = {
   id: number;
@@ -11,15 +12,26 @@ type ProductListProps = {
   data: Product[];
   isFetched: boolean;
   listId: string;
+  queryKey: "list" | "group";
 };
 
 const ProductList: React.FC<ProductListProps> = ({
   data,
   isFetched,
   listId,
+  queryKey,
 }) => {
   const [isCollected, setIsCollected] = useState<Product[]>([]);
   const [isNotCollected, setIsNotCollected] = useState<Product[]>([]);
+
+  let groupId;
+
+  if (queryKey === "group") {
+    const paramUrl = useParams({
+      from: "/_authenticated/groups/$groupId/list/$listId",
+    });
+    groupId = paramUrl.groupId;
+  }
 
   useEffect(() => {
     if (isFetched) {
@@ -48,7 +60,8 @@ const ProductList: React.FC<ProductListProps> = ({
               productAmount={element.amount}
               isCollected={element.isCollected}
               listUrlParam={listId}
-              queryKeyProp="list"
+              queryKey={queryKey}
+              groupId={groupId}
             />
           ))}
       </div>
@@ -62,7 +75,8 @@ const ProductList: React.FC<ProductListProps> = ({
               productAmount={element.amount}
               isCollected={element.isCollected}
               listUrlParam={listId}
-              queryKeyProp="list"
+              queryKey={queryKey}
+              groupId={groupId}
             />
           ))}
       </div>

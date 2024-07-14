@@ -21,7 +21,7 @@ type listProps = {
   productAmount: number;
   isCollected: boolean;
   listUrlParam: string;
-  queryKeyProp: "list" | "group";
+  queryKey: "list" | "group";
   groupId?: string;
 };
 
@@ -31,43 +31,37 @@ const ProductItem: React.FC<listProps> = ({
   productAmount,
   isCollected,
   listUrlParam,
-  queryKeyProp,
+  queryKey,
   groupId,
 }) => {
   const queryClient = useQueryClient();
 
   const updateProductMutation = useMutation({
-    mutationFn: queryKeyProp === "list" ? updateProduct : updateProductInGroup,
+    mutationFn: queryKey === "list" ? updateProduct : updateProductInGroup,
     onError: error => {
       console.error("Error adding new product:", error);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          queryKeyProp === "list" ? "lists" : "groupLists",
-          listUrlParam,
-        ],
+        queryKey: [queryKey === "list" ? "lists" : "groupLists", listUrlParam],
       });
     },
   });
 
   const deleteProductMutation = useMutation({
-    mutationFn: queryKeyProp === "list" ? deleteProduct : deleteProductInGroup,
+    mutationFn: queryKey === "list" ? deleteProduct : deleteProductInGroup,
     onError: error => {
       console.error("Error removing a product:", error);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          queryKeyProp === "list" ? "lists" : "groupLists",
-          listUrlParam,
-        ],
+        queryKey: [queryKey === "list" ? "lists" : "groupLists", listUrlParam],
       });
     },
   });
 
   const handleCollectingProduct = () => {
-    if (queryKeyProp === "list") {
+    if (queryKey === "list") {
       updateProductMutation.mutate({
         listId: listUrlParam,
         productId: productId,
@@ -82,7 +76,7 @@ const ProductItem: React.FC<listProps> = ({
   };
 
   const handleDeleteProduct = () => {
-    if (queryKeyProp === "list") {
+    if (queryKey === "list") {
       deleteProductMutation.mutate({
         listId: listUrlParam,
         productId: productId,
