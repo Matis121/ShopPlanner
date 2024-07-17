@@ -1,3 +1,4 @@
+import React, { Dispatch, SetStateAction } from "react";
 import ProgressBar from "../ProgressBar";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
@@ -7,8 +8,24 @@ import { updateList, updateListInGroup } from "@/api/User";
 import { useListHeader } from "@/hooks/list/useListHeader";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useParams } from "@tanstack/react-router";
+import { ListData } from "../types/List";
 
-const ListHeaderView = ({
+type ListHeaderProps = {
+  data: ListData;
+  isFetched: boolean;
+  listId: string;
+};
+
+type ListHeaderViewProps = {
+  data: ListData;
+  enableEditButton: boolean;
+  cardValues: { name: string; desc?: string };
+  setCardValues: Dispatch<SetStateAction<{ name: string; desc?: string }>>;
+  handleUpdateList: () => void;
+  isFetched: boolean;
+};
+
+const ListHeaderView: React.FC<ListHeaderViewProps> = ({
   data,
   enableEditButton,
   cardValues,
@@ -48,7 +65,11 @@ const ListHeaderView = ({
   );
 };
 
-export const ListHeader = ({ data, isFetched, listId }) => {
+export const ListHeader: React.FC<ListHeaderProps> = ({
+  data,
+  isFetched,
+  listId,
+}) => {
   const queryClient = useQueryClient();
 
   const { enableEditButton, cardValues, setCardValues } = useListHeader(
@@ -86,7 +107,11 @@ export const ListHeader = ({ data, isFetched, listId }) => {
   );
 };
 
-export const ListHeaderGroup = ({ data, isFetched, listId }) => {
+export const ListHeaderGroup: React.FC<ListHeaderProps> = ({
+  data,
+  isFetched,
+  listId,
+}) => {
   const queryClient = useQueryClient();
   const { groupId } = useParams({
     from: "/_authenticated/groups/$groupId/list/$listId",

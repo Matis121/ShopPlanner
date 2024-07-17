@@ -8,6 +8,11 @@ import { z } from "zod";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -22,7 +27,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({ resolver: zodResolver(loginSchema) });
+  } = useForm<LoginForm>({ resolver: zodResolver(loginSchema) });
 
   const onSubmit = async (data: FieldValues) => {
     try {

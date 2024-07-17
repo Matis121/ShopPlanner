@@ -18,7 +18,7 @@ import { createNewListInGroup } from "@/api/User";
 
 type AddListInGroupProps = {
   buttonValue: string;
-  groupId: number;
+  groupId: string;
 };
 
 const AddListInGroup: React.FC<AddListInGroupProps> = ({

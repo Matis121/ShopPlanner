@@ -12,18 +12,14 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/api/User";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import CardStatus from "./CardStatus";
+import { ListData } from "../types/List";
 
 type CardProps = {
-  listData: {
-    _id: Key;
-    name: string;
-    description: string;
-    productList: object;
-  };
+  listData: ListData;
   isFetched: boolean;
   mutationFn: (variables: any) => Promise<any>;
   queryKeyProp: "list" | "group";
-  groupId?: number;
+  groupId?: string;
 };
 
 const ListCard: React.FC<CardProps> = ({

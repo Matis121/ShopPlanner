@@ -18,7 +18,7 @@ type ListItem = {
 };
 
 type ListsInGroupProps = {
-  groupId: number;
+  groupId: string;
 };
 
 const ListsInGroup: React.FC<ListsInGroupProps> = ({ groupId }) => {

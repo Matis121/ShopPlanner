@@ -24,7 +24,7 @@ const ProductList: React.FC<ProductListProps> = ({
   const [isCollected, setIsCollected] = useState<Product[]>([]);
   const [isNotCollected, setIsNotCollected] = useState<Product[]>([]);
 
-  let groupId;
+  let groupId: string;
 
   if (queryKey === "group") {
     const paramUrl = useParams({

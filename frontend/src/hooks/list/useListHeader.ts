@@ -1,11 +1,20 @@
+import { ListData } from "@/components/types/List";
 import { useEffect, useState } from "react";
 
-export function useListHeader(data, isFetched) {
-  const [fetchedCardValues, setFetchedCardValues] = useState({
+type StateData = {
+  name: string;
+  desc?: string;
+};
+
+export function useListHeader(data: ListData, isFetched: boolean) {
+  const [fetchedCardValues, setFetchedCardValues] = useState<StateData>({
     name: "",
     desc: "",
   });
-  const [cardValues, setCardValues] = useState({ name: "", desc: "" });
+  const [cardValues, setCardValues] = useState<StateData>({
+    name: "",
+    desc: "",
+  });
   const [enableEditButton, setEnableEditButton] = useState(false);
 
   useEffect(() => {

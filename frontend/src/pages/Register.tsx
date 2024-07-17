@@ -6,6 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 
+type RegisterForm = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
 const Register = () => {
   const [error, setError] = useState("");
 
@@ -27,7 +34,7 @@ const Register = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm({ resolver: zodResolver(registerSchema) });
+  } = useForm<RegisterForm>({ resolver: zodResolver(registerSchema) });
 
   const onSubmit = async (data: FieldValues) => {
     try {

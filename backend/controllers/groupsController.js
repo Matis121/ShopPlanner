@@ -133,7 +133,7 @@ const inviteUser = async (req, res) => {
     const group = await Group.findOne({ _id: groupId });
 
     if (!user) {
-      return res.status(404).json({ error: "E-mail not found in database" });
+      return res.status(404).json({ error: "User not found" });
     }
     if (
       group.users.some(

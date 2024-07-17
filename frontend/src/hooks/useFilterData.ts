@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
+import { ListData } from "@/components/types/List";
 
-type DataItem = {
-  name: string;
-};
-
-export function useFilterData(data: DataItem[], isFetched: boolean) {
+export function useFilterData(data: ListData[], isFetched: boolean) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState<DataItem[]>([]);
+  const [filteredData, setFilteredData] = useState<ListData[]>([]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);

@@ -1,10 +1,20 @@
 import { addNewProduct, addNewProductInGroup } from "@/api/User";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useParams } from "@tanstack/react-router";
 
-const ProductFormView = ({
+type ProductFormViewProps = {
+  handleNewItemOnEnterPress: (e: any) => void;
+  newItemValue: string;
+  setNewItemValue: Dispatch<SetStateAction<string>>;
+};
+
+type ProductFormProp = {
+  listId: string;
+};
+
+const ProductFormView: React.FC<ProductFormViewProps> = ({
   handleNewItemOnEnterPress,
   setNewItemValue,
   newItemValue,
@@ -20,7 +30,7 @@ const ProductFormView = ({
   );
 };
 
-export const ProductForm = ({ listId }) => {
+export const ProductForm: React.FC<ProductFormProp> = ({ listId }) => {
   const queryClient = useQueryClient();
   const [newItemValue, setNewItemValue] = useState("");
   const createProductMutation = useMutation({
@@ -52,7 +62,7 @@ export const ProductForm = ({ listId }) => {
   );
 };
 
-export const ProductFromGroup = ({ listId }) => {
+export const ProductFromGroup: React.FC<ProductFormProp> = ({ listId }) => {
   const queryClient = useQueryClient();
   const { groupId } = useParams({
     from: "/_authenticated/groups/$groupId/list/$listId",

@@ -10,9 +10,7 @@ export function useList() {
   const listId = urlParams.listId;
   const groupId = urlParams.groupId;
 
-  const handleBackgroundClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
+  const handleBackgroundClick = () => {
     navigate({
       to: "/groups/$groupId",
       params: { groupId },

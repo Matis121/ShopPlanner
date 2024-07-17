@@ -1,4 +1,4 @@
-export function useProgressBar(itemsList, isFetched) {
+export function useProgressBar(itemsList: any[], isFetched: boolean) {
   const itemsAmount = itemsList?.length;
   let percentOfCollectedItems: number = 0;
   let collectedItemsAmount: number = 0;

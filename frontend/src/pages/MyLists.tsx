@@ -3,17 +3,15 @@ import EmptyContent from "@/components/EmptyContent";
 import ContentTitle from "@/components/ContentTitle";
 import ListCard from "@/components/cards/ListCard";
 import CardsContainer from "@/components/cards/CardsContainer";
-import { Key } from "react";
 import { Input } from "@/components/ui/input";
 import AddNewList from "../components/list/AddNewList";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { deleteList, getAllLists } from "@/api/User";
-import { useLists } from "@/hooks/useLists";
 import { useFilterData } from "@/hooks/useFilterData";
 
 type ListItem = {
-  _id: Key;
+  _id: number;
   name: string;
   description?: string; // Optional property
   productList: any[];
