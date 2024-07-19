@@ -13,6 +13,8 @@ import { deleteList } from "@/api/User";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import CardStatus from "./CardStatus";
 import { ListData } from "../types/List";
+import { useToast } from "../ui/use-toast";
+import { LuCheckCircle } from "react-icons/lu";
 
 type CardProps = {
   listData: ListData;
@@ -29,6 +31,7 @@ const ListCard: React.FC<CardProps> = ({
   queryKeyProp,
   groupId,
 }) => {
+  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const deleteListMutation = useMutation({
@@ -39,6 +42,15 @@ const ListCard: React.FC<CardProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [queryKeyProp === "list" ? "lists" : "groupLists", groupId],
+      });
+      toast({
+        variant: "positive",
+        description: (
+          <div className="flex items-center gap-2">
+            <LuCheckCircle size={22} />
+            List has been successfully removed.
+          </div>
+        ),
       });
     },
   });

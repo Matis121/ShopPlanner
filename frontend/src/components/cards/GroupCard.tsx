@@ -11,6 +11,8 @@ import { deleteGroup } from "@/api/User";
 import InviteUser from "../group/InviteUser";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useToast } from "@/components/ui/use-toast";
+import { LuCheckCircle } from "react-icons/lu";
 
 type GroupCardProps = {
   name: string;
@@ -27,9 +29,9 @@ const GroupCard: React.FC<GroupCardProps> = ({
   listsAmount,
   groupId,
 }) => {
-  const [isInviteOpen, setIsInviteOpen] = useState(false);
-
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   const deleteGroupMutation = useMutation({
     mutationFn: deleteGroup,
@@ -39,6 +41,15 @@ const GroupCard: React.FC<GroupCardProps> = ({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["groups"],
+      });
+      toast({
+        variant: "positive",
+        description: (
+          <div className="flex items-center gap-2">
+            <LuCheckCircle size={22} />
+            Group has been successfully removed.
+          </div>
+        ),
       });
     },
   });

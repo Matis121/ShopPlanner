@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +9,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { LuCheckCircle } from "react-icons/lu";
 import { Label } from "@/components/ui/label";
 import { FieldValues, useForm } from "react-hook-form";
 import { inviteUser } from "@/api/User";
@@ -23,6 +25,7 @@ const InviteUser: React.FC<InviteUserProps> = ({
   setIsOpen,
   groupId,
 }) => {
+  const { toast } = useToast();
   const [error, setError] = useState("");
 
   const {
@@ -47,6 +50,15 @@ const InviteUser: React.FC<InviteUserProps> = ({
         return;
       }
       setIsOpen(false);
+      toast({
+        variant: "positive",
+        description: (
+          <div className="flex items-center gap-2">
+            <LuCheckCircle size={22} />
+            User has been invited to group.
+          </div>
+        ),
+      });
     } catch (error) {
       console.log(error);
     }
