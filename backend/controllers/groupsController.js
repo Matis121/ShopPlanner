@@ -245,7 +245,17 @@ const deleteGroup = async (req, res) => {
       return res.status(404).json({ message: "Group not found" });
     }
 
-    await User.updateMany({ groups: groupId }, { $pull: { groups: groupId } });
+    await User.updateMany(
+      {
+        $or: [{ groups: groupId }, { "groupInvitations.groupId": groupId }],
+      },
+      {
+        $pull: {
+          groups: groupId,
+          groupInvitations: { groupId: groupId },
+        },
+      }
+    );
 
     res.status(200).json({ message: "Group deleted successfully" });
   } catch (error) {
