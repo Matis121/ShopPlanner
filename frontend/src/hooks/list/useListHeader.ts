@@ -29,7 +29,6 @@ export function useListHeader(data: ListData, isFetched: boolean) {
       cardValues.name !== fetchedCardValues.name ||
       cardValues.desc !== fetchedCardValues.desc
     ) {
-      console.log(cardValues);
       return setEnableEditButton(true);
     }
     setEnableEditButton(false);

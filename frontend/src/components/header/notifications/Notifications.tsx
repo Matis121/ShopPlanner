@@ -19,7 +19,7 @@ const Notifications = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="relative">
-        <LuBell size={24} />
+        <LuBell size={22} />
         {data && data.length > 0 && (
           <div className="flex items-center justify-center w-[20px] h-[20px] absolute -top-1.5 -right-1.5 bg-red-400 rounded-full border border-neutral-300">
             <p className=" text-red-200 text-xs font-bold">{data.length}</p>

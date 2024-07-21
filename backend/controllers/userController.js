@@ -80,7 +80,6 @@ const getGroupInvitations = async (req, res) => {
 };
 const confirmGroupInvitation = async (req, res) => {
   const { groupId, userId } = req.body;
-  console.log(req.body);
   try {
     const user = await User.findOne({ _id: userId });
     const group = await Group.findOne({ _id: groupId });
