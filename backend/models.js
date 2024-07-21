@@ -103,6 +103,7 @@ const groupUserSchema = new mongoose.Schema({
 const groupSchema = new mongoose.Schema({
   name: {
     type: String,
+    maxLength: 50,
     required: true,
   },
   createdAt: {

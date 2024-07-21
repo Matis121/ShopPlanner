@@ -73,13 +73,10 @@ const AddNewGroup: React.FC<AddNewGroupProps> = ({ buttonValue }) => {
               <Input
                 {...register("name", {
                   required: "Name is required",
-                  maxLength: {
-                    value: 30,
-                    message: "Maximum length of the name is 30 characters",
-                  },
                 })}
                 placeholder="List name..."
                 className="col-span-3"
+                maxLength={50}
               />
             </div>
             {errors.name && (
