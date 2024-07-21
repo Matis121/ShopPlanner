@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
 
 type LoginForm = {
   email: string;
@@ -49,42 +50,58 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center gap-10">
-      <h2 className=" text-xl">Login page</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 shadow-xl rounded-xl py-4 px-8"
+    <section className="relative">
+      <Button
+        variant="link"
+        className="absolute top-4 right-8 text-lg"
+        onClick={() => navigate({ to: "/register" })}
       >
-        <Input {...register("email")} placeholder="e-mail" className="w-80" />
-        {errors.email && (
-          <p className="text-sm text-muted-foreground -mt-3 text-red-500">
-            {errors.email.message}
-          </p>
-        )}
-        <Input
-          {...register("password")}
-          placeholder="Password"
-          className="w-80"
-          type="password"
-        />
-        {errors.password && (
-          <p className="text-sm text-muted-foreground -mt-3 text-red-500">
-            {errors.password.message}
-          </p>
-        )}
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          variant="outline"
-          className=" self-end"
+        Register
+      </Button>
+      <div className="w-full h-screen flex flex-col items-center justify-center gap-10">
+        <h2 className=" text-xl">Login page</h2>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-4 shadow-xl rounded-xl py-4 px-8"
         >
-          Log in
-        </Button>
-        <p className="text-sm text-muted-foreground -mt-3 text-red-500">
-          {error}
-        </p>
-      </form>
-    </div>
+          <Input {...register("email")} placeholder="e-mail" className="w-80" />
+          {errors.email && (
+            <p className="text-sm text-muted-foreground -mt-3 text-red-500">
+              {errors.email.message}
+            </p>
+          )}
+          <Input
+            {...register("password")}
+            placeholder="Password"
+            className="w-80"
+            type="password"
+          />
+          {errors.password && (
+            <p className="text-sm text-muted-foreground -mt-3 text-red-500">
+              {errors.password.message}
+            </p>
+          )}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            variant="outline"
+            className=" self-end"
+          >
+            {isSubmitting ? (
+              <div className="flex items-center">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading
+              </div>
+            ) : (
+              "Log in"
+            )}
+          </Button>
+          <p className="text-sm text-muted-foreground -mt-3 text-red-500">
+            {error}
+          </p>
+        </form>
+      </div>
+    </section>
   );
 };
 

@@ -13,6 +13,7 @@ import { LuCheckCircle } from "react-icons/lu";
 import { Label } from "@/components/ui/label";
 import { FieldValues, useForm } from "react-hook-form";
 import { inviteUser } from "@/api/User";
+import { Loader2 } from "lucide-react";
 
 type InviteUserProps = {
   isOpen: boolean;
