@@ -51,7 +51,7 @@ const AddListInGroup: React.FC<AddListInGroupProps> = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<Form>({ resolver: zodResolver(ListSchema) });
 

@@ -58,6 +58,7 @@ const Register = () => {
         variant: "positive",
       });
       setError("");
+      reset();
     } catch (error) {
       console.error("Error during submission:", error);
     }
