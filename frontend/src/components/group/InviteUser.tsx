@@ -95,7 +95,14 @@ const InviteUser: React.FC<InviteUserProps> = ({
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Loading..." : "Send request"}
+              {isSubmitting ? (
+                <div className="flex items-center">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading
+                </div>
+              ) : (
+                "Send request"
+              )}
             </Button>
           </DialogFooter>
         </form>

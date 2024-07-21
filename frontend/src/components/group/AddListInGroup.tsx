@@ -17,6 +17,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createNewListInGroup } from "@/api/User";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Loader2 } from "lucide-react";
 
 type AddListInGroupProps = {
   buttonValue: string;
@@ -118,8 +119,18 @@ const AddListInGroup: React.FC<AddListInGroupProps> = ({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={isSubmitting}>
-              Create list
+            <Button
+              type="submit"
+              disabled={createListMutation.status === "pending"}
+            >
+              {createListMutation.status === "pending" ? (
+                <div className="flex items-center">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading
+                </div>
+              ) : (
+                "Create list"
+              )}
             </Button>
           </DialogFooter>
         </form>

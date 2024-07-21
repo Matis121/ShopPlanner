@@ -14,6 +14,7 @@ import { LuPlus } from "react-icons/lu";
 import { FieldValues, useForm } from "react-hook-form";
 import { CreateNewGroup } from "@/api/User";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
 type AddNewGroupProps = {
   buttonValue: string;
@@ -33,11 +34,11 @@ const AddNewGroup: React.FC<AddNewGroupProps> = ({ buttonValue }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm();
 
-  const createListMutation = useMutation({
+  const createGroupMutation = useMutation({
     mutationFn: CreateNewGroup,
     onError: error => {
       console.error("Error adding new list:", error);
@@ -49,7 +50,7 @@ const AddNewGroup: React.FC<AddNewGroupProps> = ({ buttonValue }) => {
   });
 
   const onSubmit = async (data: FieldValues) => {
-    createListMutation.mutate({ name: data.name });
+    createGroupMutation.mutate({ name: data.name });
   };
 
   return (
@@ -84,8 +85,18 @@ const AddNewGroup: React.FC<AddNewGroupProps> = ({ buttonValue }) => {
             )}
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={isSubmitting}>
-              Create
+            <Button
+              type="submit"
+              disabled={createGroupMutation.status === "pending"}
+            >
+              {createGroupMutation.status === "pending" ? (
+                <div className="flex items-center">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading
+                </div>
+              ) : (
+                "Create group"
+              )}
             </Button>
           </DialogFooter>
         </form>

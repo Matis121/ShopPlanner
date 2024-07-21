@@ -87,8 +87,6 @@ export async function createNewList(newList: any) {
         newListData: newList,
       }
     );
-    let data = response.data;
-    return data;
   } catch (error) {
     console.log(error);
   }

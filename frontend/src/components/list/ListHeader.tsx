@@ -9,6 +9,7 @@ import { useListHeader } from "@/hooks/list/useListHeader";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useParams } from "@tanstack/react-router";
 import { ListData } from "../types/List";
+import { Loader2 } from "lucide-react";
 
 type ListHeaderProps = {
   data: ListData;
@@ -19,6 +20,7 @@ type ListHeaderProps = {
 type ListHeaderViewProps = {
   data: ListData;
   enableEditButton: boolean;
+  editButtonStatus: string;
   cardValues: { name: string; desc?: string };
   setCardValues: Dispatch<SetStateAction<{ name: string; desc?: string }>>;
   handleUpdateList: () => void;
@@ -28,6 +30,7 @@ type ListHeaderViewProps = {
 const ListHeaderView: React.FC<ListHeaderViewProps> = ({
   data,
   enableEditButton,
+  editButtonStatus,
   cardValues,
   setCardValues,
   handleUpdateList,
@@ -53,11 +56,20 @@ const ListHeaderView: React.FC<ListHeaderViewProps> = ({
         maxLength={120}
       />
       <Button
-        disabled={cardValues.name.length === 0}
+        disabled={
+          cardValues.name.length === 0 || editButtonStatus === "pending"
+        }
         className={`self-start mt-6 ${enableEditButton ? null : "hidden"}`}
         onClick={handleUpdateList}
       >
-        Save
+        {editButtonStatus === "pending" ? (
+          <div className="flex items-center">
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Loading
+          </div>
+        ) : (
+          "Save"
+        )}
       </Button>
       <ProgressBar
         itemsAmount={itemsAmount}
@@ -103,6 +115,7 @@ export const ListHeader: React.FC<ListHeaderProps> = ({
       data={data}
       isFetched={isFetched}
       enableEditButton={enableEditButton}
+      editButtonStatus={updateListMutation.status}
       cardValues={cardValues}
       setCardValues={setCardValues}
       handleUpdateList={handleUpdateList}
@@ -151,6 +164,7 @@ export const ListHeaderGroup: React.FC<ListHeaderProps> = ({
       data={data}
       isFetched={isFetched}
       enableEditButton={enableEditButton}
+      editButtonStatus={updateListMutation.status}
       cardValues={cardValues}
       setCardValues={setCardValues}
       handleUpdateList={handleUpdateList}
