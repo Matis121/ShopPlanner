@@ -15,9 +15,16 @@ import { FieldValues, useForm } from "react-hook-form";
 import { Textarea } from "../ui/textarea";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createNewList } from "@/api/User";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 type AddNewListProps = {
   buttonValue: string;
+};
+
+type Form = {
+  name: string;
+  description: string;
 };
 
 const AddNewList: React.FC<AddNewListProps> = ({ buttonValue }) => {
@@ -31,12 +38,17 @@ const AddNewList: React.FC<AddNewListProps> = ({ buttonValue }) => {
     }
   }, [open]);
 
+  const ListSchema = z.object({
+    name: z.string().min(2).max(30),
+    description: z.string(),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm();
+  } = useForm<Form>({ resolver: zodResolver(ListSchema) });
 
   const createListMutation = useMutation({
     mutationFn: createNewList,
@@ -74,26 +86,26 @@ const AddNewList: React.FC<AddNewListProps> = ({ buttonValue }) => {
               <Input
                 {...register("name", {
                   required: "Name is required",
-                  maxLength: {
-                    value: 30,
-                    message: "Maximum length of the name is 30 characters",
-                  },
                 })}
                 placeholder="List name..."
                 className="col-span-3"
+                id="name"
+                maxLength={30}
               />
             </div>
             {errors.name && (
               <p className="text-red-500 text-sm grid-cols-4 text-end">{`${errors.name.message}`}</p>
             )}
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
+              <Label htmlFor="description" className="text-right">
                 Description
               </Label>
               <Textarea
                 {...register("description")}
                 placeholder="Description..."
                 className="col-span-3"
+                id="description"
+                maxLength={120}
               />
             </div>
           </div>

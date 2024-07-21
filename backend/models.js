@@ -16,8 +16,14 @@ const productSchema = new mongoose.Schema({
 });
 
 const listSchema = new mongoose.Schema({
-  name: String,
-  description: String,
+  name: {
+    type: String,
+    maxLength: 30,
+  },
+  description: {
+    type: String,
+    maxLength: 120,
+  },
   createdAt: {
     type: Date,
     immutable: true,

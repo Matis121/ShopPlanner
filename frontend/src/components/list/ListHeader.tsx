@@ -43,14 +43,17 @@ const ListHeaderView: React.FC<ListHeaderViewProps> = ({
         value={cardValues.name}
         onChange={e => setCardValues({ ...cardValues, name: e.target.value })}
         className="font-semibold"
+        maxLength={30}
       />
       <Textarea
         placeholder="Description..."
         value={cardValues.desc}
         onChange={e => setCardValues({ ...cardValues, desc: e.target.value })}
         className="mt-4"
+        maxLength={120}
       />
       <Button
+        disabled={cardValues.name.length === 0}
         className={`self-start mt-6 ${enableEditButton ? null : "hidden"}`}
         onClick={handleUpdateList}
       >

@@ -103,9 +103,7 @@ const updateList = async (req, res) => {
     if (listName) {
       list.name = listName;
     }
-    if (listDesc) {
-      list.description = listDesc;
-    }
+    list.description = listDesc;
 
     // Save the changes to the user
     await user.save();

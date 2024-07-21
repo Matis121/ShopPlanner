@@ -74,7 +74,7 @@ const ListCard: React.FC<CardProps> = ({
 
   return (
     <div className="rounded-lg min-h-[200px] border shadow group-hover:shadow-xl duration-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 hover:cursor-pointer hover:border-blue-500 hover:dark:border-blue-500">
-      <div className="p-6 h-full flex flex-col items-start relative">
+      <div className="p-6 h-full flex flex-wrap flex-col items-start relative overflow-hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
