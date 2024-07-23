@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ProductItem from "./ProductItem";
+import { ProductItem, ProductItemGroup } from "./ProductItem";
 import { useParams } from "@tanstack/react-router";
 
 type Product = {
@@ -52,33 +52,55 @@ const ProductList: React.FC<ProductListProps> = ({
       <p className="text-sm mb-2">List of products:</p>
       <div className={`rounded-md bg-neutral-100 dark:bg-neutral-900 `}>
         {isFetched &&
-          isNotCollected.map((element: any) => (
-            <ProductItem
-              key={element._id}
-              productId={element._id}
-              productName={element.name}
-              productAmount={element.amount}
-              isCollected={element.isCollected}
-              listUrlParam={listId}
-              queryKey={queryKey}
-              groupId={groupId}
-            />
-          ))}
+          isNotCollected.map((element: any) =>
+            queryKey === "list" ? (
+              <ProductItem
+                key={element._id}
+                productId={element._id}
+                productName={element.name}
+                productAmount={element.amount}
+                isCollected={element.isCollected}
+                listUrlParam={listId}
+                groupId={groupId}
+              />
+            ) : (
+              <ProductItemGroup
+                key={element._id}
+                productId={element._id}
+                productName={element.name}
+                productAmount={element.amount}
+                isCollected={element.isCollected}
+                listUrlParam={listId}
+                groupId={groupId}
+              />
+            )
+          )}
       </div>
       <div className="bg-white text-neutral-500 dark:bg-neutral-950">
         {isFetched &&
-          isCollected.map((element: any) => (
-            <ProductItem
-              key={element._id}
-              productId={element._id}
-              productName={element.name}
-              productAmount={element.amount}
-              isCollected={element.isCollected}
-              listUrlParam={listId}
-              queryKey={queryKey}
-              groupId={groupId}
-            />
-          ))}
+          isCollected.map((element: any) =>
+            queryKey === "list" ? (
+              <ProductItem
+                key={element._id}
+                productId={element._id}
+                productName={element.name}
+                productAmount={element.amount}
+                isCollected={element.isCollected}
+                listUrlParam={listId}
+                groupId={groupId}
+              />
+            ) : (
+              <ProductItemGroup
+                key={element._id}
+                productId={element._id}
+                productName={element.name}
+                productAmount={element.amount}
+                isCollected={element.isCollected}
+                listUrlParam={listId}
+                groupId={groupId}
+              />
+            )
+          )}
       </div>
     </div>
   );

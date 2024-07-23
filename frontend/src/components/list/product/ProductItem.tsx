@@ -15,81 +15,31 @@ import {
   updateProductInGroup,
 } from "@/api/User";
 
-type listProps = {
-  productId: number;
+type ProductItemProps = {
+  productId: string;
   productName: string;
   productAmount: number;
   isCollected: boolean;
   listUrlParam: string;
-  queryKey: "list" | "group";
   groupId?: string;
 };
 
-const ProductItem: React.FC<listProps> = ({
-  productId,
+type ProductItemViewProps = {
+  productName: string;
+  productAmount: number;
+  isCollected: boolean;
+  groupId?: string;
+  handleCollectingProduct: () => void;
+  handleDeleteProduct: () => void;
+};
+
+const ProductItemView: React.FC<ProductItemViewProps> = ({
   productName,
   productAmount,
   isCollected,
-  listUrlParam,
-  queryKey,
-  groupId,
+  handleCollectingProduct,
+  handleDeleteProduct,
 }) => {
-  const queryClient = useQueryClient();
-
-  const updateProductMutation = useMutation({
-    mutationFn: queryKey === "list" ? updateProduct : updateProductInGroup,
-    onError: error => {
-      console.error("Error adding new product:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKey === "list" ? "lists" : "groupLists", listUrlParam],
-      });
-    },
-  });
-
-  const deleteProductMutation = useMutation({
-    mutationFn: queryKey === "list" ? deleteProduct : deleteProductInGroup,
-    onError: error => {
-      console.error("Error removing a product:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [queryKey === "list" ? "lists" : "groupLists", listUrlParam],
-      });
-    },
-  });
-
-  const handleCollectingProduct = () => {
-    if (queryKey === "list") {
-      updateProductMutation.mutate({
-        listId: listUrlParam,
-        productId: productId,
-      });
-    } else {
-      updateProductMutation.mutate({
-        groupId: groupId,
-        listId: listUrlParam,
-        productId: productId,
-      });
-    }
-  };
-
-  const handleDeleteProduct = () => {
-    if (queryKey === "list") {
-      deleteProductMutation.mutate({
-        listId: listUrlParam,
-        productId: productId,
-      });
-    } else {
-      deleteProductMutation.mutate({
-        groupId: groupId,
-        listId: listUrlParam,
-        productId: productId,
-      });
-    }
-  };
-
   return (
     <div
       className={`flex items-center justify-center py-2 px-4 font-semibold min-h-[52px]`}
@@ -152,4 +102,121 @@ const ProductItem: React.FC<listProps> = ({
   );
 };
 
-export default ProductItem;
+export const ProductItem: React.FC<ProductItemProps> = ({
+  productId,
+  productName,
+  productAmount,
+  isCollected,
+  listUrlParam,
+}) => {
+  const queryClient = useQueryClient();
+
+  const updateProductMutation = useMutation({
+    mutationFn: updateProduct,
+    onError: error => {
+      console.error("Error adding new product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["lists"],
+      });
+    },
+  });
+
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProduct,
+    onError: error => {
+      console.error("Error removing a product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["lists"],
+      });
+    },
+  });
+
+  const handleCollectingProduct = () => {
+    updateProductMutation.mutate({
+      listId: listUrlParam,
+      productId: productId,
+    });
+  };
+
+  const handleDeleteProduct = () => {
+    deleteProductMutation.mutate({
+      listId: listUrlParam,
+      productId: productId,
+    });
+  };
+
+  return (
+    <ProductItemView
+      productName={productName}
+      productAmount={productAmount}
+      isCollected={isCollected}
+      handleCollectingProduct={handleCollectingProduct}
+      handleDeleteProduct={handleDeleteProduct}
+    />
+  );
+};
+
+export const ProductItemGroup: React.FC<ProductItemProps> = ({
+  productId,
+  productName,
+  productAmount,
+  isCollected,
+  listUrlParam,
+  groupId,
+}) => {
+  const queryClient = useQueryClient();
+
+  const updateProductMutation = useMutation({
+    mutationFn: updateProductInGroup,
+    onError: error => {
+      console.error("Error adding new product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["groupLists", listUrlParam],
+      });
+    },
+  });
+
+  const deleteProductMutation = useMutation({
+    mutationFn: deleteProductInGroup,
+    onError: error => {
+      console.error("Error removing a product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["groupLists", listUrlParam],
+      });
+    },
+  });
+
+  const handleCollectingProduct = () => {
+    updateProductMutation.mutate({
+      groupId: groupId,
+      listId: listUrlParam,
+      productId: productId,
+    });
+  };
+
+  const handleDeleteProduct = () => {
+    deleteProductMutation.mutate({
+      groupId: groupId,
+      listId: listUrlParam,
+      productId: productId,
+    });
+  };
+
+  return (
+    <ProductItemView
+      productName={productName}
+      productAmount={productAmount}
+      isCollected={isCollected}
+      handleCollectingProduct={handleCollectingProduct}
+      handleDeleteProduct={handleDeleteProduct}
+    />
+  );
+};
