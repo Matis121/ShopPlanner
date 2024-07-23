@@ -1,9 +1,23 @@
 import axios from "axios";
 import { getUserId } from "@/utils/auth";
 
+type apiTypes = {
+  username: string;
+  email: string;
+  password: string;
+  listId: string;
+  listName: string;
+  listDesc: string;
+  productId: string;
+  productName: string;
+  groupId: string;
+  name: string;
+  description: string;
+};
+
 const userId = getUserId();
 
-export async function registerUser({ username, email, password }) {
+export async function registerUser({ username, email, password }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/user/register`,
@@ -22,7 +36,7 @@ export async function registerUser({ username, email, password }) {
   }
 }
 
-export async function loginUser({ email, password }) {
+export async function loginUser({ email, password }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/user/login`,
@@ -64,7 +78,7 @@ export async function getAllLists() {
   let data = response.data;
   return data;
 }
-export async function getSingleList(listId: any) {
+export async function getSingleList(listId: apiTypes) {
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
     {
@@ -78,7 +92,7 @@ export async function getSingleList(listId: any) {
 }
 
 // add
-export async function createNewList(newList: any) {
+export async function createNewList(newList: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/lists`,
@@ -91,7 +105,7 @@ export async function createNewList(newList: any) {
     console.log(error);
   }
 }
-export async function addNewProduct({ listId, productName }) {
+export async function addNewProduct({ listId, productName }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
@@ -106,7 +120,7 @@ export async function addNewProduct({ listId, productName }) {
 }
 
 // update
-export async function updateList({ listId, listName, listDesc }) {
+export async function updateList({ listId, listName, listDesc }: apiTypes) {
   try {
     let response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
@@ -116,7 +130,7 @@ export async function updateList({ listId, listName, listDesc }) {
     console.log(error);
   }
 }
-export async function updateProduct({ listId, productId }) {
+export async function updateProduct({ listId, productId }: apiTypes) {
   try {
     let response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
@@ -130,7 +144,7 @@ export async function updateProduct({ listId, productId }) {
 }
 
 // delete
-export async function deleteList({ listId }) {
+export async function deleteList({ listId }: apiTypes) {
   try {
     let response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
@@ -144,7 +158,7 @@ export async function deleteList({ listId }) {
     console.log(error);
   }
 }
-export async function deleteProduct({ listId, productId }) {
+export async function deleteProduct({ listId, productId }: apiTypes) {
   try {
     let response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
@@ -171,14 +185,14 @@ export async function getAllGroups() {
   let data = response.data;
   return data;
 }
-export async function getGroupLists(groupId) {
+export async function getGroupLists(groupId: apiTypes) {
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists`
   );
   let data = response.data;
   return data;
 }
-export async function getSingleListInGroup({ listId, groupId }) {
+export async function getSingleListInGroup({ listId, groupId }: apiTypes) {
   let response = await axios.get(
     `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}`
   );
@@ -187,7 +201,11 @@ export async function getSingleListInGroup({ listId, groupId }) {
 }
 
 // add
-export async function addNewProductInGroup({ listId, groupId, productName }) {
+export async function addNewProductInGroup({
+  listId,
+  groupId,
+  productName,
+}: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/add-proposal`,
@@ -197,7 +215,7 @@ export async function addNewProductInGroup({ listId, groupId, productName }) {
     console.log(error);
   }
 }
-export async function CreateNewGroup({ name }) {
+export async function CreateNewGroup({ name }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/groups/add-proposal`,
@@ -209,7 +227,11 @@ export async function CreateNewGroup({ name }) {
     console.log(error);
   }
 }
-export async function createNewListInGroup({ name, description, groupId }) {
+export async function createNewListInGroup({
+  name,
+  description,
+  groupId,
+}: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/add-proposal`,
@@ -221,7 +243,7 @@ export async function createNewListInGroup({ name, description, groupId }) {
     console.log(error);
   }
 }
-export async function inviteUser({ email, groupId }) {
+export async function inviteUser({ email, groupId }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/invite-user`,
@@ -229,11 +251,11 @@ export async function inviteUser({ email, groupId }) {
     );
     let data = response.data;
     return { success: true, data };
-  } catch (error) {
+  } catch (error: any) {
     return { success: false, message: error.response.data.error };
   }
 }
-export async function rejectGroupInvitation({ groupId }) {
+export async function rejectGroupInvitation({ groupId }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/user/group-invitation/reject`,
@@ -241,11 +263,14 @@ export async function rejectGroupInvitation({ groupId }) {
     );
     let data = response.data;
     return { success: true, data };
-  } catch (error) {
-    return { success: false, message: error.response.data.error };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.response.data.error,
+    };
   }
 }
-export async function confirmGroupInvitation({ groupId }) {
+export async function confirmGroupInvitation({ groupId }: apiTypes) {
   try {
     let response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/user/group-invitation/confirm`,
@@ -253,7 +278,7 @@ export async function confirmGroupInvitation({ groupId }) {
     );
     let data = response.data;
     return { success: true, data };
-  } catch (error) {
+  } catch (error: any) {
     return { success: false, message: error.response.data.error };
   }
 }
@@ -264,7 +289,7 @@ export async function updateListInGroup({
   listId,
   listName,
   listDesc,
-}) {
+}: apiTypes) {
   try {
     let response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/change-proposal`,
@@ -274,7 +299,11 @@ export async function updateListInGroup({
     console.log(error);
   }
 }
-export async function updateProductInGroup({ groupId, listId, productId }) {
+export async function updateProductInGroup({
+  groupId,
+  listId,
+  productId,
+}: apiTypes) {
   try {
     let response = await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/change-proposal`
@@ -285,7 +314,7 @@ export async function updateProductInGroup({ groupId, listId, productId }) {
 }
 
 // delete
-export async function deleteGroup({ groupId }) {
+export async function deleteGroup({ groupId }: apiTypes) {
   try {
     let response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/delete-proposal`
@@ -294,7 +323,7 @@ export async function deleteGroup({ groupId }) {
     console.log(error);
   }
 }
-export async function deleteListInGroup({ listId, groupId }) {
+export async function deleteListInGroup({ listId, groupId }: apiTypes) {
   try {
     let response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/delete-proposal`
@@ -303,7 +332,11 @@ export async function deleteListInGroup({ listId, groupId }) {
     console.log(error);
   }
 }
-export async function deleteProductInGroup({ groupId, listId, productId }) {
+export async function deleteProductInGroup({
+  groupId,
+  listId,
+  productId,
+}: apiTypes) {
   try {
     let response = await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/delete-proposal`
