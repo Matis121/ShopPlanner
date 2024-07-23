@@ -38,13 +38,12 @@ const Groups = () => {
               <div key={item._id}>
                 <Link
                   to={"/groups/$groupId"}
-                  params={{ groupId: item._id }}
+                  params={{ groupId: `${item._id}` }}
                   key={item._id}
                 ></Link>
                 <GroupCard
-                  href="/groups/$groupId"
                   name={item.name}
-                  description={item.description}
+                  description={item.description || ""}
                   usersAmount={item.users.length ? item.users.length : 0}
                   listsAmount={item.lists.length ? item.lists.length : 0}
                   groupId={item._id}

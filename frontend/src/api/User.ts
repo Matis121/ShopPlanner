@@ -82,26 +82,20 @@ export async function getSingleList(listId: string) {
 // add
 export async function createNewList(newList: any) {
   try {
-    let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/lists`,
-      {
-        userId: userId,
-        newListData: newList,
-      }
-    );
+    await axios.post(`${import.meta.env.VITE_SERVER_URL}/lists`, {
+      userId: userId,
+      newListData: newList,
+    });
   } catch (error) {
     console.log(error);
   }
 }
 export async function addNewProduct({ listId, productName }: any) {
   try {
-    let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
-      {
-        userId,
-        productName,
-      }
-    );
+    await axios.post(`${import.meta.env.VITE_SERVER_URL}/lists/${listId}`, {
+      userId,
+      productName,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -110,17 +104,18 @@ export async function addNewProduct({ listId, productName }: any) {
 // update
 export async function updateList({ listId, listName, listDesc }: any) {
   try {
-    let response = await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
-      { userId, listName, listDesc }
-    );
+    await axios.put(`${import.meta.env.VITE_SERVER_URL}/lists/${listId}`, {
+      userId,
+      listName,
+      listDesc,
+    });
   } catch (error) {
     console.log(error);
   }
 }
 export async function updateProduct({ listId, productId }: any) {
   try {
-    let response = await axios.put(
+    await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
       {
         userId,
@@ -134,21 +129,18 @@ export async function updateProduct({ listId, productId }: any) {
 // delete
 export async function deleteList({ listId }: any) {
   try {
-    let response = await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
-      {
-        params: {
-          userId,
-        },
-      }
-    );
+    await axios.delete(`${import.meta.env.VITE_SERVER_URL}/lists/${listId}`, {
+      params: {
+        userId,
+      },
+    });
   } catch (error) {
     console.log(error);
   }
 }
 export async function deleteProduct({ listId, productId }: any) {
   try {
-    let response = await axios.delete(
+    await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
       {
         params: {
@@ -195,7 +187,7 @@ export async function addNewProductInGroup({
   productName,
 }: any) {
   try {
-    let response = await axios.post(
+    await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/add-proposal`,
       { productName }
     );
@@ -276,7 +268,7 @@ export async function updateListInGroup({
   listDesc,
 }: any) {
   try {
-    let response = await axios.put(
+    await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/change-proposal`,
       { listName, listDesc }
     );
@@ -290,7 +282,7 @@ export async function updateProductInGroup({
   productId,
 }: any) {
   try {
-    let response = await axios.put(
+    await axios.put(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/change-proposal`
     );
   } catch (error) {
@@ -301,7 +293,7 @@ export async function updateProductInGroup({
 // delete
 export async function deleteGroup({ groupId }: any) {
   try {
-    let response = await axios.delete(
+    await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/delete-proposal`
     );
   } catch (error) {
@@ -310,7 +302,7 @@ export async function deleteGroup({ groupId }: any) {
 }
 export async function deleteListInGroup({ listId, groupId }: any) {
   try {
-    let response = await axios.delete(
+    await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/delete-proposal`
     );
   } catch (error) {
@@ -323,7 +315,7 @@ export async function deleteProductInGroup({
   productId,
 }: any) {
   try {
-    let response = await axios.delete(
+    await axios.delete(
       `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/delete-proposal`
     );
   } catch (error) {

@@ -1,6 +1,8 @@
+// TODO: refactor types
+
 import { jwtDecode } from "jwt-decode";
 
-export function auth(token) {
+export function auth(token: string) {
   if (!localStorage.getItem("authToken")) {
     localStorage.setItem("authToken", token);
   }
@@ -18,8 +20,8 @@ export function logout() {
 
 export function getUserId() {
   if (localStorage.getItem("authToken")) {
-    const authToken = localStorage.getItem("authToken");
-    const { id } = jwtDecode(authToken);
+    const authToken: any = localStorage.getItem("authToken");
+    const { id }: any = jwtDecode(authToken);
     return id;
   }
 }
