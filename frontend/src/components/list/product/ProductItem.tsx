@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LuMoreVertical, LuTrash2, LuPlus, LuMinus } from "react-icons/lu";
+import { Loader2 } from "lucide-react";
 import { FcCheckmark } from "react-icons/fc";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import {
@@ -31,6 +32,7 @@ type ProductItemViewProps = {
   groupId?: string;
   handleCollectingProduct: () => void;
   handleDeleteProduct: () => void;
+  productUpdateStatus: string;
 };
 
 const ProductItemView: React.FC<ProductItemViewProps> = ({
@@ -39,16 +41,23 @@ const ProductItemView: React.FC<ProductItemViewProps> = ({
   isCollected,
   handleCollectingProduct,
   handleDeleteProduct,
+  productUpdateStatus,
 }) => {
+  console.log(productUpdateStatus);
   return (
     <div
       className={`flex items-center justify-center py-2 px-4 font-semibold min-h-[52px]`}
     >
       <div
         onClick={handleCollectingProduct}
-        className={`min-w-[25px] min-h-[25px] w-[25px] h-[25px] cursor-pointer mr-4 rounded-full ${isCollected ? null : "hover:bg-blue-500 border-2 border-blue-500 transition-all"}`}
+        className={`flex items-center justify-center min-w-[25px] min-h-[25px] w-[25px] h-[25px] cursor-pointer mr-4 rounded-full ${!isCollected && productUpdateStatus === "idle" && "hover:bg-blue-500 border-2 border-blue-500 transition-all"}`}
       >
-        {isCollected && <FcCheckmark size={25} />}
+        {isCollected && productUpdateStatus === "idle" && (
+          <FcCheckmark size={25} />
+        )}
+        {productUpdateStatus !== "idle" && (
+          <Loader2 className="h-6 w-6 animate-spin" />
+        )}
       </div>
       <p className="text-sm w-full overflow-hidden mr-3">{productName}</p>
       <div className="ml-auto flex items-center">
@@ -156,6 +165,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
       isCollected={isCollected}
       handleCollectingProduct={handleCollectingProduct}
       handleDeleteProduct={handleDeleteProduct}
+      productUpdateStatus={updateProductMutation.status}
     />
   );
 };
@@ -217,6 +227,7 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
       isCollected={isCollected}
       handleCollectingProduct={handleCollectingProduct}
       handleDeleteProduct={handleDeleteProduct}
+      productUpdateStatus={updateProductMutation.status}
     />
   );
 };
