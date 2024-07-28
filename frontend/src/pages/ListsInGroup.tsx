@@ -9,6 +9,7 @@ import ListCard from "@/components/cards/ListCard";
 import CardsContainer from "@/components/cards/CardsContainer";
 import AddListInGroup from "@/components/group/AddListInGroup";
 import { useFilterData } from "@/hooks/useFilterData";
+import ListSkeleton from "@/components/skielet/ListSkeleton";
 
 type ListItem = {
   _id: number;
@@ -50,7 +51,9 @@ const ListsInGroup: React.FC<ListsInGroupProps> = ({ groupId }) => {
             <AddListInGroup buttonValue="Add new list" groupId={groupId} />
           </>
         </ContentTitle>
-        {isFetched && data && data.listsInGroup.length > 0 ? (
+        {!isFetched ? (
+          <ListSkeleton qty={3} />
+        ) : data.listsInGroup.length > 0 ? (
           <CardsContainer contentType="lists">
             {filteredData.map((item: ListItem) => (
               <Link

@@ -9,6 +9,7 @@ import { getAllGroups } from "@/api/User";
 import { Link } from "@tanstack/react-router";
 import AddNewGroup from "@/components/group/AddNewGroup";
 import { useFilterData } from "@/hooks/useFilterData";
+import GroupSkeleton from "@/components/skielet/GroupSkeleton";
 
 const Groups = () => {
   const { data, isFetched } = useQuery({
@@ -32,7 +33,9 @@ const Groups = () => {
             <AddNewGroup buttonValue="Add new group" />
           </>
         </ContentTitle>
-        {isFetched && data.length > 0 ? (
+        {!isFetched ? (
+          <GroupSkeleton qty={2} />
+        ) : data.length > 0 ? (
           <CardsContainer contentType="groups">
             {filteredData.map(item => (
               <div key={item._id}>

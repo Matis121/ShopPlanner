@@ -9,6 +9,7 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { deleteList, getAllLists } from "@/api/User";
 import { useFilterData } from "@/hooks/useFilterData";
+import ListSkeleton from "@/components/skielet/ListSkeleton";
 
 type ListItem = {
   _id: number;
@@ -39,7 +40,9 @@ const MyLists = () => {
             <AddNewList buttonValue="Add new list" />
           </>
         </ContentTitle>
-        {isFetched && data.length > 0 ? (
+        {!isFetched ? (
+          <ListSkeleton qty={3} />
+        ) : data.length > 0 ? (
           <CardsContainer contentType="lists">
             {filteredData.map((item: ListItem) => (
               <Link

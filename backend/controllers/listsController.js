@@ -118,7 +118,6 @@ const updateList = async (req, res) => {
 const updateProduct = async (req, res) => {
   const { listId, productId } = req.params;
   const { userId } = req.body;
-  console.log(listId, productId);
   try {
     // Find the user
     const user = await User.findOne({ _id: userId });
