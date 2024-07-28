@@ -32,6 +32,10 @@ groupsRouter.put(
   "/groups/:groupId/lists/:listId/products/:productId/change-proposal",
   controller.updateProduct
 );
+groupsRouter.put(
+  "/groups/:groupId/lists/:listId/products/:productId/edit",
+  controller.editProduct
+);
 
 // DELETE
 groupsRouter.delete("/groups/:groupId/delete-proposal", controller.deleteGroup);

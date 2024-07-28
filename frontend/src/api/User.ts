@@ -308,6 +308,25 @@ export async function updateProductInGroup({
     console.log(error);
   }
 }
+export async function editProductInGroup({
+  groupId,
+  listId,
+  productId,
+  productName,
+  productQty,
+}: any) {
+  try {
+    await axios.put(
+      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/edit`,
+      {
+        productName,
+        productQty,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // delete
 export async function deleteGroup({ groupId }: any) {

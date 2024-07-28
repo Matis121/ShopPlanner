@@ -235,6 +235,40 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const editProduct = async (req, res) => {
+  const { groupId, listId, productId } = req.params;
+  const { productName, productQty } = req.body;
+  try {
+    // Find the user
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Find the list inside the user's lists
+    const list = group.lists.find(list => String(list._id) === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    const product = list.productList.find(product => product.id === productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Update product properties
+    product.name = productName;
+    product.amount = productQty;
+
+    await group.save();
+
+    res.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 // DELETE
 const deleteGroup = async (req, res) => {
   const { groupId } = req.params;
@@ -314,4 +348,5 @@ module.exports = {
   createNewGroup,
   createNewGroup,
   inviteUser,
+  editProduct,
 };

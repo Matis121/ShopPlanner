@@ -4,10 +4,21 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import {
   deleteProduct,
   deleteProductInGroup,
+  editProduct,
+  editProductInGroup,
   updateProduct,
   updateProductInGroup,
 } from "@/api/User";
-import DeleteProduct from "./DeleteProduct";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LuMoreVertical, LuTrash2 } from "react-icons/lu";
+import { Dispatch, SetStateAction, useState } from "react";
+import EditProduct from "./EditProduct";
 
 type ProductItemProps = {
   productId: string;
@@ -26,6 +37,12 @@ type ProductItemViewProps = {
   handleCollectingProduct: () => void;
   handleDeleteProduct: () => void;
   productUpdateStatus: string;
+  handleEditProduct: () => void;
+  editProductValues: { productName: string; productAmount: number };
+  setEditProductValues: Dispatch<
+    SetStateAction<{ productName: string; productAmount: number }>
+  >;
+  productEditStatus: string;
 };
 
 const ProductItemView: React.FC<ProductItemViewProps> = ({
@@ -35,33 +52,70 @@ const ProductItemView: React.FC<ProductItemViewProps> = ({
   handleCollectingProduct,
   handleDeleteProduct,
   productUpdateStatus,
+  handleEditProduct,
+  editProductValues,
+  setEditProductValues,
+  productEditStatus,
 }) => {
-  console.log(productUpdateStatus);
+  const [isEditProductOpen, setIsEditProductOpen] = useState(false);
+
   return (
-    <div
-      className={`flex items-center justify-center py-2 px-4 font-semibold min-h-[52px]`}
-    >
+    <>
+      <EditProduct
+        isOpen={isEditProductOpen}
+        setIsOpen={setIsEditProductOpen}
+        handleEditProduct={handleEditProduct}
+        editProductValues={editProductValues}
+        setEditProductValues={setEditProductValues}
+        productEditStatus={productEditStatus}
+      />
       <div
-        onClick={handleCollectingProduct}
-        className={`flex items-center justify-center min-w-[25px] min-h-[25px] w-[25px] h-[25px] cursor-pointer mr-4 rounded-full ${!isCollected && productUpdateStatus === "idle" && "hover:bg-blue-500 border-2 border-blue-500 transition-all"}`}
+        className={`flex items-center justify-center py-2 px-4 font-semibold min-h-[52px]`}
       >
-        {isCollected && productUpdateStatus === "idle" && (
-          <FcCheckmark size={25} />
-        )}
-        {productUpdateStatus !== "idle" && (
-          <Loader2 className="h-6 w-6 animate-spin" />
-        )}
-      </div>
-      <p className="text-sm w-full overflow-hidden mr-3">{productName}</p>
-      <div className="ml-auto flex items-center">
-        <div className="flex gap-0.5 mr-2">
-          {productAmount > 1 && (
-            <p className="text-blue-400">{productAmount}</p>
+        <div
+          onClick={handleCollectingProduct}
+          className={`flex items-center justify-center min-w-[25px] min-h-[25px] w-[25px] h-[25px] cursor-pointer mr-4 rounded-full ${!isCollected && productUpdateStatus === "idle" && "hover:bg-blue-500 border-2 border-blue-500 transition-all"}`}
+        >
+          {isCollected && productUpdateStatus === "idle" && (
+            <FcCheckmark size={25} />
+          )}
+          {productUpdateStatus !== "idle" && (
+            <Loader2 className="h-6 w-6 animate-spin" />
           )}
         </div>
-        <DeleteProduct handleDeleteProduct={handleDeleteProduct} />
+        <p className="text-sm w-full overflow-hidden mr-3">{productName}</p>
+        <div className="ml-auto flex items-center">
+          <div className="flex gap-0.5 mr-2">
+            {productAmount > 1 && (
+              <p className="text-blue-400">{productAmount}</p>
+            )}
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <LuMoreVertical />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-30">
+              <DropdownMenuItem
+                className="flex gap-2 hover:cursor-pointer"
+                onClick={() => setIsEditProductOpen(true)}
+              >
+                <LuTrash2 />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="flex gap-2 text-red-500 hover:cursor-pointer"
+                onClick={handleDeleteProduct}
+              >
+                <LuTrash2 />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -73,6 +127,11 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   listUrlParam,
 }) => {
   const queryClient = useQueryClient();
+
+  const [editProductValues, setEditProductValues] = useState({
+    productName,
+    productAmount,
+  });
 
   const updateProductMutation = useMutation({
     mutationFn: updateProduct,
@@ -98,6 +157,18 @@ export const ProductItem: React.FC<ProductItemProps> = ({
     },
   });
 
+  const editProductMutation = useMutation({
+    mutationFn: editProduct,
+    onError: error => {
+      console.error("Error removing a product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["lists"],
+      });
+    },
+  });
+
   const handleCollectingProduct = () => {
     updateProductMutation.mutate({
       listId: listUrlParam,
@@ -112,6 +183,15 @@ export const ProductItem: React.FC<ProductItemProps> = ({
     });
   };
 
+  const handleEditProduct = () => {
+    editProductMutation.mutate({
+      listId: listUrlParam,
+      productId: productId,
+      productName: editProductValues.productName,
+      productQty: editProductValues.productAmount,
+    });
+  };
+
   return (
     <ProductItemView
       productName={productName}
@@ -120,6 +200,10 @@ export const ProductItem: React.FC<ProductItemProps> = ({
       handleCollectingProduct={handleCollectingProduct}
       handleDeleteProduct={handleDeleteProduct}
       productUpdateStatus={updateProductMutation.status}
+      handleEditProduct={handleEditProduct}
+      editProductValues={editProductValues}
+      setEditProductValues={setEditProductValues}
+      productEditStatus={editProductMutation.status}
     />
   );
 };
@@ -133,6 +217,11 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
   groupId,
 }) => {
   const queryClient = useQueryClient();
+
+  const [editProductValues, setEditProductValues] = useState({
+    productName,
+    productAmount,
+  });
 
   const updateProductMutation = useMutation({
     mutationFn: updateProductInGroup,
@@ -158,6 +247,18 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
     },
   });
 
+  const editProductMutation = useMutation({
+    mutationFn: editProductInGroup,
+    onError: error => {
+      console.error("Error removing a product:", error);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["groupLists"],
+      });
+    },
+  });
+
   const handleCollectingProduct = () => {
     updateProductMutation.mutate({
       groupId: groupId,
@@ -174,6 +275,16 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
     });
   };
 
+  const handleEditProduct = () => {
+    editProductMutation.mutate({
+      groupId: groupId,
+      listId: listUrlParam,
+      productId: productId,
+      productName: editProductValues.productName,
+      productQty: editProductValues.productAmount,
+    });
+  };
+
   return (
     <ProductItemView
       productName={productName}
@@ -182,6 +293,10 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
       handleCollectingProduct={handleCollectingProduct}
       handleDeleteProduct={handleDeleteProduct}
       productUpdateStatus={updateProductMutation.status}
+      handleEditProduct={handleEditProduct}
+      editProductValues={editProductValues}
+      setEditProductValues={setEditProductValues}
+      productEditStatus={editProductMutation.status}
     />
   );
 };
