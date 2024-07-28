@@ -13,6 +13,10 @@ listsRouter.post("/lists/:listId", controller.addNewProduct);
 // UPDATE
 listsRouter.put("/lists/:listId", controller.updateList);
 listsRouter.put("/lists/:listId/products/:productId", controller.updateProduct);
+listsRouter.put(
+  "/lists/:listId/products/:productId/edit",
+  controller.editProduct
+);
 
 // DELETE
 listsRouter.delete("/lists/:listId", controller.deleteList);

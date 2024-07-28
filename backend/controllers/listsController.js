@@ -1,4 +1,4 @@
-const { User, List } = require("../models");
+const { User, Product } = require("../models");
 
 // GET
 const getAllLists = async (req, res, next) => {
@@ -118,6 +118,7 @@ const updateList = async (req, res) => {
 const updateProduct = async (req, res) => {
   const { listId, productId } = req.params;
   const { userId } = req.body;
+  console.log(listId, productId);
   try {
     // Find the user
     const user = await User.findOne({ _id: userId });
@@ -132,12 +133,49 @@ const updateProduct = async (req, res) => {
     }
 
     const product = list.productList.find(product => product.id === productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
     if (product.isCollected) {
       product.isCollected = false;
     } else {
       product.isCollected = true;
     }
+
+    await user.save();
+
+    res.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+const editProduct = async (req, res) => {
+  const { listId, productId } = req.params;
+  const { userId, productName, productQty } = req.body;
+  try {
+    // Find the user
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Find the list inside the user's lists
+    const list = user.lists.find(list => String(list._id) === listId);
+    if (!list) {
+      return res.status(404).json({ message: "List not found" });
+    }
+
+    const product = list.productList.find(product => product.id === productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Update product properties
+    product.name = productName;
+    product.amount = productQty;
 
     await user.save();
 
@@ -198,4 +236,5 @@ module.exports = {
   updateProduct,
   deleteList,
   deleteProduct,
+  editProduct,
 };

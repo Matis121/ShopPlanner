@@ -125,6 +125,25 @@ export async function updateProduct({ listId, productId }: any) {
     console.log(error);
   }
 }
+export async function editProduct({
+  listId,
+  productId,
+  productName,
+  productQty,
+}: any) {
+  try {
+    await axios.put(
+      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}/edit`,
+      {
+        userId,
+        productName,
+        productQty,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // delete
 export async function deleteList({ listId }: any) {
