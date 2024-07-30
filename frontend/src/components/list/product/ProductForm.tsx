@@ -23,6 +23,7 @@ const ProductFormView: React.FC<ProductFormViewProps> = ({
     <Input
       placeholder="Add new product..."
       className="self-center mt-16 rounded-full text-center w-[80%]"
+      maxLength={150}
       onKeyDown={e => handleNewItemOnEnterPress(e)}
       value={newItemValue}
       onChange={e => setNewItemValue(e.target.value)}
