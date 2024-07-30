@@ -29,7 +29,10 @@ const MyLists = () => {
   return (
     <DefaultLayout>
       <>
-        <ContentTitle title="My lists" cardsAmount={data ? data.length : 0}>
+        <ContentTitle
+          breadCrumb={[{ name: "My lists", href: "/mylists" }]}
+          cardsAmount={data ? data.length : 0}
+        >
           <>
             <Input
               type="text"

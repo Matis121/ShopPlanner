@@ -22,7 +22,10 @@ const Groups = () => {
   return (
     <DefaultLayout>
       <>
-        <ContentTitle title="Groups" cardsAmount={data ? data.length : 0}>
+        <ContentTitle
+          breadCrumb={[{ name: "Groups", href: "/groups" }]}
+          cardsAmount={data ? data.length : 0}
+        >
           <>
             <Input
               type="text"

@@ -77,7 +77,7 @@ const AddNewGroup: React.FC<AddNewGroupProps> = ({ buttonValue }) => {
                 })}
                 placeholder="List name..."
                 className="col-span-3"
-                maxLength={50}
+                maxLength={40}
               />
             </div>
             {errors.name && (

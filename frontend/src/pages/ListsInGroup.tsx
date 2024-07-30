@@ -38,8 +38,11 @@ const ListsInGroup: React.FC<ListsInGroupProps> = ({ groupId }) => {
     <DefaultLayout>
       <>
         <ContentTitle
-          title={`Group: ${data ? data.groupName : ""}`}
           cardsAmount={data ? data.listsInGroup.length : 0}
+          breadCrumb={[
+            { name: "Groups", href: "/groups" },
+            { name: `${data && data.groupName}`, href: `/${groupId}` },
+          ]}
         >
           <>
             <Input
