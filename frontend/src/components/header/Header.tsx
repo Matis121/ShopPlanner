@@ -24,7 +24,7 @@ const Header = () => {
 
   return (
     <header
-      className={`flex items-center border-b py-2 bg-white dark:bg-neutral-950 dark:border-neutral-800 overflow-hidden ${isMobile ? "px-4" : "px-10"}`}
+      className={`fixed flex z-20 w-full items-center border-b py-2 bg-white bg-opacity-95 dark:bg-neutral-950 dark:border-neutral-800 overflow-hidden ${isMobile ? "px-4" : "px-10"}`}
     >
       <Link to="/">
         <span className=" text-blue-400 font-semibold text-xl">

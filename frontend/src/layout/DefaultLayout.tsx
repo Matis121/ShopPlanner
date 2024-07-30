@@ -12,10 +12,10 @@ const DefaultLayout = ({ children }: Props) => {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="flex flex-col flex-1 w-full overflow-hidden min-h-screen h-full">
+      <div className="relative flex flex-col flex-1 w-full overflow-auto h-screen">
         <Header />
         <main
-          className={`flex flex-col items-start w-full mb-16 ${isMobile ? "px-4" : "container"}`}
+          className={`flex flex-col items-start w-full my-20 ${isMobile ? "px-4" : "container"}`}
         >
           {children}
         </main>
