@@ -35,13 +35,16 @@ const Login = () => {
         email: data.email,
         password: data.password,
       });
+      console.log(usersettings);
       if (!usersettings.success) {
+        console.log(usersettings);
         setError(usersettings.message);
       }
       if (usersettings.token) {
         auth(usersettings.token);
+      }
+      if (usersettings.success) {
         navigate({ to: "/" });
-        return;
       }
     } catch (error) {
       console.error("Error during submission:", error);

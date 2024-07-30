@@ -29,9 +29,9 @@ const Notifications = () => {
       <DropdownMenuContent>
         <div className="flex items-center flex-col gap-4 p-1">
           {data && data.length > 0 ? (
-            (data as GroupInvitation[]).map(element => (
+            (data as GroupInvitation[]).map((element, idx) => (
               <GroupInvitations
-                key={element.id}
+                key={element.id || idx}
                 groupId={element.groupId}
                 groupName={element.groupName}
               />

@@ -44,7 +44,9 @@ const login = async (req, res, next) => {
     const user = await User.findOne({ email }).lean();
 
     if (!user) {
-      return res.json({ message: "E-mail not found" });
+      return res
+        .status(200)
+        .json({ success: false, message: "E-mail not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
@@ -56,12 +58,18 @@ const login = async (req, res, next) => {
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET);
 
-      return res.json({ token });
+      return res.status(200).json({ success: true, token });
     } else {
-      return res.json({ message: "Incorrect password" });
+      return res
+        .status(200)
+        .json({ success: false, message: "Incorrect password" });
     }
   } catch (error) {
-    return res.json({ error: "Login failed", details: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Login failed",
+      details: error.message,
+    });
   }
 };
 const getGroupInvitations = async (req, res) => {
