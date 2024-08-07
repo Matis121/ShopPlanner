@@ -36,7 +36,7 @@ To run this project, you will need to add the following environment variables to
 
 #### Frontend
 
-`_SERVER_URL`
+`VITE_SERVER_URL`
 
 #### Backend
 
