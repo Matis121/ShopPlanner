@@ -6,7 +6,7 @@ import { getUserId } from "@/utils/auth";
 export async function registerUser({ username, email, password }: any) {
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/user/register`,
+      `${import.meta.env.SERVER_URL}/user/register`,
       {
         username,
         email,
@@ -25,7 +25,7 @@ export async function registerUser({ username, email, password }: any) {
 export async function loginUser({ email, password }: any) {
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/user/login`,
+      `${import.meta.env.SERVER_URL}/user/login`,
       {
         email,
         password,
@@ -43,7 +43,7 @@ export async function getGroupInvitations() {
   const userId = getUserId();
   try {
     let response = await axios.get(
-      `${import.meta.env.VITE_SERVER_URL}/user/${userId}/group-invitations`
+      `${import.meta.env.SERVER_URL}/user/${userId}/group-invitations`
     );
     let data = response.data;
     return data;
@@ -57,7 +57,7 @@ export async function getGroupInvitations() {
 // get
 export async function getAllLists() {
   const userId = getUserId();
-  let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/lists`, {
+  let response = await axios.get(`${import.meta.env.SERVER_URL}/lists`, {
     params: {
       userId: userId,
     },
@@ -68,7 +68,7 @@ export async function getAllLists() {
 export async function getSingleList(listId: string) {
   const userId = getUserId();
   let response = await axios.get(
-    `${import.meta.env.VITE_SERVER_URL}/lists/${listId}`,
+    `${import.meta.env.SERVER_URL}/lists/${listId}`,
     {
       params: {
         userId: userId,
@@ -83,7 +83,7 @@ export async function getSingleList(listId: string) {
 export async function createNewList(newList: any) {
   const userId = getUserId();
   try {
-    await axios.post(`${import.meta.env.VITE_SERVER_URL}/lists`, {
+    await axios.post(`${import.meta.env.SERVER_URL}/lists`, {
       userId: userId,
       newListData: newList,
     });
@@ -94,7 +94,7 @@ export async function createNewList(newList: any) {
 export async function addNewProduct({ listId, productName }: any) {
   const userId = getUserId();
   try {
-    await axios.post(`${import.meta.env.VITE_SERVER_URL}/lists/${listId}`, {
+    await axios.post(`${import.meta.env.SERVER_URL}/lists/${listId}`, {
       userId,
       productName,
     });
@@ -107,7 +107,7 @@ export async function addNewProduct({ listId, productName }: any) {
 export async function updateList({ listId, listName, listDesc }: any) {
   const userId = getUserId();
   try {
-    await axios.put(`${import.meta.env.VITE_SERVER_URL}/lists/${listId}`, {
+    await axios.put(`${import.meta.env.SERVER_URL}/lists/${listId}`, {
       userId,
       listName,
       listDesc,
@@ -120,7 +120,7 @@ export async function updateProduct({ listId, productId }: any) {
   const userId = getUserId();
   try {
     await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
+      `${import.meta.env.SERVER_URL}/lists/${listId}/products/${productId}`,
       {
         userId,
       }
@@ -138,7 +138,7 @@ export async function editProduct({
   try {
     const userId = getUserId();
     await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}/edit`,
+      `${import.meta.env.SERVER_URL}/lists/${listId}/products/${productId}/edit`,
       {
         userId,
         productName,
@@ -154,7 +154,7 @@ export async function editProduct({
 export async function deleteList({ listId }: any) {
   const userId = getUserId();
   try {
-    await axios.delete(`${import.meta.env.VITE_SERVER_URL}/lists/${listId}`, {
+    await axios.delete(`${import.meta.env.SERVER_URL}/lists/${listId}`, {
       params: {
         userId,
       },
@@ -167,7 +167,7 @@ export async function deleteProduct({ listId, productId }: any) {
   const userId = getUserId();
   try {
     await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/lists/${listId}/products/${productId}`,
+      `${import.meta.env.SERVER_URL}/lists/${listId}/products/${productId}`,
       {
         params: {
           userId,
@@ -184,7 +184,7 @@ export async function deleteProduct({ listId, productId }: any) {
 // get
 export async function getAllGroups() {
   const userId = getUserId();
-  let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/groups`, {
+  let response = await axios.get(`${import.meta.env.SERVER_URL}/groups`, {
     params: {
       userId: userId,
     },
@@ -194,14 +194,14 @@ export async function getAllGroups() {
 }
 export async function getGroupLists(groupId: string) {
   let response = await axios.get(
-    `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists`
+    `${import.meta.env.SERVER_URL}/groups/${groupId}/lists`
   );
   let data = response.data;
   return data;
 }
 export async function getSingleListInGroup({ listId, groupId }: any) {
   let response = await axios.get(
-    `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}`
+    `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}`
   );
   let data = response.data;
   return data;
@@ -215,7 +215,7 @@ export async function addNewProductInGroup({
 }: any) {
   try {
     await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/add-proposal`,
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}/products/add-proposal`,
       { productName }
     );
   } catch (error) {
@@ -226,7 +226,7 @@ export async function CreateNewGroup({ name }: any) {
   const userId = getUserId();
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/groups/add-proposal`,
+      `${import.meta.env.SERVER_URL}/groups/add-proposal`,
       { name, userId }
     );
     let data = response.data;
@@ -242,7 +242,7 @@ export async function createNewListInGroup({
 }: any) {
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/add-proposal`,
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/add-proposal`,
       { name, description }
     );
     let data = response.data;
@@ -254,7 +254,7 @@ export async function createNewListInGroup({
 export async function inviteUser({ email, groupId }: any) {
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/invite-user`,
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/invite-user`,
       { email }
     );
     let data = response.data;
@@ -267,7 +267,7 @@ export async function rejectGroupInvitation({ groupId }: any) {
   const userId = getUserId();
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/user/group-invitation/reject`,
+      `${import.meta.env.SERVER_URL}/user/group-invitation/reject`,
       { groupId, userId }
     );
     let data = response.data;
@@ -280,7 +280,7 @@ export async function confirmGroupInvitation({ groupId }: any) {
   const userId = getUserId();
   try {
     let response = await axios.post(
-      `${import.meta.env.VITE_SERVER_URL}/user/group-invitation/confirm`,
+      `${import.meta.env.SERVER_URL}/user/group-invitation/confirm`,
       { groupId, userId }
     );
     let data = response.data;
@@ -299,7 +299,7 @@ export async function updateListInGroup({
 }: any) {
   try {
     await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/change-proposal`,
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}/change-proposal`,
       { listName, listDesc }
     );
   } catch (error) {
@@ -313,7 +313,7 @@ export async function updateProductInGroup({
 }: any) {
   try {
     await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/change-proposal`
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/change-proposal`
     );
   } catch (error) {
     console.log(error);
@@ -328,7 +328,7 @@ export async function editProductInGroup({
 }: any) {
   try {
     await axios.put(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/edit`,
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/edit`,
       {
         productName,
         productQty,
@@ -343,7 +343,7 @@ export async function editProductInGroup({
 export async function deleteGroup({ groupId }: any) {
   try {
     await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/delete-proposal`
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/delete-proposal`
     );
   } catch (error) {
     console.log(error);
@@ -352,7 +352,7 @@ export async function deleteGroup({ groupId }: any) {
 export async function deleteListInGroup({ listId, groupId }: any) {
   try {
     await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/delete-proposal`
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}/delete-proposal`
     );
   } catch (error) {
     console.log(error);
@@ -365,7 +365,7 @@ export async function deleteProductInGroup({
 }: any) {
   try {
     await axios.delete(
-      `${import.meta.env.VITE_SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/delete-proposal`
+      `${import.meta.env.SERVER_URL}/groups/${groupId}/lists/${listId}/products/${productId}/delete-proposal`
     );
   } catch (error) {
     console.log(error);
