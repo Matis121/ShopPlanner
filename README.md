@@ -9,13 +9,13 @@ Shop Planner is a React-based application that helps you create and organize sho
 
 - Creating private, separate lists to organize your shopping
 ![App Screenshot](https://raw.githubusercontent.com/Matis121/ShopPlanner/master/readme-images/list-cards.png)
--
+
 - Making individual lists of products
 ![App Screenshot](https://raw.githubusercontent.com/Matis121/ShopPlanner/master/readme-images/lists-of-products.png)
--
+
 - Creating groups to share lists with each other
 ![App Screenshot](https://raw.githubusercontent.com/Matis121/ShopPlanner/master/readme-images/group-cards.png)
--
+
 - Inviting users to the groups you have created
 ![App Screenshot](https://raw.githubusercontent.com/Matis121/ShopPlanner/master/readme-images/invite-user.png)
 
