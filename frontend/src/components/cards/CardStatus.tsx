@@ -16,6 +16,14 @@ const CardStatus: React.FC<CardStatusProps> = ({ percentOfCollectedItems }) => {
     <span
       className={`mt-6 inline-flex flex-shrink-0 items-center rounded-full ring-1 px-2 py-1 text-xs font-medium ${status == "New" ? "bg-blue-50 text-blue-700 ring-blue-600/20" : status == "In progress" ? "bg-yellow-50 text-yellow-700 ring-yellow-600/20" : "bg-green-50 text-green-700 ring-green-600/20"}`}
     >
+      <span className="relative flex h-3 w-3 mr-2">
+        <span
+          className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${status == "New" ? "bg-blue-500" : status == "In progress" ? "bg-yellow-500" : "bg-green-500"}`}
+        ></span>
+        <span
+          className={`relative inline-flex rounded-full h-3 w-3 ${status == "New" ? "bg-blue-500" : status == "In progress" ? "bg-yellow-500" : "bg-green-500"}`}
+        ></span>
+      </span>
       {status}
     </span>
   );
