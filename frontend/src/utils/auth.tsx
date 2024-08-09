@@ -35,6 +35,7 @@ export function getUserId(): string | null {
   if (authToken) {
     try {
       const decoded: JwtPayload = jwtDecode(authToken);
+      console.log(decoded);
       return decoded.id;
     } catch (error) {
       console.error("Failed to decode auth token:", error);
@@ -42,4 +43,17 @@ export function getUserId(): string | null {
     }
   }
   return null;
+}
+
+export function getUserName(): string | undefined | null {
+  const authToken = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (authToken) {
+    try {
+      const decoded: JwtPayload = jwtDecode(authToken);
+      return decoded.username;
+    } catch (error) {
+      console.error("Failed to decode auth token:", error);
+      return null;
+    }
+  }
 }

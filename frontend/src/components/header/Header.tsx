@@ -1,11 +1,17 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LuListChecks, LuUsers } from "react-icons/lu";
 import ToggleTheme from "./ToggleTheme";
 import Notifications from "./notifications/Notifications";
-import { logout } from "@/utils/auth";
+import { logout, getUserName } from "@/utils/auth";
 import useIsMobile from "@/hooks/useIsMobile";
 import MobileHamburger from "./MobileHamburger";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, ChevronDown } from "lucide-react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -67,13 +73,24 @@ const Header = () => {
           <MobileHamburger />
         </div>
       )}
-      <div className="flex items-center ml-auto gap-3">
+      <div className="flex items-center ml-auto gap-4">
         <Notifications />
         <ToggleTheme />
-        <Avatar onClick={logoutWithRedirect} className="cursor-pointer">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-1 ml-2 text-blue-400 font-medium">
+            <span>{getUserName()}</span>
+            <ChevronDown size={16} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem
+              onClick={logoutWithRedirect}
+              className="cursor-pointer"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
