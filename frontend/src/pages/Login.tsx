@@ -61,6 +61,13 @@ const Login = () => {
         Register
       </Button>
       <div className="w-full h-screen flex flex-col items-center justify-center gap-10">
+        <div className="flex flex-col py-2 px-4 bg-green-500 dark:bg-green-300 bg-opacity-60 dark:bg-opacity-50 text-white border border-green-600 rounded-md">
+          <span className="font-semibold mb-2 uppercase mx-auto">
+            Test account
+          </span>
+          <p>Email: demo@gmail.com</p>
+          <p>Password: demo12</p>
+        </div>
         <h2 className=" text-xl">Login page</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
