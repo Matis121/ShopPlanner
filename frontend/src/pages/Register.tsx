@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 
 type RegisterForm = {
@@ -65,16 +65,19 @@ const Register = () => {
   };
 
   return (
-    <section className="relative">
-      <Button
-        variant="link"
-        className="absolute top-4 right-8 text-lg"
-        onClick={() => navigate({ to: "/login" })}
-      >
-        Login
-      </Button>
-      <div className="w-full h-screen flex flex-col items-center justify-center gap-10">
-        <h2 className=" text-xl">Register page</h2>
+    <section className="relative h-screen">
+      <div className="w-full flex justify-between px-4 py-4">
+        <Link to="/">
+          <span className=" text-blue-400 font-semibold text-xl">
+            ShopPlanner
+          </span>
+        </Link>
+        <Button variant="link" onClick={() => navigate({ to: "/login" })}>
+          Login
+        </Button>
+      </div>
+      <div className="w-full flex flex-col items-center justify-center gap-10 absolute top-[50%] transform translate-y-[-50%]">
+        <h2 className=" text-xl">Create new account</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 shadow-xl rounded-xl py-4 px-8"
