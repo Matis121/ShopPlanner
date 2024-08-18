@@ -20,6 +20,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+     /* Vitest */
+     "types": ["@testing-library/jest-dom"],
+
     // Shadcn
     "baseUrl": ".",
     "paths": {
