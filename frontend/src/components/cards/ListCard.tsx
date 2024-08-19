@@ -12,7 +12,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/api/User";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import CardStatus from "./CardStatus";
-import { ListData } from "../types/List";
+import { ListData } from "../../types/List";
 import { useToast } from "../ui/use-toast";
 import { LuCheckCircle } from "react-icons/lu";
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ListData } from "@/components/types/List";
+import { ListData } from "@/types/List";
 
 export function useFilterData(data: ListData[], isFetched: boolean) {
   const [searchQuery, setSearchQuery] = useState("");

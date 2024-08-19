@@ -8,7 +8,7 @@ import { updateList, updateListInGroup } from "@/api/User";
 import { useListHeader } from "@/hooks/list/useListHeader";
 import { useProgressBar } from "@/hooks/useProgressBar";
 import { useParams } from "@tanstack/react-router";
-import { ListData } from "../types/List";
+import { ListData } from "../../types/List";
 import { Loader2 } from "lucide-react";
 
 type ListHeaderProps = {

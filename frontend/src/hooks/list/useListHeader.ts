@@ -1,4 +1,4 @@
-import { ListData } from "@/components/types/List";
+import { ListData } from "@/types/List";
 import { useEffect, useState } from "react";
 
 type StateData = {
