@@ -35,7 +35,6 @@ export function getUserId(): string | null {
   if (authToken) {
     try {
       const decoded: JwtPayload = jwtDecode(authToken);
-      console.log(decoded);
       return decoded.id;
     } catch (error) {
       console.error("Failed to decode auth token:", error);

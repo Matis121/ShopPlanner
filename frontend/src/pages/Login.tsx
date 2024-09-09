@@ -35,9 +35,7 @@ const Login = () => {
         email: data.email,
         password: data.password,
       });
-      console.log(usersettings);
       if (!usersettings.success) {
-        console.log(usersettings);
         setError(usersettings.message);
       }
       if (usersettings.token) {

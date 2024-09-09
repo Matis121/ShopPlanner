@@ -25,8 +25,6 @@ const ContentTitle: React.FC<ContentTitleProps> = ({
   children,
   breadCrumb,
 }) => {
-  console.log(breadCrumb);
-
   const DisplaySearch = (cardsAmount: number) => {
     if (cardsAmount > 0) {
       return <>{children}</>;
