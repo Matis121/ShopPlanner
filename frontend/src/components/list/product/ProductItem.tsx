@@ -140,20 +140,45 @@ export const ProductItem: React.FC<ProductItemProps> = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["lists"],
+        queryKey: ["lists", listUrlParam],
       });
     },
   });
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
-    onError: error => {
-      console.error("Error removing a product:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["lists"],
+    onMutate: async deleteProduct => {
+      await queryClient.cancelQueries({ queryKey: ["lists", listUrlParam] });
+
+      const previousProductsData = queryClient.getQueryData([
+        "lists",
+        listUrlParam,
+      ]);
+      console.log(deleteProduct);
+      queryClient.setQueryData(["lists", listUrlParam], (oldData: any) => {
+        if (!oldData) return { oldData };
+        return {
+          ...oldData,
+          productList: oldData.productList.filter(
+            (product: any) => product._id !== deleteProduct.productId
+          ),
+        };
       });
+
+      return { previousProductsData };
+    },
+    onError: (error, context) => {
+      if (context?.previousProductsData) {
+        queryClient.setQueryData(
+          ["lists", listUrlParam],
+          context.previousProductsData
+        );
+      }
+      console.error("Error adding product:", error);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists", listUrlParam] });
     },
   });
 
@@ -164,7 +189,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["lists"],
+        queryKey: ["lists", listUrlParam],
       });
     },
   });
@@ -254,7 +279,7 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["groupLists"],
+        queryKey: ["groupLists", listUrlParam],
       });
     },
   });

@@ -36,10 +36,40 @@ export const ProductForm: React.FC<ProductFormProp> = ({ listId }) => {
   const [newItemValue, setNewItemValue] = useState("");
   const createProductMutation = useMutation({
     mutationFn: addNewProduct,
-    onError: error => {
-      console.error("Error adding new product:", error);
+    onMutate: async newData => {
+      await queryClient.cancelQueries({ queryKey: ["lists", listId] });
+
+      const previousProductsData = queryClient.getQueryData(["lists", listId]);
+      console.log(newData);
+      queryClient.setQueryData(["lists", listId], (oldData: any) => {
+        if (!oldData) return { productList: [newData] };
+        console.log(oldData);
+        return {
+          ...oldData,
+          productList: [
+            ...oldData.productList,
+            {
+              name: newData.productName,
+              amount: 1,
+              isCollected: false,
+            },
+          ],
+        };
+      });
+
+      return { previousProductsData };
     },
-    onSuccess: () => {
+    onError: (error, context) => {
+      if (context?.previousProductsData) {
+        queryClient.setQueryData(
+          ["lists", listId],
+          context.previousProductsData
+        );
+      }
+      console.error("Error adding product:", error);
+    },
+
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["lists", listId] });
     },
   });
@@ -72,10 +102,35 @@ export const ProductFromGroup: React.FC<ProductFormProp> = ({ listId }) => {
   const [newItemValue, setNewItemValue] = useState("");
   const createProductMutation = useMutation({
     mutationFn: addNewProductInGroup,
-    onError: error => {
-      console.error("Error adding new product:", error);
+    onMutate: async newData => {
+      await queryClient.cancelQueries({ queryKey: ["groupLists", listId] });
+
+      const previousProductsData = queryClient.getQueryData([
+        "groupLists",
+        listId,
+      ]);
+
+      queryClient.setQueryData(["groupLists", listId], (oldData: any) => {
+        if (!oldData) return { productList: [newData] };
+        return {
+          ...oldData,
+          productList: [...oldData.productList, newData],
+        };
+      });
+
+      return { previousProductsData };
     },
-    onSuccess: () => {
+    onError: (error, context) => {
+      if (context?.previousProductsData) {
+        queryClient.setQueryData(
+          ["groupLists", listId],
+          context.previousProductsData
+        );
+      }
+      console.error("Error adding product:", error);
+    },
+
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["groupLists", listId] });
     },
   });
