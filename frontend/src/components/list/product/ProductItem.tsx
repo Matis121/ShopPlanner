@@ -172,7 +172,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
           context.previousProductsData
         );
       }
-      console.error("Error adding product:", error);
+      console.error("Error removing a product:", error);
     },
 
     onSettled: () => {
@@ -285,25 +285,80 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProductInGroup,
-    onError: error => {
-      console.error("Error removing a product:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onMutate: async deleteProduct => {
+      await queryClient.cancelQueries({
         queryKey: ["groupLists", listUrlParam],
       });
+      const previousProductsData = queryClient.getQueryData([
+        "groupLists",
+        listUrlParam,
+      ]);
+      console.log(deleteProduct);
+      queryClient.setQueryData(["groupLists", listUrlParam], (oldData: any) => {
+        if (!oldData) return { oldData };
+        return {
+          ...oldData,
+          productList: oldData.productList.filter(
+            (product: any) => product._id !== deleteProduct.productId
+          ),
+        };
+      });
+      return { previousProductsData };
+    },
+    onError: (error, context) => {
+      if (context?.previousProductsData) {
+        queryClient.setQueryData(
+          ["groupLists", listUrlParam],
+          context.previousProductsData
+        );
+      }
+      console.error("Error removing a product:", error);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["groupLists", listUrlParam] });
     },
   });
 
   const editProductMutation = useMutation({
     mutationFn: editProductInGroup,
-    onError: error => {
-      console.error("Error removing a product:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onMutate: async newData => {
+      await queryClient.cancelQueries({
         queryKey: ["groupLists", listUrlParam],
       });
+      const prevProductData = queryClient.getQueryData([
+        "groupLists",
+        listUrlParam,
+      ]);
+      queryClient.setQueryData(["groupLists", listUrlParam], (oldData: any) => {
+        if (!oldData) return { oldData };
+        return {
+          ...oldData,
+          productList: oldData.productList.map((product: any) => {
+            return product._id === newData.productId
+              ? {
+                  ...product,
+                  name: newData.productName,
+                  amount: newData.productQty,
+                }
+              : product;
+          }),
+        };
+      });
+      return { prevProductData };
+    },
+    onError: (error, context) => {
+      if (context?.prevProductData) {
+        queryClient.setQueryData(
+          ["groupLists", listUrlParam],
+          context.prevProductData
+        );
+      }
+      console.error("Error updating product:", error);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["groupLists", listUrlParam] });
     },
   });
 

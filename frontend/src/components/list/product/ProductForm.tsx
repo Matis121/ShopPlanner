@@ -102,17 +102,23 @@ export const ProductFromGroup: React.FC<ProductFormProp> = ({ listId }) => {
     mutationFn: addNewProductInGroup,
     onMutate: async newData => {
       await queryClient.cancelQueries({ queryKey: ["groupLists", listId] });
-
       const previousProductsData = queryClient.getQueryData([
         "groupLists",
         listId,
       ]);
-
       queryClient.setQueryData(["groupLists", listId], (oldData: any) => {
         if (!oldData) return { productList: [newData] };
+        console.log(oldData);
         return {
           ...oldData,
-          productList: [...oldData.productList, newData],
+          productList: [
+            ...oldData.productList,
+            {
+              name: newData.productName,
+              amount: 1,
+              isCollected: false,
+            },
+          ],
         };
       });
 
