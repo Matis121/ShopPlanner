@@ -38,9 +38,7 @@ export const ProductForm: React.FC<ProductFormProp> = ({ listId }) => {
     mutationFn: addNewProduct,
     onMutate: async newData => {
       await queryClient.cancelQueries({ queryKey: ["lists", listId] });
-
       const previousProductsData = queryClient.getQueryData(["lists", listId]);
-      console.log(newData);
       queryClient.setQueryData(["lists", listId], (oldData: any) => {
         if (!oldData) return { productList: [newData] };
         console.log(oldData);

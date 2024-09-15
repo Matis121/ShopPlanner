@@ -149,7 +149,6 @@ export const ProductItem: React.FC<ProductItemProps> = ({
     mutationFn: deleteProduct,
     onMutate: async deleteProduct => {
       await queryClient.cancelQueries({ queryKey: ["lists", listUrlParam] });
-
       const previousProductsData = queryClient.getQueryData([
         "lists",
         listUrlParam,
@@ -164,7 +163,6 @@ export const ProductItem: React.FC<ProductItemProps> = ({
           ),
         };
       });
-
       return { previousProductsData };
     },
     onError: (error, context) => {
@@ -184,13 +182,38 @@ export const ProductItem: React.FC<ProductItemProps> = ({
 
   const editProductMutation = useMutation({
     mutationFn: editProduct,
-    onError: error => {
-      console.error("Error removing a product:", error);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["lists", listUrlParam],
+    onMutate: async newData => {
+      await queryClient.cancelQueries({ queryKey: ["lists", listUrlParam] });
+      const prevProductData = queryClient.getQueryData(["lists", listUrlParam]);
+      queryClient.setQueryData(["lists", listUrlParam], (oldData: any) => {
+        if (!oldData) return { oldData };
+        return {
+          ...oldData,
+          productList: oldData.productList.map((product: any) => {
+            return product._id === newData.productId
+              ? {
+                  ...product,
+                  name: newData.productName,
+                  amount: newData.productQty,
+                }
+              : product;
+          }),
+        };
       });
+      return { prevProductData };
+    },
+    onError: (error, context) => {
+      if (context?.prevProductData) {
+        queryClient.setQueryData(
+          ["lists", listUrlParam],
+          context.prevProductData
+        );
+      }
+      console.error("Error updating product:", error);
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["lists", listUrlParam] });
     },
   });
 
