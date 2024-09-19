@@ -153,7 +153,6 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         "lists",
         listUrlParam,
       ]);
-      console.log(deleteProduct);
       queryClient.setQueryData(["lists", listUrlParam], (oldData: any) => {
         if (!oldData) return { oldData };
         return {
@@ -293,7 +292,6 @@ export const ProductItemGroup: React.FC<ProductItemProps> = ({
         "groupLists",
         listUrlParam,
       ]);
-      console.log(deleteProduct);
       queryClient.setQueryData(["groupLists", listUrlParam], (oldData: any) => {
         if (!oldData) return { oldData };
         return {

@@ -18,10 +18,17 @@ export function useList() {
     navigate({ to: "/mylists" });
   };
 
-  const { data, isFetched } = useQuery({
+  const { data, isFetched, isLoading } = useQuery({
     queryKey: ["lists", listId],
     queryFn: () => getSingleList(listId),
   });
 
-  return { data, isFetched, listId, handleBackgroundClick, handleExit };
+  return {
+    data,
+    isFetched,
+    isLoading,
+    listId,
+    handleBackgroundClick,
+    handleExit,
+  };
 }

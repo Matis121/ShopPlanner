@@ -10,12 +10,14 @@ type Product = {
 type ListContentProps = {
   data: Product[];
   isFetched: boolean;
+  isLoading: boolean;
   listId: string;
 };
 
 export const ListContent: React.FC<ListContentProps> = ({
   data,
   isFetched,
+  isLoading,
   listId,
 }) => {
   return (
@@ -24,6 +26,7 @@ export const ListContent: React.FC<ListContentProps> = ({
       <ProductList
         data={data}
         isFetched={isFetched}
+        isLoading={isLoading}
         listId={listId}
         queryKey={"list"}
       />
@@ -34,6 +37,7 @@ export const ListContent: React.FC<ListContentProps> = ({
 export const ListContentGroup: React.FC<ListContentProps> = ({
   data,
   isFetched,
+  isLoading,
   listId,
 }) => {
   return (
@@ -42,6 +46,7 @@ export const ListContentGroup: React.FC<ListContentProps> = ({
       <ProductList
         data={data}
         isFetched={isFetched}
+        isLoading={isLoading}
         listId={listId}
         queryKey={"group"}
       />

@@ -4,8 +4,14 @@ import { ListContent } from "./ListContent";
 import { useList } from "@/hooks/list/useList";
 
 const List = () => {
-  const { data, isFetched, listId, handleBackgroundClick, handleExit } =
-    useList();
+  const {
+    data,
+    isFetched,
+    isLoading,
+    listId,
+    handleBackgroundClick,
+    handleExit,
+  } = useList();
   return (
     <div
       className="z-50 flex justify-center max-h-screen overflow-auto fixed top-0 left-0 bg-neutral-400 bg-opacity-80 dark:bg-black dark:bg-opacity-70 w-screen md:min-h-[100%]"
@@ -22,6 +28,7 @@ const List = () => {
           data={data?.productList}
           isFetched={isFetched}
           listId={listId}
+          isLoading={isLoading}
         />
       </section>
     </div>

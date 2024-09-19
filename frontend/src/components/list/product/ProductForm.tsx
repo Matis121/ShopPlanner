@@ -41,7 +41,6 @@ export const ProductForm: React.FC<ProductFormProp> = ({ listId }) => {
       const previousProductsData = queryClient.getQueryData(["lists", listId]);
       queryClient.setQueryData(["lists", listId], (oldData: any) => {
         if (!oldData) return { productList: [newData] };
-        console.log(oldData);
         return {
           ...oldData,
           productList: [
@@ -108,7 +107,6 @@ export const ProductFromGroup: React.FC<ProductFormProp> = ({ listId }) => {
       ]);
       queryClient.setQueryData(["groupLists", listId], (oldData: any) => {
         if (!oldData) return { productList: [newData] };
-        console.log(oldData);
         return {
           ...oldData,
           productList: [
