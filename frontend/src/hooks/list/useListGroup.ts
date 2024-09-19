@@ -22,7 +22,7 @@ export function useListGroup() {
     navigate({ to: "/groups/$groupId", params: { groupId } });
   };
 
-  const { data, isFetched } = useQuery({
+  const { data, isFetched, isLoading } = useQuery({
     queryKey: ["groupLists", listId],
     queryFn: () =>
       getSingleListInGroup({
@@ -31,5 +31,12 @@ export function useListGroup() {
       }),
   });
 
-  return { data, isFetched, listId, handleBackgroundClick, handleExit };
+  return {
+    data,
+    isFetched,
+    isLoading,
+    listId,
+    handleBackgroundClick,
+    handleExit,
+  };
 }

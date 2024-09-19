@@ -4,8 +4,14 @@ import { ListContentGroup } from "./ListContent";
 import { useListGroup } from "@/hooks/list/useListGroup";
 
 const ListGroup = () => {
-  const { data, isFetched, listId, handleBackgroundClick, handleExit } =
-    useListGroup();
+  const {
+    data,
+    isFetched,
+    isLoading,
+    listId,
+    handleBackgroundClick,
+    handleExit,
+  } = useListGroup();
   return (
     <div
       className="flex justify-center max-h-screen overflow-auto fixed top-0 left-0 bg-neutral-400 bg-opacity-80 dark:bg-black dark:bg-opacity-70 w-screen z-50 md:min-h-[100%]"
@@ -21,6 +27,7 @@ const ListGroup = () => {
         <ListContentGroup
           data={data?.productList}
           isFetched={isFetched}
+          isLoading={isLoading}
           listId={listId}
         />
       </section>
