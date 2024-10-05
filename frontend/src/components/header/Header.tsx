@@ -16,7 +16,6 @@ import { LogOut, ChevronDown } from "lucide-react";
 const Header = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  console.log("test");
 
   const isActiveElement = () => {
     return (
